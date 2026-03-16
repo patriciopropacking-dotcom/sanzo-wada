@@ -261,27 +261,88 @@ header{
 /* GARMENT SLOTS */
 .garment-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
 .garment-slot{
-  background:var(--cream);display:grid;grid-template-columns:56px 1fr auto;
-  align-items:center;gap:0;cursor:pointer;transition:background 0.15s;
+  background:var(--cream);display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;gap:0;transition:background 0.15s;
   position:relative;
 }
 .garment-slot:hover{background:var(--cream2)}
 .garment-slot.has-color{background:var(--cream)}
 .garment-icon{
   width:56px;height:56px;display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;border-right:1px solid var(--line2);flex-shrink:0;
+  font-size:1.3rem;border-right:1px solid var(--line2);flex-shrink:0;cursor:pointer;
 }
-.garment-label-wrap{padding:0.8rem 1rem;border-right:1px solid var(--line2)}
+.garment-label-wrap{padding:0.8rem 1rem;border-right:1px solid var(--line2);cursor:pointer}
 .garment-label{font-size:0.65rem;letter-spacing:0.1em;color:var(--ink);display:block}
 .garment-sublabel{font-size:0.5rem;letter-spacing:0.08em;color:var(--ink3);display:block;margin-top:2px}
 .garment-color-preview{
   width:56px;height:56px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
-  position:relative;
+  position:relative;cursor:pointer;
 }
 .garment-swatch{width:100%;height:100%;position:absolute;inset:0}
 .garment-empty{font-size:0.5rem;letter-spacing:0.1em;color:var(--ink3);text-align:center;padding:0.5rem;position:relative;z-index:1}
 .garment-slot.has-color .garment-empty{display:none}
+
+/* Suggest button per garment */
+.garment-suggest-btn{
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.4rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:none;border:none;border-left:1px solid var(--line2);color:var(--red);cursor:pointer;
+  padding:0 0.7rem;height:56px;display:flex;align-items:center;gap:0.3rem;
+  transition:background 0.15s;flex-shrink:0;white-space:nowrap;opacity:0.7;
+}
+.garment-suggest-btn:hover{background:var(--cream2);opacity:1}
+.garment-suggest-btn.hidden{visibility:hidden;pointer-events:none}
+
+/* Suggestion panel below a slot */
+.suggest-panel{
+  background:var(--cream2);border-bottom:1px solid var(--line);border-left:1px solid var(--line);border-right:1px solid var(--line);
+  animation:slideIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
+}
+.suggest-header{
+  padding:0.7rem 1rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.suggest-title{font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red)}
+.suggest-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.85rem;transition:color 0.2s;padding:0.2rem}
+.suggest-close:hover{color:var(--red)}
+.suggest-body{padding:0.8rem 1rem 1rem}
+.suggest-intro{font-size:0.62rem;color:var(--ink3);letter-spacing:0.04em;line-height:1.6;margin-bottom:0.8rem;font-style:italic}
+.suggest-garment-group{margin-bottom:0.9rem}
+.suggest-garment-label{font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.4rem}
+.suggest-colors{display:flex;gap:4px;flex-wrap:wrap}
+.suggest-chip{
+  display:flex;align-items:center;gap:0.35rem;
+  background:var(--cream);border:1px solid var(--line);
+  padding:0.25rem 0.5rem 0.25rem 0.25rem;
+  cursor:pointer;transition:border-color 0.15s,transform 0.15s;
+  font-size:0.48rem;color:var(--ink2);letter-spacing:0.04em;
+}
+.suggest-chip:hover{border-color:var(--red);transform:scale(1.04)}
+.suggest-dot{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08)}
+.suggest-wada{
+  font-size:0.35rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--red);color:white;padding:1px 3px;margin-left:1px;line-height:1.4;
+}
+
+/* Combo thumbnails in modal */
+.combo-thumb{
+  position:relative;
+  height:36px;width:72px;
+  cursor:pointer;overflow:hidden;flex-shrink:0;
+  border:1.5px solid var(--line);
+  transition:transform 0.18s,border-color 0.18s,box-shadow 0.18s;
+}
+.combo-thumb:hover{transform:scale(1.08);border-color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.combo-thumb-active{border-color:var(--red)!important;border-width:2px!important}
+.combo-thumb-num{
+  position:absolute;bottom:0;left:0;right:0;
+  font-size:0.38rem;letter-spacing:0.08em;
+  background:rgba(26,23,20,0.6);color:#f7f4ef;
+  text-align:center;padding:1px 0;
+  opacity:0;transition:opacity 0.2s;
+}
+.combo-thumb:hover .combo-thumb-num{opacity:1}
 
 /* LOOK PREVIEW */
 .look-preview{position:sticky;top:80px}
@@ -684,7 +745,27 @@ function openComboModal(presetColors){
   document.getElementById('comboModalOverlay').classList.add('open');
 }
 
+// Store allCombos globally so thumbnails can reference the full list
+let currentAllCombos=[];
+
+function switchCombo(cn){
+  // Called when clicking a thumbnail — opens the full modal for that combo
+  const m=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);
+  if(m.length<2)return;
+  // Animate swap
+  const modal=document.getElementById('comboModal');
+  modal.style.opacity='0.5';modal.style.transform='scale(0.97)';
+  setTimeout(()=>{
+    modal.style.transition='opacity 0.25s,transform 0.25s';
+    buildComboModal(m,cn,currentAllCombos);
+    modal.style.opacity='1';modal.style.transform='scale(1)';
+    modal.scrollTop=0;
+  },120);
+}
+
 function buildComboModal(colors, comboNum, allCombos){
+  if(allCombos)currentAllCombos=allCombos;
+
   // SWATCHES STRIP
   const sw=document.getElementById('cmSwatches');
   sw.innerHTML='';
@@ -697,7 +778,6 @@ function buildComboModal(colors, comboNum, allCombos){
   // OUTFIT FIGURE
   const fig=document.getElementById('outfitFigure');
   fig.innerHTML='';
-  // Distribute colors across outfit pieces
   const outfitPieces=[
     {label:'Abrigo',h:38,w:'90%'},
     {label:'Top',h:32,w:'72%'},
@@ -716,6 +796,8 @@ function buildComboModal(colors, comboNum, allCombos){
   // INFO PANEL
   const info=document.getElementById('cmInfo');
   const isSaved=savedItems.some(s=>s.type==='combo'&&s.colors.map(x=>x.hex).join()==colors.map(x=>x.hex).join());
+  const displayCombos=currentAllCombos.length>1?currentAllCombos:allCombos;
+
   info.innerHTML=`
     <div class="cm-num">${comboNum?`Combinación #${comboNum}`:'Look personalizado'}</div>
     <h3 class="cm-title">${colors.map(c=>c.name).join(' · ')}</h3>
@@ -729,14 +811,18 @@ function buildComboModal(colors, comboNum, allCombos){
           </div>
         </div>`).join('')}
     </div>
-    ${allCombos&&allCombos.length>1?`
-    <div style="margin-top:auto;padding-top:1rem;border-top:1px solid var(--line2)">
-      <span style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.6rem">Otras combinaciones</span>
-      <div style="display:flex;gap:4px;flex-wrap:wrap">
-        ${allCombos.slice(0,8).map(({cn,m})=>`
-          <div onclick="buildComboModal(${JSON.stringify(m.map(x=>({index:x.index,name:x.name,hex:x.hex,cmyk:x.cmyk,rgb:x.rgb,combinations:x.combinations})))},${cn},null)" 
-               style="display:flex;height:24px;width:60px;cursor:pointer;overflow:hidden;flex-shrink:0;border:1px solid var(--line)" title="Combinación #${cn}">
-            ${m.map(c=>`<div style="flex:1;background:${c.hex}"></div>`).join('')}
+    ${displayCombos&&displayCombos.length>1?`
+    <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line2)">
+      <span style="font-size:0.45rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.7rem">Otras combinaciones</span>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        ${displayCombos.slice(0,12).map(({cn,m})=>`
+          <div onclick="switchCombo(${cn})"
+               class="combo-thumb${comboNum===cn?' combo-thumb-active':''}"
+               title="Combinación #${cn} · ${m.map(x=>x.name).join(', ')}">
+            <div style="display:flex;height:100%;width:100%">
+              ${m.map(c=>`<div style="flex:1;background:${c.hex}"></div>`).join('')}
+            </div>
+            <span class="combo-thumb-num">#${cn}</span>
           </div>`).join('')}
       </div>
     </div>`:``}
@@ -791,20 +877,24 @@ function buildAtelier(){
   const slots=document.getElementById('garmentSlots');
   slots.innerHTML='';
   GARMENTS.forEach((g,i)=>{
-    const slot=document.createElement('div');
-    slot.className='garment-slot'+(atelierState[i]?' has-color':'');
-    slot.id=`slot-${i}`;
-    slot.onclick=()=>openPopover(i,slot);
     const c=atelierState[i];
+
+    // Slot row
+    const slot=document.createElement('div');
+    slot.className='garment-slot'+(c?' has-color':'');
+    slot.id=`slot-${i}`;
     slot.innerHTML=`
-      <div class="garment-icon">${g.icon}</div>
-      <div class="garment-label-wrap">
+      <div class="garment-icon" onclick="openPopover(${i},this.closest('.garment-slot'))">${g.icon}</div>
+      <div class="garment-label-wrap" onclick="openPopover(${i},this.closest('.garment-slot'))">
         <span class="garment-label">${g.label}</span>
         <span class="garment-sublabel">${c?c.name:g.sub}</span>
       </div>
-      <div class="garment-color-preview">
+      <div class="garment-color-preview" onclick="openPopover(${i},this.closest('.garment-slot'))">
         ${c?`<div class="garment-swatch" style="background:${c.hex}"></div>`:`<span class="garment-empty">+</span>`}
-      </div>`;
+      </div>
+      <button class="garment-suggest-btn${c?'':' hidden'}" onclick="showSuggestions(${i})" title="Sugerir colores para las otras prendas">
+        ✦ Sugerir
+      </button>`;
     slots.appendChild(slot);
   });
   buildLookFigure();
@@ -862,6 +952,83 @@ function updateHarmony(){
 }
 
 function clearAtelier(){atelierState=Array(GARMENTS.length).fill(null);buildAtelier()}
+
+// ── ATELIER SUGGESTIONS ───────────────────────────────────────────────────────
+function showSuggestions(slotIdx){
+  // Remove any existing suggestion panel
+  const existing=document.getElementById('suggestPanel');
+  if(existing){
+    // If same slot — toggle off
+    if(existing.dataset.slot==slotIdx){existing.remove();return}
+    existing.remove();
+  }
+
+  const baseColor=atelierState[slotIdx];
+  if(!baseColor){showToast('Primero elegí un color para esta prenda');return}
+
+  // Find all Wada combos that include this color
+  const wadaCombos=new Set();
+  baseColor.combinations.forEach(cn=>{
+    (COMBOS[cn]||[]).forEach(idx=>{if(idx!==baseColor.index)wadaCombos.add(idx)});
+  });
+  // Also add reverse — combos where other colors list baseColor
+  COLORS.forEach(c=>{
+    if(c.combinations.some(cn=>(COMBOS[cn]||[]).includes(baseColor.index)))wadaCombos.add(c.index);
+  });
+
+  // Group suggestions by garment (skip current slot)
+  const suggestions=GARMENTS.map((g,i)=>{
+    if(i===slotIdx)return null;
+    // Wada combos first, then other colors from same family
+    const wadaSuggestions=[...wadaCombos].map(idx=>colorByIndex[idx]).filter(Boolean).slice(0,4);
+    return{garmentIdx:i,garment:g,colors:wadaSuggestions};
+  }).filter(Boolean).filter(s=>s.colors.length>0).slice(0,4);
+
+  if(!suggestions.length){showToast('No hay combinaciones Wada para este color');return}
+
+  // Build panel
+  const panel=document.createElement('div');
+  panel.className='suggest-panel';
+  panel.id='suggestPanel';
+  panel.dataset.slot=slotIdx;
+
+  panel.innerHTML=`
+    <div class="suggest-header">
+      <span class="suggest-title">✦ Colores que combinan con ${baseColor.name}</span>
+      <button class="suggest-close" onclick="document.getElementById('suggestPanel').remove()">×</button>
+    </div>
+    <div class="suggest-body">
+      <p class="suggest-intro">Según el Diccionario de Sanzo Wada, estos colores forman combinaciones perfectas con <em>${baseColor.name}</em>. Tocá cualquiera para aplicarlo a esa prenda.</p>
+      ${suggestions.map(s=>`
+        <div class="suggest-garment-group">
+          <span class="suggest-garment-label">${s.garment.icon} ${s.garment.label}</span>
+          <div class="suggest-colors">
+            ${s.colors.map(c=>`
+              <div class="suggest-chip" onclick="applySuggestion(${s.garmentIdx},${c.index})" title="${c.name}">
+                <div class="suggest-dot" style="background:${c.hex}"></div>
+                ${c.name}
+                <span class="suggest-wada">Wada</span>
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+
+  // Insert after the slot row
+  const slotEl=document.getElementById(`slot-${slotIdx}`);
+  slotEl.insertAdjacentElement('afterend',panel);
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function applySuggestion(garmentIdx,colorIdx){
+  const color=colorByIndex[colorIdx];
+  if(!color)return;
+  atelierState[garmentIdx]=color;
+  buildAtelier();
+  // Re-show suggestions for original slot (find it)
+  const panel=document.getElementById('suggestPanel');
+  if(panel){const slot=parseInt(panel.dataset.slot);setTimeout(()=>showSuggestions(slot),50)}
+  showToast(`${color.name} → ${GARMENTS[garmentIdx].label}`);
+}
 
 function saveAtelier(){
   const active=atelierState.filter(Boolean);
