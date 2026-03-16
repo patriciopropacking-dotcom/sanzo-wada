@@ -249,14 +249,194 @@ header{
 .cm-atelier-btn:hover{border-color:var(--ink);color:var(--ink)}
 
 /* ── ATELIER ─────────────────────────────── */
-.atelier-wrap{max-width:1100px;margin:0 auto;padding:3rem 2rem 4rem}
+.atelier-wrap{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem}
+.atelier-step{}
 .atelier-header{margin-bottom:2.5rem}
 .atelier-eyebrow{font-size:0.48rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--red);margin-bottom:0.8rem}
 .atelier-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.05;color:var(--ink)}
 .atelier-title em{font-style:italic}
 .atelier-desc{font-size:0.72rem;letter-spacing:0.05em;color:var(--ink3);line-height:1.8;max-width:520px;margin-top:0.8rem}
 
-.atelier-grid{display:grid;grid-template-columns:1fr 340px;gap:3rem;align-items:start}
+/* Step 1: base garment picker */
+.base-garments-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:0.5px;background:var(--line2);margin-top:0.5rem;
+}
+.base-garment-card{
+  background:var(--cream);padding:2rem 1.5rem;
+  cursor:pointer;text-align:center;
+  transition:background 0.15s,transform 0.2s;
+  display:flex;flex-direction:column;align-items:center;gap:0.7rem;
+}
+.base-garment-card:hover{background:var(--cream2);transform:scale(1.03);z-index:2}
+.base-garment-card:active{transform:scale(0.97)}
+.bg-icon{font-size:2.2rem;line-height:1}
+.bg-label{font-family:'Playfair Display',serif;font-size:0.85rem;color:var(--ink);font-style:italic}
+.bg-sub{font-size:0.45rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3)}
+
+/* Step 2 topbar */
+.step2-topbar{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;margin-bottom:2rem;padding-bottom:1.5rem;
+  border-bottom:1px solid var(--line2);
+}
+.atelier-back-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--ink3);
+  padding:0.5rem 1rem;cursor:pointer;transition:all 0.2s;justify-self:start;
+}
+.atelier-back-btn:hover{border-color:var(--ink);color:var(--ink)}
+.step2-title{
+  font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;
+  color:var(--ink);text-align:center;
+}
+
+/* Builder layout */
+.atelier-builder{display:grid;grid-template-columns:1fr 200px 280px;gap:2rem;align-items:start}
+
+/* LEFT: slots */
+.atelier-left{}
+.base-slot-display{
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:0.5px;
+}
+.base-slot-inner{
+  display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;
+}
+.base-slot-badge{
+  font-size:0.4rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--red);color:white;padding:2px 6px;
+  margin-left:0.5rem;vertical-align:middle;
+}
+.other-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+
+/* Garment slots (used in both old and new) */
+.garment-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+.garment-slot{
+  background:var(--cream);display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;gap:0;transition:background 0.15s;
+  position:relative;
+}
+.garment-slot:hover{background:var(--cream2)}
+.garment-slot.has-color{background:var(--cream)}
+.garment-slot.is-base{border-left:3px solid var(--red)}
+.garment-icon{
+  width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;border-right:1px solid var(--line2);flex-shrink:0;cursor:pointer;
+}
+.garment-label-wrap{padding:0.8rem 1rem;border-right:1px solid var(--line2);cursor:pointer}
+.garment-label{font-size:0.65rem;letter-spacing:0.1em;color:var(--ink);display:block}
+.garment-sublabel{font-size:0.5rem;letter-spacing:0.08em;color:var(--ink3);display:block;margin-top:2px}
+.garment-color-preview{
+  width:56px;height:56px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;
+}
+.garment-swatch{width:100%;height:100%;position:absolute;inset:0}
+.garment-empty{font-size:0.5rem;letter-spacing:0.1em;color:var(--ink3);text-align:center;padding:0.5rem;position:relative;z-index:1}
+.garment-slot.has-color .garment-empty{display:none}
+
+/* Suggest button per garment */
+.garment-suggest-btn{
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.4rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:none;border:none;border-left:1px solid var(--line2);color:var(--red);cursor:pointer;
+  padding:0 0.7rem;height:56px;display:flex;align-items:center;gap:0.3rem;
+  transition:background 0.15s;flex-shrink:0;white-space:nowrap;opacity:0.7;
+}
+.garment-suggest-btn:hover{background:var(--cream2);opacity:1}
+.garment-suggest-btn.hidden{visibility:hidden;pointer-events:none}
+
+/* CENTER: silhouette */
+.atelier-center{display:flex;flex-direction:column;align-items:center;gap:1rem;position:sticky;top:80px}
+.atelier-center-label{font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink3)}
+.atelier-silhouette{
+  width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:1.5rem 1rem;background:var(--cream2);border:1px solid var(--line);
+  min-height:280px;justify-content:center;
+}
+.sil-piece{
+  border-radius:2px;display:flex;align-items:center;justify-content:center;
+  font-size:0.38rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(26,23,20,0.45);transition:background 0.35s,width 0.3s;cursor:pointer;
+  position:relative;border:1.5px solid transparent;
+}
+.sil-piece.empty{background:var(--cream3)!important;color:var(--ink3)}
+.sil-piece.is-base{border-color:var(--red)!important;}
+.sil-piece:hover:not(.empty){border-color:var(--ink)}
+.sil-piece-label{
+  position:absolute;left:calc(100% + 6px);
+  font-size:0.38rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink3);white-space:nowrap;
+}
+
+/* Drag handle on sil-pieces */
+.sil-piece .drag-handle{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  font-size:0.6rem;color:rgba(26,23,20,0.25);cursor:grab;
+}
+.sil-piece.dragging{opacity:0.5;border-style:dashed}
+.sil-piece.drag-over{border-color:var(--red);border-style:solid}
+
+/* RIGHT: suggestions + actions */
+.atelier-right{display:flex;flex-direction:column;gap:1rem}
+.atelier-suggestions-box{
+  background:var(--cream2);border:1px solid var(--line);
+  min-height:160px;
+}
+.suggestions-placeholder{
+  padding:2rem 1.5rem;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:0.8rem;
+}
+.suggestions-placeholder-icon{font-size:1.5rem;color:var(--ink3);opacity:0.4}
+.suggestions-placeholder span{font-size:0.62rem;color:var(--ink3);line-height:1.7;letter-spacing:0.03em}
+.suggestions-placeholder strong{color:var(--red)}
+.suggest-panel-header{
+  padding:0.7rem 1rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--cream);
+}
+.suggest-panel-title{font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red)}
+.suggest-panel-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.85rem}
+.suggest-panel-close:hover{color:var(--red)}
+.suggest-panel-body{padding:0.8rem}
+.suggest-base-color{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.6rem 0.8rem;background:var(--cream);border:1px solid var(--line);
+  margin-bottom:0.8rem;
+}
+.suggest-base-dot{width:24px;height:24px;flex-shrink:0;border:1px solid var(--line)}
+.suggest-base-info{}
+.suggest-base-name{font-size:0.6rem;color:var(--ink);display:block}
+.suggest-base-sub{font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.suggest-section-label{font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.5rem;margin-top:0.7rem}
+.suggest-chips{display:flex;flex-direction:column;gap:3px}
+.suggest-chip{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--cream);border:1px solid var(--line);
+  padding:0.3rem 0.5rem;cursor:pointer;
+  transition:border-color 0.15s;font-size:0.52rem;color:var(--ink2);
+}
+.suggest-chip:hover{border-color:var(--red)}
+.suggest-chip-dot{width:20px;height:20px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08)}
+.suggest-chip-name{flex:1;font-size:0.52rem}
+.suggest-wada-badge{
+  font-size:0.35rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--red);color:white;padding:1px 4px;flex-shrink:0;
+}
+
+/* Actions */
+.atelier-actions{display:flex;flex-direction:column;gap:0.5rem}
+.look-name-input{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;
+  background:var(--cream);border:1px solid var(--line);
+  color:var(--ink);padding:0.6rem 0.8rem;outline:none;width:100%;
+  transition:border-color 0.2s;
+}
+.look-name-input:focus{border-color:var(--ink)}
+.look-name-input::placeholder{color:var(--ink3)}
+.atelier-action-row{display:flex;gap:0.4rem}
 
 /* GARMENT SLOTS */
 .garment-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
@@ -371,17 +551,22 @@ header{
 .harmony-score.ok{color:#b5900a}
 .harmony-score.bold{color:var(--red)}
 
-.look-action-row{display:flex;gap:0.5rem;width:100%}
+.look-action-row{display:flex;gap:0.4rem;width:100%}
 .look-save-btn{
   flex:1;font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
   background:var(--ink);color:var(--cream);border:none;padding:0.8rem;cursor:pointer;transition:background 0.2s;
 }
 .look-save-btn:hover{background:var(--red)}
+.look-share-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:transparent;color:var(--ink);border:1px solid var(--ink);padding:0.8rem 0.9rem;cursor:pointer;transition:all 0.2s;
+}
+.look-share-btn:hover{background:var(--ink);color:var(--cream)}
 .look-clear-btn{
   font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
-  background:transparent;color:var(--ink3);border:1px solid var(--line);padding:0.8rem 1rem;cursor:pointer;transition:all 0.2s;
+  background:transparent;color:var(--ink3);border:1px solid var(--line);padding:0.8rem;cursor:pointer;transition:all 0.2s;width:100%;
 }
-.look-clear-btn:hover{border-color:var(--ink);color:var(--ink)}
+.look-clear-btn:hover{border-color:var(--red);color:var(--red)}
 
 /* COLOR PICKER POPOVER */
 .color-popover{
@@ -488,8 +673,9 @@ header{
   .a-stat{display:none}
   .filter-bar{padding:0.7rem 1rem}
   .colour-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
-  .atelier-grid{grid-template-columns:1fr}
-  .look-preview{position:static}
+  .atelier-builder{grid-template-columns:1fr}
+  .atelier-center{position:static}
+  .atelier-right{order:3}
   .cm-body{grid-template-columns:1fr}
   .combo-modal{max-height:95vh}
   .sel-actions{flex-direction:column;gap:0.4rem}
@@ -543,32 +729,54 @@ header{
 <!-- ── ATELIER TAB ──────────────────────── -->
 <div id="tab-atelier" class="tab-panel">
   <div class="atelier-wrap">
-    <div class="atelier-header">
-      <div class="atelier-eyebrow">Construcción de look · Sanzo Wada</div>
-      <h2 class="atelier-title">Atelier <em>de Color</em></h2>
-      <p class="atelier-desc">Armá tu look prenda por prenda. Elegí el color Sanzo Wada de cada pieza y mirá cómo se construye la armonía en tiempo real.</p>
-    </div>
-    <div class="atelier-grid">
-      <div>
-        <div class="garment-slots" id="garmentSlots"></div>
+    <div id="atelierStep1" class="atelier-step">
+      <div class="atelier-header">
+        <div class="atelier-eyebrow">Atelier · Paso 1</div>
+        <h2 class="atelier-title">¿Con qué <em>empezás</em>?</h2>
+        <p class="atelier-desc">Elegí la prenda protagonista — la pieza alrededor de la cual construís tu outfit.</p>
       </div>
-      <div class="look-preview">
-        <span class="look-preview-title">Preview del look</span>
-        <div class="look-card">
-          <div class="look-figure" id="lookFigure"></div>
+      <div class="base-garments-grid" id="baseGarments"></div>
+    </div>
+    <div id="atelierStep2" class="atelier-step" style="display:none">
+      <div class="step2-topbar">
+        <button class="atelier-back-btn" onclick="atelierBack()">← Cambiar base</button>
+        <div id="step2Title" class="step2-title"></div>
+        <div></div>
+      </div>
+      <div class="atelier-builder">
+        <div class="atelier-left">
+          <div id="baseSlotDisplay" class="base-slot-display"></div>
+          <div id="otherSlots" class="other-slots"></div>
+        </div>
+        <div class="atelier-center">
+          <span class="atelier-center-label">Tu look</span>
+          <div id="atelierSilhouette" class="atelier-silhouette"></div>
           <div class="harmony-bar">
-            <span class="harmony-label">Armonía de color</span>
+            <span class="harmony-label">Armonía Wada</span>
             <div class="harmony-score" id="harmonyScore">—</div>
           </div>
-          <div class="look-action-row">
-            <button class="look-save-btn" onclick="saveAtelier()">Guardar look</button>
-            <button class="look-clear-btn" onclick="clearAtelier()">Limpiar</button>
+        </div>
+        <div class="atelier-right">
+          <div id="atelierSuggestionsBox" class="atelier-suggestions-box">
+            <div class="suggestions-placeholder">
+              <span class="suggestions-placeholder-icon">✦</span>
+              <span>Tocá <strong>Sugerir</strong> en cualquier prenda para ver qué colores Wada combinan perfectamente</span>
+            </div>
+          </div>
+          <div class="atelier-actions">
+            <input type="text" id="lookNameInput" class="look-name-input" placeholder="Nombrar este look…">
+            <div class="atelier-action-row">
+              <button class="look-save-btn" onclick="saveAtelier()">↓ Guardar</button>
+              <button class="look-share-btn" onclick="shareAtelier()">↗ Compartir</button>
+            </div>
+            <button class="look-clear-btn" onclick="clearAtelier()">Limpiar todo</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ── COMBINATIONS TAB ─────────────────── -->
 <div id="tab-combinations" class="tab-panel">
@@ -856,30 +1064,92 @@ function sendComboToAtelier(colorIndices){
 
 function closeComboModal(e){if(e.target===document.getElementById('comboModalOverlay'))document.getElementById('comboModalOverlay').classList.remove('open')}
 
-// ── ATELIER ───────────────────────────────────────────────────────────────────
+// ── ATELIER ──────────────────────────────────────────────────────────────────
 const GARMENTS=[
-  {id:'abrigo',icon:'🧥',label:'Abrigo / Tapado',sub:'Coat · Manteau'},
-  {id:'blazer',icon:'👔',label:'Blazer / Saco',sub:'Jacket · Veste'},
-  {id:'camisa',icon:'👕',label:'Camisa / Top',sub:'Shirt · Chemise'},
-  {id:'pantalon',icon:'👖',label:'Pantalón / Falda',sub:'Trousers · Jupe'},
-  {id:'vestido',icon:'👗',label:'Vestido',sub:'Dress · Robe'},
-  {id:'corbata',icon:'🎀',label:'Corbata / Pañuelo',sub:'Tie · Foulard'},
-  {id:'zapatos',icon:'👠',label:'Zapatos / Botas',sub:'Shoes · Chaussures'},
-  {id:'cartera',icon:'👜',label:'Cartera / Bolso',sub:'Bag · Sac'},
-  {id:'accesorio',icon:'💍',label:'Accesorio',sub:'Jewellery · Bijou'},
+  {id:'abrigo',  icon:'🧥', label:'Abrigo / Tapado',    sub:'Coat'},
+  {id:'blazer',  icon:'👔', label:'Blazer / Saco',       sub:'Jacket'},
+  {id:'camisa',  icon:'👕', label:'Camisa / Top',        sub:'Shirt'},
+  {id:'pantalon',icon:'👖', label:'Pantalón / Falda',    sub:'Trousers'},
+  {id:'vestido', icon:'👗', label:'Vestido',             sub:'Dress'},
+  {id:'corbata', icon:'🎀', label:'Corbata / Pañuelo',   sub:'Tie · Foulard'},
+  {id:'zapatos', icon:'👠', label:'Zapatos / Botas',     sub:'Shoes'},
+  {id:'cartera', icon:'👜', label:'Cartera / Bolso',     sub:'Bag'},
+  {id:'accesorio',icon:'💍',label:'Accesorio',           sub:'Jewellery'},
 ];
 
 let atelierState=Array(GARMENTS.length).fill(null);
-let activePopoverSlot=null;
-let popoverSearch='';
+let atelierBaseIdx=null;   // which garment is the "hero"
+let activeSuggestSlot=null;
+// outfit order for silhouette (indices into GARMENTS), user can drag to reorder
+let silhouetteOrder=[0,1,2,3,4,5,6,7,8];
 
-function buildAtelier(){
-  const slots=document.getElementById('garmentSlots');
-  slots.innerHTML='';
+// ── STEP 1: pick base garment ────────────────────────────────────────────────
+function buildStep1(){
+  const grid=document.getElementById('baseGarments');
+  grid.innerHTML='';
   GARMENTS.forEach((g,i)=>{
-    const c=atelierState[i];
+    const card=document.createElement('div');
+    card.className='base-garment-card';
+    card.innerHTML=`<span class="bg-icon">${g.icon}</span><span class="bg-label">${g.label}</span><span class="bg-sub">${g.sub}</span>`;
+    card.onclick=()=>selectBaseGarment(i);
+    grid.appendChild(card);
+  });
+}
 
-    // Slot row
+function selectBaseGarment(idx){
+  atelierBaseIdx=idx;
+  // Show step 2
+  document.getElementById('atelierStep1').style.display='none';
+  document.getElementById('atelierStep2').style.display='block';
+  document.getElementById('step2Title').innerHTML=`<em>${GARMENTS[idx].icon} ${GARMENTS[idx].label}</em> como base`;
+  // Open color popover immediately for the base garment
+  const baseDisplay=document.getElementById('baseSlotDisplay');
+  buildStep2();
+  openPopover(idx, baseDisplay);
+}
+
+function atelierBack(){
+  document.getElementById('atelierStep2').style.display='none';
+  document.getElementById('atelierStep1').style.display='block';
+  atelierBaseIdx=null;
+  atelierState=Array(GARMENTS.length).fill(null);
+  activeSuggestSlot=null;
+  clearSuggestionsBox();
+}
+
+// ── STEP 2: build around base ────────────────────────────────────────────────
+function buildStep2(){
+  buildBaseSlot();
+  buildOtherSlots();
+  buildSilhouette();
+  updateHarmony();
+}
+
+function buildBaseSlot(){
+  const el=document.getElementById('baseSlotDisplay');
+  const i=atelierBaseIdx;
+  const g=GARMENTS[i];
+  const c=atelierState[i];
+  el.innerHTML=`
+    <div class="garment-slot is-base has-color" style="border-left:3px solid var(--red)">
+      <div class="garment-icon" onclick="openPopover(${i},this.closest('.garment-slot'))">${g.icon}</div>
+      <div class="garment-label-wrap" onclick="openPopover(${i},this.closest('.garment-slot'))">
+        <span class="garment-label">${g.label} <span class="base-slot-badge" style="font-size:0.38rem;letter-spacing:0.12em;text-transform:uppercase;background:var(--red);color:white;padding:1px 5px;margin-left:4px">Base</span></span>
+        <span class="garment-sublabel">${c?c.name:'Tocar para elegir color'}</span>
+      </div>
+      <div class="garment-color-preview" onclick="openPopover(${i},this.closest('.garment-slot'))">
+        ${c?`<div class="garment-swatch" style="background:${c.hex}"></div>`:`<span class="garment-empty">+</span>`}
+      </div>
+      <button class="garment-suggest-btn${c?'':' hidden'}" onclick="showSuggestionsPanel(${i})">✦ Sugerir</button>
+    </div>`;
+}
+
+function buildOtherSlots(){
+  const el=document.getElementById('otherSlots');
+  el.innerHTML='';
+  GARMENTS.forEach((g,i)=>{
+    if(i===atelierBaseIdx)return;
+    const c=atelierState[i];
     const slot=document.createElement('div');
     slot.className='garment-slot'+(c?' has-color':'');
     slot.id=`slot-${i}`;
@@ -892,157 +1162,249 @@ function buildAtelier(){
       <div class="garment-color-preview" onclick="openPopover(${i},this.closest('.garment-slot'))">
         ${c?`<div class="garment-swatch" style="background:${c.hex}"></div>`:`<span class="garment-empty">+</span>`}
       </div>
-      <button class="garment-suggest-btn${c?'':' hidden'}" onclick="showSuggestions(${i})" title="Sugerir colores para las otras prendas">
-        ✦ Sugerir
-      </button>`;
-    slots.appendChild(slot);
-  });
-  buildLookFigure();
-  updateHarmony();
-}
-
-function renderAtelier(){buildAtelier()}
-
-function buildLookFigure(){
-  const fig=document.getElementById('lookFigure');
-  fig.innerHTML='';
-  const pieces=[
-    {idx:0,h:'40px',w:'100%',r:'3px 3px 0 0'},  // abrigo
-    {idx:1,h:'28px',w:'80%',r:'2px'},             // blazer
-    {idx:2,h:'24px',w:'68%',r:'2px'},             // camisa
-    {idx:3,h:'44px',w:'64%',r:'0 0 2px 2px'},     // pantalon/falda
-    {idx:4,h:'50px',w:'60%',r:'2px'},             // vestido
-    {idx:6,h:'14px',w:'44%',r:'0 0 4px 4px'},     // zapatos
-  ];
-  pieces.forEach(p=>{
-    const c=atelierState[p.idx];
-    const div=document.createElement('div');
-    div.className='lf-piece'+(c?'':' empty');
-    div.style.cssText=`height:${p.h};width:${p.w};border-radius:${p.r};background:${c?c.hex:''}`;
-    div.textContent=c?'':'·';
-    fig.appendChild(div);
+      <button class="garment-suggest-btn${c?'':' hidden'}" onclick="showSuggestionsPanel(${i})">✦ Sugerir</button>`;
+    el.appendChild(slot);
   });
 }
 
+// ── SILHOUETTE with drag & drop ──────────────────────────────────────────────
+let dragSrcIdx=null;
+
+function buildSilhouette(){
+  const sil=document.getElementById('atelierSilhouette');
+  sil.innerHTML='';
+
+  // Pieces config: garment index → visual shape
+  const shapes={
+    0:{h:'44px',w:'95%',r:'3px'},   // abrigo
+    1:{h:'32px',w:'80%',r:'2px'},   // blazer
+    2:{h:'26px',w:'68%',r:'2px'},   // camisa
+    3:{h:'52px',w:'64%',r:'0 0 3px 3px'}, // pantalon
+    4:{h:'60px',w:'62%',r:'2px'},   // vestido
+    5:{h:'10px',w:'32%',r:'2px'},   // corbata
+    6:{h:'14px',w:'48%',r:'0 0 6px 6px'}, // zapatos
+    7:{h:'22px',w:'38%',r:'2px'},   // cartera
+    8:{h:'10px',w:'28%',r:'50px'},  // accesorio
+  };
+
+  // Show pieces in silhouetteOrder, skip empty optionals
+  const toShow=silhouetteOrder.filter(idx=>{
+    if(idx===atelierBaseIdx)return true;
+    return atelierState[idx]!==null;
+  });
+
+  if(toShow.length===0){
+    sil.innerHTML='<span style="font-size:0.62rem;color:var(--ink3);font-style:italic;opacity:0.5">Elegí colores para ver el look</span>';
+    return;
+  }
+
+  toShow.forEach((gIdx,pos)=>{
+    const c=atelierState[gIdx];
+    const g=GARMENTS[gIdx];
+    const sh=shapes[gIdx]||{h:'24px',w:'60%',r:'2px'};
+    const isBase=gIdx===atelierBaseIdx;
+
+    const piece=document.createElement('div');
+    piece.className='sil-piece'+(c?'':' empty')+(isBase?' is-base':'');
+    piece.dataset.gidx=gIdx;
+    piece.dataset.pos=pos;
+    piece.style.cssText=`height:${sh.h};width:${sh.w};border-radius:${sh.r};background:${c?c.hex:''};`;
+    piece.draggable=true;
+    piece.title=`${g.label}${c?' · '+c.name:''}`;
+
+    if(c){
+      piece.innerHTML=`<span class="drag-handle" title="Arrastrar para reordenar">⠿</span>`;
+    }else{
+      piece.innerHTML=`<span style="font-size:0.4rem;opacity:0.5">${g.icon}</span>`;
+    }
+
+    // Drag events
+    piece.addEventListener('dragstart',e=>{
+      dragSrcIdx=gIdx;
+      piece.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+    });
+    piece.addEventListener('dragend',()=>piece.classList.remove('dragging'));
+    piece.addEventListener('dragover',e=>{e.preventDefault();piece.classList.add('drag-over')});
+    piece.addEventListener('dragleave',()=>piece.classList.remove('drag-over'));
+    piece.addEventListener('drop',e=>{
+      e.preventDefault();
+      piece.classList.remove('drag-over');
+      if(dragSrcIdx===null||dragSrcIdx===gIdx)return;
+      // Swap positions in silhouetteOrder
+      const fromPos=silhouetteOrder.indexOf(dragSrcIdx);
+      const toPos=silhouetteOrder.indexOf(gIdx);
+      if(fromPos!==-1&&toPos!==-1){
+        silhouetteOrder.splice(fromPos,1);
+        silhouetteOrder.splice(toPos,0,dragSrcIdx);
+      }
+      dragSrcIdx=null;
+      buildSilhouette();
+    });
+
+    // Click to change color
+    piece.addEventListener('click',()=>openPopover(gIdx,piece));
+
+    sil.appendChild(piece);
+  });
+}
+
+// ── HARMONY ──────────────────────────────────────────────────────────────────
 function updateHarmony(){
   const active=atelierState.filter(Boolean);
   const el=document.getElementById('harmonyScore');
+  if(!el)return;
   if(active.length<2){el.textContent='—';el.className='harmony-score';return}
-
-  // Calculate harmony using LAB distances
   function rgbToLab(r,g,b){let rr=r/255,gg=g/255,bb=b/255;rr=rr>.04045?Math.pow((rr+.055)/1.055,2.4):rr/12.92;gg=gg>.04045?Math.pow((gg+.055)/1.055,2.4):gg/12.92;bb=bb>.04045?Math.pow((bb+.055)/1.055,2.4):bb/12.92;let x=(rr*.4124+gg*.3576+bb*.1805)/.95047,y=(rr*.2126+gg*.7152+bb*.0722),z=(rr*.0193+gg*.1192+bb*.9505)/1.08883;x=x>.008856?Math.pow(x,1/3):7.787*x+16/116;y=y>.008856?Math.pow(y,1/3):7.787*y+16/116;z=z>.008856?Math.pow(z,1/3):7.787*z+16/116;return[116*y-16,500*(x-y),200*(y-z)]}
   const labs=active.map(c=>rgbToLab(...c.rgb));
-  let totalDist=0,pairs=0;
-  for(let i=0;i<labs.length;i++)for(let j=i+1;j<labs.length;j++){
-    const[l1,a1,b1]=labs[i],[l2,a2,b2]=labs[j];
-    totalDist+=Math.sqrt((l1-l2)**2+(a1-a2)**2+(b1-b2)**2);
-    pairs++;
-  }
-  const avg=totalDist/pairs;
-
-  // Check if any pair is a Wada combo
-  let wadaBonus=0;
+  let td=0,p=0;
+  for(let i=0;i<labs.length;i++)for(let j=i+1;j<labs.length;j++){const[l1,a1,b1]=labs[i],[l2,a2,b2]=labs[j];td+=Math.sqrt((l1-l2)**2+(a1-a2)**2+(b1-b2)**2);p++}
+  const avg=td/p;
+  let wadaPairs=0;
   for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++){
-    if(active[i].combinations.includes(active[j].index)||active[j].combinations.includes(active[i].index))wadaBonus+=20;
+    if(active[i].combinations.some(cn=>(COMBOS[cn]||[]).includes(active[j].index)))wadaPairs++;
   }
-
-  if(wadaBonus>0||avg<25){el.textContent='Armonía perfecta ✦';el.className='harmony-score good'}
-  else if(avg<45){el.textContent='Combinación osada ◈';el.className='harmony-score ok'}
+  if(wadaPairs>=2){el.textContent='Combinación maestra ✦✦';el.className='harmony-score good'}
+  else if(wadaPairs===1){el.textContent='Armonía Wada ✦';el.className='harmony-score good'}
+  else if(avg<30){el.textContent='Paleta monocromática';el.className='harmony-score ok'}
+  else if(avg<50){el.textContent='Combinación osada ◈';el.className='harmony-score ok'}
   else{el.textContent='Contraste audaz ✧';el.className='harmony-score bold'}
 }
 
-function clearAtelier(){atelierState=Array(GARMENTS.length).fill(null);buildAtelier()}
-
-// ── ATELIER SUGGESTIONS ───────────────────────────────────────────────────────
-function showSuggestions(slotIdx){
-  // Remove any existing suggestion panel
-  const existing=document.getElementById('suggestPanel');
-  if(existing){
-    // If same slot — toggle off
-    if(existing.dataset.slot==slotIdx){existing.remove();return}
-    existing.remove();
-  }
-
+// ── SUGGESTIONS PANEL ────────────────────────────────────────────────────────
+function showSuggestionsPanel(slotIdx){
+  activeSuggestSlot=slotIdx;
   const baseColor=atelierState[slotIdx];
   if(!baseColor){showToast('Primero elegí un color para esta prenda');return}
 
-  // Find all Wada combos that include this color
-  const wadaCombos=new Set();
+  // Gather all Wada partner colors
+  const wadaPartners=new Set();
   baseColor.combinations.forEach(cn=>{
-    (COMBOS[cn]||[]).forEach(idx=>{if(idx!==baseColor.index)wadaCombos.add(idx)});
-  });
-  // Also add reverse — combos where other colors list baseColor
-  COLORS.forEach(c=>{
-    if(c.combinations.some(cn=>(COMBOS[cn]||[]).includes(baseColor.index)))wadaCombos.add(c.index);
+    (COMBOS[cn]||[]).forEach(idx=>{if(idx!==baseColor.index)wadaPartners.add(idx)});
   });
 
-  // Group suggestions by garment (skip current slot)
-  const suggestions=GARMENTS.map((g,i)=>{
-    if(i===slotIdx)return null;
-    // Wada combos first, then other colors from same family
-    const wadaSuggestions=[...wadaCombos].map(idx=>colorByIndex[idx]).filter(Boolean).slice(0,4);
-    return{garmentIdx:i,garment:g,colors:wadaSuggestions};
-  }).filter(Boolean).filter(s=>s.colors.length>0).slice(0,4);
+  const box=document.getElementById('atelierSuggestionsBox');
+  const partnerColors=[...wadaPartners].map(i=>colorByIndex[i]).filter(Boolean);
 
-  if(!suggestions.length){showToast('No hay combinaciones Wada para este color');return}
+  if(!partnerColors.length){
+    box.innerHTML=`<div class="suggest-panel-header"><span class="suggest-panel-title">Sin combinaciones Wada</span><button class="suggest-panel-close" onclick="clearSuggestionsBox()">×</button></div><div style="padding:1.5rem;font-size:0.62rem;color:var(--ink3);font-style:italic">Este color no tiene combinaciones registradas en el diccionario.</div>`;
+    return;
+  }
 
   // Build panel
-  const panel=document.createElement('div');
-  panel.className='suggest-panel';
-  panel.id='suggestPanel';
-  panel.dataset.slot=slotIdx;
+  const otherGarments=GARMENTS.map((g,i)=>i!==slotIdx&&i!==atelierBaseIdx?{g,i}:null).filter(Boolean);
 
-  panel.innerHTML=`
-    <div class="suggest-header">
-      <span class="suggest-title">✦ Colores que combinan con ${baseColor.name}</span>
-      <button class="suggest-close" onclick="document.getElementById('suggestPanel').remove()">×</button>
+  box.innerHTML=`
+    <div class="suggest-panel-header">
+      <span class="suggest-panel-title">✦ Combina con ${baseColor.name}</span>
+      <button class="suggest-panel-close" onclick="clearSuggestionsBox()">×</button>
     </div>
-    <div class="suggest-body">
-      <p class="suggest-intro">Según el Diccionario de Sanzo Wada, estos colores forman combinaciones perfectas con <em>${baseColor.name}</em>. Tocá cualquiera para aplicarlo a esa prenda.</p>
-      ${suggestions.map(s=>`
-        <div class="suggest-garment-group">
-          <span class="suggest-garment-label">${s.garment.icon} ${s.garment.label}</span>
-          <div class="suggest-colors">
-            ${s.colors.map(c=>`
-              <div class="suggest-chip" onclick="applySuggestion(${s.garmentIdx},${c.index})" title="${c.name}">
-                <div class="suggest-dot" style="background:${c.hex}"></div>
-                ${c.name}
-                <span class="suggest-wada">Wada</span>
-              </div>`).join('')}
-          </div>
-        </div>`).join('')}
+    <div class="suggest-panel-body">
+      <div class="suggest-base-color">
+        <div class="suggest-base-dot" style="background:${baseColor.hex}"></div>
+        <div class="suggest-base-info">
+          <span class="suggest-base-name">${baseColor.name}</span>
+          <span class="suggest-base-sub">${GARMENTS[slotIdx].label}</span>
+        </div>
+      </div>
+      <span class="suggest-section-label">Colores perfectos según Wada</span>
+      <div class="suggest-chips">
+        ${partnerColors.slice(0,8).map(c=>`
+          <div class="suggest-chip" onclick="applySuggestionTo(${c.index})" title="${c.name} — aplicar a una prenda libre">
+            <div class="suggest-chip-dot" style="background:${c.hex}"></div>
+            <span class="suggest-chip-name">${c.name}</span>
+            <span class="suggest-wada-badge">Wada</span>
+          </div>`).join('')}
+      </div>
+      ${otherGarments.length?`
+      <span class="suggest-section-label" style="margin-top:1rem">Tocar para aplicar a una prenda</span>
+      <div style="font-size:0.55rem;color:var(--ink3);font-style:italic;line-height:1.5">Después de tocar un color de arriba, elegí a qué prenda aplicarlo.</div>`:''}
     </div>`;
-
-  // Insert after the slot row
-  const slotEl=document.getElementById(`slot-${slotIdx}`);
-  slotEl.insertAdjacentElement('afterend',panel);
-  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function applySuggestion(garmentIdx,colorIdx){
+function clearSuggestionsBox(){
+  activeSuggestSlot=null;
+  document.getElementById('atelierSuggestionsBox').innerHTML=`
+    <div class="suggestions-placeholder">
+      <span class="suggestions-placeholder-icon">✦</span>
+      <span>Tocá <strong>Sugerir</strong> en cualquier prenda para ver qué colores Wada combinan perfectamente</span>
+    </div>`;
+}
+
+// Apply a suggested color to the next empty slot (or let user pick)
+let pendingSuggestionColor=null;
+function applySuggestionTo(colorIdx){
   const color=colorByIndex[colorIdx];
   if(!color)return;
-  atelierState[garmentIdx]=color;
-  buildAtelier();
-  // Re-show suggestions for original slot (find it)
-  const panel=document.getElementById('suggestPanel');
-  if(panel){const slot=parseInt(panel.dataset.slot);setTimeout(()=>showSuggestions(slot),50)}
-  showToast(`${color.name} → ${GARMENTS[garmentIdx].label}`);
+  pendingSuggestionColor=color;
+  // Find first empty non-base slot
+  const emptyIdx=GARMENTS.findIndex((_,i)=>i!==atelierBaseIdx&&!atelierState[i]);
+  if(emptyIdx!==-1){
+    atelierState[emptyIdx]=color;
+    buildStep2();
+    if(activeSuggestSlot!==null)showSuggestionsPanel(activeSuggestSlot);
+    showToast(`${color.name} → ${GARMENTS[emptyIdx].label}`);
+  } else {
+    // All slots full — open popover to let user pick which slot
+    showToast('Todas las prendas tienen color. Tocá una prenda para reemplazar.');
+    pendingSuggestionColor=color;
+  }
+}
+
+function clearAtelier(){
+  atelierState=Array(GARMENTS.length).fill(null);
+  activeSuggestSlot=null;
+  clearSuggestionsBox();
+  if(atelierBaseIdx!==null){buildStep2()}
+  else{atelierBack()}
 }
 
 function saveAtelier(){
   const active=atelierState.filter(Boolean);
-  if(active.length<2){showToast('Agregá al menos 2 prendas');return}
-  const filled=GARMENTS.filter((_,i)=>atelierState[i]).map((g,_,__)=>g);
+  if(active.length<1){showToast('Agregá al menos 1 color al look');return}
+  const name=document.getElementById('lookNameInput').value.trim()||`Look ${new Date().toLocaleDateString('es-AR',{day:'numeric',month:'short'})}`;
   savedItems.push({
     type:'look',id:Date.now(),
     colors:active,
-    label:`Look · ${active.slice(0,2).map(c=>c.name).join(' + ')}`,
+    label:name,
     garments:atelierState.map((c,i)=>c?{garment:GARMENTS[i].label,color:c}:null).filter(Boolean)
   });
   updateSavedCount();
-  showToast('Look guardado');
+  document.getElementById('lookNameInput').value='';
+  showToast(`"${name}" guardado ✦`);
 }
+
+function shareAtelier(){
+  const active=atelierState.filter(Boolean);
+  if(!active.length){showToast('Armá un look primero');return}
+  const name=document.getElementById('lookNameInput').value.trim()||'Mi look Wada';
+  const lines=atelierState.map((c,i)=>c?`${GARMENTS[i].icon} ${GARMENTS[i].label}: ${c.name} (${c.hex})`:'').filter(Boolean);
+  const text=`✦ ${name} — Wada Colour Intelligence\n\n${lines.join('\n')}\n\nsanzo-wada-pi.vercel.app`;
+  if(navigator.share){navigator.share({title:name,text}).catch(()=>{})}
+  else{navigator.clipboard.writeText(text).then(()=>showToast('Look copiado al portapapeles ✦')).catch(()=>showToast('No se pudo copiar'))}
+}
+
+function sendToAtelier(){
+  if(!selectedColor)return;
+  closePanel();
+  switchTab('atelier',document.querySelector('.h-tab:nth-child(2)'));
+  if(atelierBaseIdx===null){
+    // Set this color as first garment (abrigo by default) and go to step 2
+    atelierBaseIdx=0;
+    atelierState[0]=selectedColor;
+    document.getElementById('atelierStep1').style.display='none';
+    document.getElementById('atelierStep2').style.display='block';
+    document.getElementById('step2Title').innerHTML=`<em>${GARMENTS[0].icon} ${GARMENTS[0].label}</em> como base`;
+    buildStep2();
+  } else {
+    const empty=atelierState.findIndex((s,i)=>i!==atelierBaseIdx&&!s);
+    if(empty!==-1){atelierState[empty]=selectedColor}
+    else{atelierState[atelierBaseIdx]=selectedColor}
+    buildStep2();
+  }
+  showToast(`${selectedColor.name} enviado al Atelier`);
+}
+
 
 // ── COLOR POPOVER (for Atelier) ───────────────────────────────────────────────
 function openPopover(slotIdx,slotEl){
@@ -1081,7 +1443,7 @@ function renderPopoverGrid(){
   const grid=document.getElementById('cpGrid');grid.innerHTML='';
   // "None" option
   const none=document.createElement('div');none.className='cp-cell cp-none';none.textContent='✕';none.title='Quitar color';
-  none.onclick=()=>{atelierState[activePopoverSlot]=null;buildAtelier();closePopover()};
+  none.onclick=()=>{atelierState[activePopoverSlot]=null;if(pendingSuggestionColor){pendingSuggestionColor=null}buildStep2();closePopover()};
   grid.appendChild(none);
   let fl=COLORS;
   if(popoverSearch)fl=fl.filter(c=>c.name.toLowerCase().includes(popoverSearch));
@@ -1089,7 +1451,7 @@ function renderPopoverGrid(){
     const cell=document.createElement('div');
     cell.className='cp-cell'+(atelierState[activePopoverSlot]&&atelierState[activePopoverSlot].index===c.index?' selected':'');
     cell.style.background=c.hex;cell.title=c.name;
-    cell.onclick=()=>{atelierState[activePopoverSlot]=c;buildAtelier();closePopover()};
+    cell.onclick=()=>{atelierState[activePopoverSlot]=c;if(pendingSuggestionColor)pendingSuggestionColor=null;buildStep2();if(activeSuggestSlot!==null)setTimeout(()=>showSuggestionsPanel(activeSuggestSlot),50);closePopover();};
     grid.appendChild(cell);
   });
 }
@@ -1180,7 +1542,7 @@ function showToast(msg){
 // ── INIT ──────────────────────────────────────────────────────────────────────
 buildFamilyBtns();
 renderGrid();
-buildAtelier();
+buildStep1();
 </script>
 </body>
 </html>
