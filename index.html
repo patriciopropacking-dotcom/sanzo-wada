@@ -881,13 +881,11 @@ header{
 }
 
 
-/* ── NEW TABS CSS ──────────────────────── */
+/* ── NEW TABS ────────────────────────────── */
 .inspo-page,.occasion-page{max-width:1300px;margin:0 auto;padding:3rem 2rem 4rem}
 .inspo-page-header{margin-bottom:2rem}
-.daily-strip{display:grid;grid-template-columns:200px 1fr;background:var(--cream2);border:1px solid var(--line);margin-bottom:2rem;overflow:hidden;min-height:100px}
-.daily-strip-swatches{display:flex}
-.daily-strip-swatches div{flex:1;min-height:100px}
-.daily-strip-info{padding:1.2rem 1.5rem;border-left:1px solid var(--line2);display:flex;flex-direction:column;justify-content:center}
+.daily-strip{display:grid;grid-template-columns:1fr auto;background:var(--cream2);border:1px solid var(--line);margin-bottom:2rem;overflow:hidden;min-height:100px}
+.daily-strip-info{padding:1.2rem 1.5rem;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--line2)}
 .daily-strip-eyebrow{font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.3rem}
 .daily-strip-title{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.2rem}
 .daily-strip-sub{font-size:0.55rem;color:var(--ink3)}
@@ -895,86 +893,78 @@ header{
 .daily-strip-btn:hover{background:var(--red)}
 .inspo-controls{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
 .inspo-search-wrap{position:relative}
-.inspo-search-icon{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.7rem;pointer-events:none}
+.inspo-search-icon{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--ink3);pointer-events:none}
 .inspo-search-wrap input{width:100%;font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;background:var(--cream2);border:1px solid var(--line);color:var(--ink);padding:0.75rem 0.75rem 0.75rem 2.2rem;outline:none;transition:border-color 0.2s}
 .inspo-search-wrap input:focus{border-color:var(--ink)}
 .inspo-search-wrap input::placeholder{color:var(--ink3)}
 .inspo-style-pills{display:flex;gap:0.4rem;flex-wrap:wrap}
 .style-pill{font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.35rem 0.9rem;border:1px solid var(--line);background:var(--cream);color:var(--ink3);cursor:pointer;transition:all 0.2s}
-.style-pill:hover{border-color:var(--ink);color:var(--ink)}
-.style-pill.active{border-color:var(--ink);background:var(--ink);color:var(--cream)}
-.pinterest-grid{columns:4 200px;column-gap:1px}
-.pinterest-card{background:var(--cream);cursor:pointer;break-inside:avoid;margin-bottom:1px;position:relative;overflow:hidden;transition:transform 0.25s cubic-bezier(0.16,1,0.3,1)}
-.pinterest-card:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
-.pinterest-img{width:100%;display:block;background:var(--cream3)}
+.style-pill:hover,.style-pill.active{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+.pinterest-grid{columns:4 180px;column-gap:1px}
+.pinterest-card{background:var(--cream);cursor:pointer;break-inside:avoid;margin-bottom:1px;position:relative;overflow:hidden;transition:transform 0.2s}
+.pinterest-card:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
 .pinterest-body{padding:0.8rem}
-.pinterest-palette{display:flex;gap:3px;margin-bottom:0.5rem}
-.pinterest-palette div{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(0,0,0,0.07)}
 .pinterest-title{font-family:'Playfair Display',serif;font-size:0.82rem;font-style:italic;color:var(--ink);display:block;margin-bottom:0.3rem}
 .pinterest-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
 .pinterest-tag{font-size:0.4rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);background:var(--cream2);padding:2px 5px}
 .pinterest-tag.accent{background:rgba(181,23,58,0.08);color:var(--red)}
-.pinterest-style-label{position:absolute;top:0.6rem;left:0.6rem;font-size:0.38rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(247,244,239,0.92);color:var(--ink);padding:2px 7px}
-.occasion-styles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line2);margin-bottom:2.5rem}
+.pinterest-style-label{position:absolute;top:0.5rem;left:0.5rem;font-size:0.38rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(247,244,239,0.92);color:var(--ink);padding:2px 7px}
+.occasion-styles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line2);margin-bottom:2rem}
 .occasion-style-card{background:var(--cream);cursor:pointer;position:relative;overflow:hidden;transition:background 0.15s}
-.occasion-style-card:hover{background:var(--cream2)}
-.occasion-style-card.active{background:var(--cream2)}
+.occasion-style-card:hover,.occasion-style-card.active{background:var(--cream2)}
 .occasion-style-card.active::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--red)}
 .occasion-style-top{height:90px;display:flex;gap:1px}
 .occasion-style-top div{flex:1}
 .occasion-style-bottom{padding:0.9rem 1rem}
 .occasion-style-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.88rem;color:var(--ink);display:block;margin-bottom:0.2rem}
-.occasion-style-desc{font-size:0.48rem;letter-spacing:0.05em;color:var(--ink3);line-height:1.5}
+.occasion-style-desc{font-size:0.48rem;color:var(--ink3);line-height:1.5}
 .occasion-results-header{display:flex;align-items:baseline;justify-content:space-between;padding:1.5rem 0 1rem;border-top:1px solid var(--line2);margin-bottom:1rem}
 .occasion-results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--ink)}
 .occasion-results-count{font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3)}
 .occasion-results-grid{columns:3 240px;column-gap:1px;margin-bottom:3rem}
 .occasion-combo-card{background:var(--cream);cursor:pointer;break-inside:avoid;margin-bottom:1px;transition:background 0.15s}
 .occasion-combo-card:hover{background:var(--cream2)}
-.occasion-combo-swatches{display:flex;height:72px}
-.occasion-combo-swatches div{flex:1}
 .occasion-combo-info{padding:0.8rem}
 .occasion-combo-num{font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.2rem}
 .occasion-combo-names{font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:var(--ink);line-height:1.4}
 .occasion-combo-why{font-size:0.5rem;color:var(--ink3);margin-top:0.3rem;display:block}
-.season-tabs-row{display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--line2)}
+.season-tabs-row{display:flex;margin-bottom:2rem;border-bottom:1px solid var(--line2)}
 .season-tab-btn{font-family:'Tenor Sans',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;background:none;border:none;color:var(--ink3);cursor:pointer;padding:0.7rem 1.2rem;position:relative;transition:color 0.2s}
 .season-tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--red);transform:scaleX(0);transition:transform 0.3s}
 .season-tab-btn.active{color:var(--ink)}
 .season-tab-btn.active::after{transform:scaleX(1)}
 .season-intro{font-size:0.75rem;color:var(--ink3);line-height:1.8;margin-bottom:2rem;max-width:600px;font-style:italic}
-.season-trends{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line2);margin-bottom:2.5rem}
+.season-trends{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line2);margin-bottom:2rem}
 .season-trend-card{background:var(--cream)}
 .season-trend-swatch{height:110px;position:relative}
 .season-trend-badge{position:absolute;bottom:0.6rem;left:0.6rem;font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(247,244,239,0.92);color:var(--ink);padding:2px 8px}
 .season-trend-body{padding:0.8rem}
 .season-trend-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.88rem;color:var(--ink);display:block}
 .season-trend-wada{font-size:0.48rem;color:var(--ink3);display:block;margin-top:0.2rem}
-.season-trend-btn{font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);background:none;border:none;cursor:pointer;padding:0.4rem 0;font-family:'Tenor Sans',sans-serif;transition:color 0.2s}
+.season-trend-btn{font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);background:none;border:none;cursor:pointer;padding:0.4rem 0;font-family:'Tenor Sans',sans-serif}
 .season-house-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin-top:1.5rem}
 .season-house-card{background:var(--cream2);border:1px solid var(--line);padding:1.2rem}
 .season-house-name{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.6rem;display:block}
 .season-house-colors{display:flex;gap:3px;margin-bottom:0.5rem}
-.season-house-colors div{width:28px;height:28px;flex-shrink:0;border:1px solid rgba(0,0,0,0.06)}
+.season-house-colors div{width:28px;height:28px;border:1px solid rgba(0,0,0,0.06)}
 .season-house-note{font-size:0.58rem;color:var(--ink3);line-height:1.6}
 .closet-body{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
 .closet-section-label{font-size:0.45rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.8rem}
 .closet-add-section{background:var(--cream2);border:1px solid var(--line);padding:1.2rem;margin-bottom:1rem}
 .closet-add-row{display:grid;grid-template-columns:48px 1fr auto;gap:0.6rem;align-items:center;margin-bottom:0.8rem}
 .closet-add-preview{width:48px;height:48px;border:1px solid var(--line);background:var(--cream3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--ink3)}
-.closet-input{font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;background:var(--cream);border:1px solid var(--line);color:var(--ink);padding:0.55rem 0.7rem;outline:none;transition:border-color 0.2s;width:100%}
-.closet-input:focus{border-color:var(--ink)}
+.closet-input{font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;background:var(--cream);border:1px solid var(--line);color:var(--ink);padding:0.55rem 0.7rem;outline:none;width:100%}
 .closet-input::placeholder{color:var(--ink3)}
-.closet-add-btn{font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--ink);color:var(--cream);border:none;padding:0.55rem 0.9rem;cursor:pointer;transition:background 0.2s;white-space:nowrap}
+.closet-add-btn{font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.15em;text-transform:uppercase;background:var(--ink);color:var(--cream);border:none;padding:0.55rem 0.9rem;cursor:pointer;white-space:nowrap}
 .closet-add-btn:hover{background:var(--red)}
-.closet-confirm-btn{width:100%;font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;background:var(--red);color:white;border:none;padding:0.7rem;cursor:pointer;transition:background 0.2s}
+.closet-confirm-btn{width:100%;font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;background:var(--red);color:white;border:none;padding:0.7rem;cursor:pointer}
 .closet-items{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
 .closet-item{background:var(--cream);display:grid;grid-template-columns:48px 1fr auto;align-items:center}
-.closet-item-swatch{width:48px;height:48px;flex-shrink:0;border-right:1px solid var(--line2)}
+.closet-item-swatch{width:48px;height:48px;border-right:1px solid var(--line2)}
 .closet-item-info{padding:0.6rem 0.8rem;border-right:1px solid var(--line2)}
 .closet-item-label{font-size:0.65rem;color:var(--ink);display:block}
-.closet-item-color{font-size:0.5rem;color:var(--ink3);font-family:monospace;display:block;margin-top:1px}
-.closet-item-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem;font-size:0.8rem;transition:color 0.2s;height:48px}
+.closet-item-color{font-size:0.5rem;color:var(--ink3);font-family:monospace;display:block}
+.closet-item-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem;height:48px}
 .closet-item-del:hover{color:var(--red)}
 .closet-combo-row{background:var(--cream2);border:1px solid var(--line);margin-bottom:0.5px;cursor:pointer;display:grid;grid-template-columns:100px 1fr;transition:background 0.15s}
 .closet-combo-row:hover{background:var(--cream3)}
@@ -991,13 +981,12 @@ header{
 .history-info{padding:0.7rem 0.8rem;border-left:1px solid var(--line2)}
 .history-label{font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--ink);display:block}
 .history-date{font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
-.history-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem;font-size:0.75rem;transition:color 0.2s}
+.history-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem}
 .history-del:hover{color:var(--red)}
 @media(max-width:700px){
   .pinterest-grid{columns:2 140px}
   .occasion-styles-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   .occasion-results-grid{columns:1}
-  .daily-strip{grid-template-columns:100px 1fr}
   .closet-body{grid-template-columns:1fr}
   .h-nav .h-tab{font-size:0.42rem;padding:0.4rem 0.5rem;letter-spacing:0.08em}
 }
@@ -1012,7 +1001,7 @@ header{
     <button class="h-tab active" onclick="switchTab('archive',this)">Archivo</button>
     <button class="h-tab" onclick="switchTab('atelier',this)">Atelier</button>
     <button class="h-tab" onclick="switchTab('inspo',this)">Inspo</button>
-    <button class="h-tab" onclick="switchTab('occasion',this)">Ocasión</button>
+    <button class="h-tab" onclick="switchTab('occasion',this)">Ocasion</button>
     <button class="h-tab" onclick="switchTab('season',this)">Temporada</button>
     <button class="h-tab" onclick="switchTab('closet',this)">Mi Closet</button>
   </div>
@@ -1195,15 +1184,15 @@ header{
 <div id="tab-inspo" class="tab-panel">
   <div class="inspo-page">
     <div class="inspo-page-header">
-      <div class="a-eyebrow">Inspiración · Editorial &amp; Street Style</div>
+      <div class="a-eyebrow">Inspiracion · Paletas de color</div>
       <h2 class="atelier-title">Style <em>Inspo</em></h2>
-      <p class="atelier-desc">Explorá outfits por estilo y color. Cada card muestra la paleta Wada del look.</p>
+      <p class="atelier-desc">Explorá combinaciones Wada por estilo. Cada card muestra los colores reales de la paleta.</p>
     </div>
     <div class="daily-strip" id="dailyStrip"></div>
     <div class="inspo-controls">
       <div class="inspo-search-wrap">
         <span class="inspo-search-icon">◈</span>
-        <input type="text" id="inspoSearchInput" placeholder="Buscar estilo, color…" oninput="filterInspo()">
+        <input type="text" id="inspoSearchInput" placeholder="Buscar estilo, color..." oninput="filterInspo()">
       </div>
       <div class="inspo-style-pills" id="inspoStylePills"></div>
     </div>
@@ -1215,8 +1204,8 @@ header{
 <div id="tab-occasion" class="tab-panel">
   <div class="occasion-page">
     <div class="inspo-page-header">
-      <div class="a-eyebrow">Modo Ocasión · Combinaciones por contexto</div>
-      <h2 class="atelier-title">¿Para qué <em>ocasión</em>?</h2>
+      <div class="a-eyebrow">Modo Ocasion · Combinaciones por contexto</div>
+      <h2 class="atelier-title">Para que <em>ocasion?</em></h2>
       <p class="atelier-desc">Elegí tu estilo o evento y descubrí las combinaciones Wada perfectas para ese momento.</p>
     </div>
     <div class="occasion-styles-grid" id="occasionStylesGrid"></div>
@@ -1250,15 +1239,15 @@ header{
     <div class="inspo-page-header">
       <div class="a-eyebrow">Mi Closet · Colores reales</div>
       <h2 class="atelier-title">Mi <em>Closet</em></h2>
-      <p class="atelier-desc">Guardá los colores de tu ropero real. Wada te dice qué combinaciones podés hacer hoy.</p>
+      <p class="atelier-desc">Guarda los colores de tu ropero real. Wada te dice que combinaciones podes hacer hoy.</p>
     </div>
     <div class="closet-body">
       <div class="closet-left">
         <div class="closet-add-section">
           <span class="closet-section-label">Agregar color</span>
           <div class="closet-add-row">
-            <div class="closet-add-preview" id="closetAddPreview" onclick="openClosetPicker()"></div>
-            <input type="text" id="closetAddName" class="closet-input" placeholder="Nombre de la prenda…">
+            <div class="closet-add-preview" id="closetAddPreview" onclick="openClosetPicker()">+</div>
+            <input type="text" id="closetAddName" class="closet-input" placeholder="Nombre de la prenda...">
             <button class="closet-add-btn" onclick="openClosetPicker()">Elegir color</button>
           </div>
           <button class="closet-confirm-btn" id="closetConfirmBtn" onclick="addToCloset()" style="display:none">+ Agregar al closet</button>
@@ -1529,18 +1518,6 @@ function buildComboModal(colors, comboNum, allCombos){
       </button>
       <button class="cm-atelier-btn" onclick="sendComboToAtelier(${JSON.stringify(colors.map(x=>x.index))})">→ Atelier</button>
     </div>`;
-}
-
-function saveCombo(colorIndices,comboNum){
-  const colors=colorIndices.map(i=>colorByIndex[i]).filter(Boolean);
-  const key=colors.map(c=>c.hex).join();
-  if(savedItems.some(s=>s.type==='combo'&&s.colors.map(x=>x.hex).join()===key)){showToast('Ya está guardado');return}
-  savedItems.push({type:'combo',id:Date.now(),colors,label:`Combinación #${comboNum}`,comboNum});
-  updateSavedCount();
-  document.getElementById('cmSaveBtn').textContent='✓ Guardado';
-  document.getElementById('cmSaveBtn').classList.add('saved');
-  saveToStorage();
-  showToast('Combinación guardada');
 }
 
 function sendComboToAtelier(colorIndices){
@@ -1849,22 +1826,6 @@ function clearAtelier(){
   else{atelierBack()}
 }
 
-function saveAtelier(){
-  const active=atelierState.filter(Boolean);
-  if(active.length<1){showToast('Agregá al menos 1 color al look');return}
-  const name=document.getElementById('lookNameInput').value.trim()||`Look ${new Date().toLocaleDateString('es-AR',{day:'numeric',month:'short'})}`;
-  savedItems.push({
-    type:'look',id:Date.now(),
-    colors:active,
-    label:name,
-    garments:atelierState.map((c,i)=>c?{garment:GARMENTS[i].label,color:c}:null).filter(Boolean)
-  });
-  updateSavedCount();
-  document.getElementById('lookNameInput').value='';
-  saveToStorage();
-  showToast(`"${name}" guardado ✦`);
-}
-
 function shareAtelier(){
   const active=atelierState.filter(Boolean);
   if(!active.length){showToast('Armá un look primero');return}
@@ -1874,8 +1835,6 @@ function shareAtelier(){
   if(navigator.share){navigator.share({title:name,text}).catch(()=>{})}
   else{navigator.clipboard.writeText(text).then(()=>showToast('Look copiado al portapapeles ✦')).catch(()=>showToast('No se pudo copiar'))}
 }
-
-
 
 // ── COLOR POPOVER (for Atelier) ───────────────────────────────────────────────
 function openPopover(slotIdx,slotEl){
@@ -1982,12 +1941,12 @@ function switchTab(tab,btn){
   document.querySelectorAll('.h-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
   ['archive','atelier','inspo','occasion','season','closet','combinations'].forEach(t=>{
-    const el=document.getElementById(`tab-${t}`);
+    const el=document.getElementById('tab-'+t);
     if(el)el.classList.toggle('active',t===tab);
   });
   if(tab==='combinations')renderCombosView();
+  if(tab==='inspo'){buildDailyStrip();buildStylePills();renderPinterestGrid();}
   if(tab==='occasion')buildOccasionPage();
-  if(tab==='inspo'){buildInspoFilters();buildDailyCombo();renderInspoGrid()}
   if(tab==='season')renderSeasonContent();
   if(tab==='closet')buildClosetView();
 }
@@ -1999,18 +1958,41 @@ function showToast(msg){
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-loadFromStorage();
-buildFamilyBtns();
-renderGrid();
-buildStep1();
-updateSavedCount();
 
 // ── PERSIST TO LOCALSTORAGE ───────────────────────────────────────────────────
 // ── INSPO DATA ────────────────────────────────────────────────────────────────
 // Curated inspo cards: each maps to Wada color indices + style tags
 // Photos from Unsplash (free, no API key needed via source.unsplash.com)
+const INSPO_CARDS=[
+  {id:1,title:'Monocromo en terracota',tags:['editorial','formal','otoño'],colorIdxs:[14,20,67],occasion:'formal',
+   photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80'},
+  {id:2,title:'Blanco total con acento',tags:['editorial','verano','minimalista'],colorIdxs:[152,39,116],occasion:'casual',
+   photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80'},
+  {id:3,title:'Street style violeta',tags:['street','urbano','bold'],colorIdxs:[138,90,55],occasion:'casual',
+   photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80'},
+  {id:4,title:'Look cocktail rojo',tags:['editorial','cocktail','noche'],colorIdxs:[23,157,42],occasion:'cocktail',
+   photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80'},
+  {id:5,title:'Tonal azul marino',tags:['formal','clásico','oficina'],colorIdxs:[128,125,110],occasion:'formal',
+   photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80'},
+  {id:6,title:'Amarillo vibrante',tags:['street','verano','color'],colorIdxs:[55,157,98],occasion:'casual',
+   photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80'},
+  {id:7,title:'Nude y camel',tags:['editorial','minimalista','clásico'],colorIdxs:[54,50,83],occasion:'formal',
+   photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80'},
+  {id:8,title:'Destellos verdes',tags:['street','primavera','bold'],colorIdxs:[96,40,157],occasion:'casual',
+   photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&crop=bottom'},
+  {id:9,title:'Boda invitada rosado',tags:['boda','cocktail','romántico'],colorIdxs:[3,133,110],occasion:'boda',
+   photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=top'},
+  {id:10,title:'Total black con textura',tags:['editorial','noche','poder'],colorIdxs:[157,156,123],occasion:'noche',
+   photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=top'},
+  {id:11,title:'Pasteles de primavera',tags:['street','primavera','suave'],colorIdxs:[43,110,133],occasion:'casual',
+   photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=top'},
+  {id:12,title:'Vestido corinto y dorado',tags:['editorial','cócktail','glamour'],colorIdxs:[29,51,157],occasion:'cocktail',
+   photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=top'},
+];
+
 const INSPO_TAGS=['todos','editorial','street','formal','cocktail','casual','boda','noche','verano','otoño'];
 let inspoActiveTag='todos';
+let inspoSearchQ='';
 
 function buildInspoFilters(){
   const el=document.getElementById('inspoFilterChips');
@@ -2058,8 +2040,33 @@ function renderInspoGrid(){
   });
 }
 
+function buildDailyCombo(){
+  const el=document.getElementById('dailyCombo');
+  if(!el)return;
+  // Pick combo based on day of year
+  const dayOfYear=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const allCombos=Object.entries(COMBOS);
+  const {0:cn,1:indices}=allCombos[dayOfYear%allCombos.length];
+  const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
+  if(!colors.length){el.style.display='none';return}
+  const swatches=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
+  el.innerHTML=`
+    <div class="daily-combo-swatches">${swatches}</div>
+    <div class="daily-combo-info">
+      <span class="daily-eyebrow">Combinación del día · #${cn}</span>
+      <div class="daily-title">${colors.map(c=>c.name).join(' · ')}</div>
+      <div class="daily-sub">${colors.length} colores · Paleta Sanzo Wada</div>
+      <button class="daily-btn" onclick="openDailyCombo(${cn})">Explorar combinación →</button>
+    </div>`;
+}
 
+// ── SEASON DATA ───────────────────────────────────────────────────────────────
+;
+
+let activeSeason='fw25';
 // ── CLOSET ────────────────────────────────────────────────────────────────────
+let closetItems=[]; // {id,label,color}
+let closetPickerColor=null;
 
 function deleteHistory(id,e){
   e.stopPropagation();
@@ -2121,112 +2128,123 @@ function closeOccasion(e){if(e.target===document.getElementById('occasionOverlay
 
 
 
-// ── PERSIST ───────────────────────────────────────────────────────────────────
-function saveToStorage(){try{localStorage.setItem('wada_saved',JSON.stringify(savedItems));localStorage.setItem('wada_closet',JSON.stringify(closetItems||[]));}catch(e){}}
-function loadFromStorage(){try{const s=localStorage.getItem('wada_saved');if(s)savedItems=JSON.parse(s);const c=localStorage.getItem('wada_closet');if(c)closetItems=JSON.parse(c);}catch(e){}}
+// ═══════════════════════════════════════════════════════════════════════════
+// NEW FEATURES: PERSIST · INSPO · OCCASION · SEASON · CLOSET
+// ═══════════════════════════════════════════════════════════════════════════
 
-// Patch save functions to persist
-const _origSaveCombo=saveCombo;
+// ── LOCALSTORAGE ──────────────────────────────────────────────────────────
 
-// ── INSPO STYLES DATA ─────────────────────────────────────────────────────────
+function saveToStorage(){
+  try{
+    localStorage.setItem('wada_saved', JSON.stringify(savedItems));
+    localStorage.setItem('wada_closet', JSON.stringify(closetItems));
+  }catch(e){}
+}
+function loadFromStorage(){
+  try{
+    const s=localStorage.getItem('wada_saved');
+    if(s) savedItems=JSON.parse(s);
+    const cl=localStorage.getItem('wada_closet');
+    if(cl) closetItems=JSON.parse(cl);
+  }catch(e){}
+}
+
+// ── INSPO DATA ────────────────────────────────────────────────────────────
 const STYLES=[
   {id:'editorial',name:'Editorial',cards:[
-    {title:'Total noir + azul medianoche',tags:['editorial','avant-garde'],wadaIdxs:[157,130,110],comboNum:232},
-    {title:'Rojo carmin + negro',tags:['editorial','poder'],wadaIdxs:[23,157,51],comboNum:313},
-    {title:'Lavanda + violeta profundo',tags:['editorial','color'],wadaIdxs:[133,148,157],comboNum:335},
-    {title:'Verde neón + negro',tags:['editorial','dramático'],wadaIdxs:[92,157,55],comboNum:326},
-    {title:'Blanco + índigo',tags:['editorial','minimal'],wadaIdxs:[152,130,125],comboNum:232},
+    {title:'Noir + azul medianoche',tags:['editorial','avant-garde'],wadaIdxs:[157,130,110]},
+    {title:'Rojo carmin + negro',tags:['editorial','poder'],wadaIdxs:[23,157,51]},
+    {title:'Lavanda + violeta',tags:['editorial','color'],wadaIdxs:[133,148,157]},
+    {title:'Verde neon + negro',tags:['editorial','dramatico'],wadaIdxs:[92,157,55]},
+    {title:'Blanco + indigo',tags:['editorial','minimal'],wadaIdxs:[152,130,125]},
   ]},
   {id:'casual',name:'Casual calle',cards:[
-    {title:'Amarillo pálido + azul cobalto',tags:['casual','básico'],wadaIdxs:[40,125,152],comboNum:344},
-    {title:'Rosado + lavanda',tags:['casual','suave'],wadaIdxs:[43,133,110],comboNum:334},
-    {title:'Ocre + café oscuro',tags:['casual','otoño'],wadaIdxs:[54,82,50],comboNum:327},
-    {title:'Salmón + amarillo',tags:['casual','verano'],wadaIdxs:[45,55,116],comboNum:310},
-    {title:'Naranja + azul marino',tags:['casual','contraste'],wadaIdxs:[64,128,157],comboNum:null},
+    {title:'Amarillo + azul cobalto',tags:['casual','basico'],wadaIdxs:[40,125,152]},
+    {title:'Rosado + lavanda',tags:['casual','suave'],wadaIdxs:[43,133,110]},
+    {title:'Ocre + cafe oscuro',tags:['casual','otono'],wadaIdxs:[54,82,50]},
+    {title:'Salmon + amarillo',tags:['casual','verano'],wadaIdxs:[45,55,116]},
+    {title:'Naranja + azul marino',tags:['casual','contraste'],wadaIdxs:[64,128,157]},
   ]},
   {id:'noche',name:'Noche / Cocktail',cards:[
-    {title:'Bordó + marfil',tags:['noche','elegante'],wadaIdxs:[29,42,157],comboNum:245},
-    {title:'Negro + dorado',tags:['noche','glamour'],wadaIdxs:[157,51,42],comboNum:242},
-    {title:'Rojo + negro',tags:['noche','bold'],wadaIdxs:[23,157,42],comboNum:313},
-    {title:'Azul índigo + verde agua',tags:['noche','cocktail'],wadaIdxs:[130,110,152],comboNum:232},
-    {title:'Violeta + negro',tags:['noche','sofisticado'],wadaIdxs:[148,157,133],comboNum:335},
+    {title:'Bordo + marfil',tags:['noche','elegante'],wadaIdxs:[29,42,157]},
+    {title:'Negro + dorado',tags:['noche','glamour'],wadaIdxs:[157,51,42]},
+    {title:'Rojo + negro',tags:['noche','bold'],wadaIdxs:[23,157,42]},
+    {title:'Azul indigo + verde agua',tags:['noche','cocktail'],wadaIdxs:[130,110,152]},
+    {title:'Violeta + negro',tags:['noche','sofisticado'],wadaIdxs:[148,157,133]},
   ]},
   {id:'boho',name:'Boho / Romantic',cards:[
-    {title:'Siena + crudo',tags:['boho','tierra'],wadaIdxs:[14,54,50],comboNum:327},
-    {title:'Rosa pálido + lavanda',tags:['boho','romántico'],wadaIdxs:[3,133,88],comboNum:308},
-    {title:'Ocre + verde oliva',tags:['boho','natural'],wadaIdxs:[59,76,50],comboNum:278},
-    {title:'Rosa seashell + camel',tags:['boho','suave'],wadaIdxs:[43,54,50],comboNum:317},
-    {title:'Blanco + dorado suave',tags:['boho','artesanal'],wadaIdxs:[152,51,42],comboNum:343},
+    {title:'Siena + crudo',tags:['boho','tierra'],wadaIdxs:[14,54,50]},
+    {title:'Rosa palido + lavanda',tags:['boho','romantico'],wadaIdxs:[3,133,88]},
+    {title:'Ocre + verde oliva',tags:['boho','natural'],wadaIdxs:[59,76,50]},
+    {title:'Rosa + camel',tags:['boho','suave'],wadaIdxs:[43,54,50]},
+    {title:'Blanco + dorado suave',tags:['boho','artesanal'],wadaIdxs:[152,51,42]},
   ]},
   {id:'sport',name:'Sport Chic',cards:[
-    {title:'Negro + verde menta',tags:['sport','minimal'],wadaIdxs:[157,87,110],comboNum:300},
-    {title:'Blanco + verde fresco',tags:['sport','tenis'],wadaIdxs:[152,96,55],comboNum:283},
-    {title:'Azul cobalto + blanco',tags:['sport','vibrante'],wadaIdxs:[120,152,55],comboNum:295},
-    {title:'Rosa + blanco',tags:['sport','femenino'],wadaIdxs:[6,152,133],comboNum:334},
-    {title:'Gris + naranja',tags:['sport','street'],wadaIdxs:[153,64,157],comboNum:null},
+    {title:'Negro + verde menta',tags:['sport','minimal'],wadaIdxs:[157,87,110]},
+    {title:'Blanco + verde fresco',tags:['sport','tenis'],wadaIdxs:[152,96,55]},
+    {title:'Azul cobalto + blanco',tags:['sport','vibrante'],wadaIdxs:[120,152,55]},
+    {title:'Rosa + blanco',tags:['sport','femenino'],wadaIdxs:[6,152,133]},
+    {title:'Gris + naranja',tags:['sport','street'],wadaIdxs:[153,64,157]},
   ]},
   {id:'playa',name:'Playa / Resort',cards:[
-    {title:'Blanco + azul Kings blue',tags:['playa','resort'],wadaIdxs:[152,110,116],comboNum:345},
-    {title:'Azul agua + verde',tags:['playa','fresco'],wadaIdxs:[110,116,109],comboNum:345},
-    {title:'Naranja + turquesa',tags:['playa','tropical'],wadaIdxs:[63,116,55],comboNum:253},
-    {title:'Amarillo + blanco',tags:['playa','luminoso'],wadaIdxs:[55,152,109],comboNum:306},
-    {title:'Verde menta + coral',tags:['playa','tropical'],wadaIdxs:[87,6,55],comboNum:300},
+    {title:'Blanco + azul cielo',tags:['playa','resort'],wadaIdxs:[152,110,116]},
+    {title:'Azul agua + verde',tags:['playa','fresco'],wadaIdxs:[110,116,109]},
+    {title:'Naranja + turquesa',tags:['playa','tropical'],wadaIdxs:[63,116,55]},
+    {title:'Amarillo + blanco',tags:['playa','luminoso'],wadaIdxs:[55,152,109]},
+    {title:'Verde menta + coral',tags:['playa','tropical'],wadaIdxs:[87,6,55]},
   ]},
   {id:'corporate',name:'Corporate',cards:[
-    {title:'Navy + crudo',tags:['corporate','clásico'],wadaIdxs:[128,54,152],comboNum:279},
-    {title:'Gris antracita + blanco',tags:['corporate','minimal'],wadaIdxs:[156,153,152],comboNum:329},
-    {title:'Camel + chocolate',tags:['corporate','elegante'],wadaIdxs:[50,86,54],comboNum:296},
-    {title:'Blanco + negro power',tags:['corporate','contraste'],wadaIdxs:[152,157,153],comboNum:340},
-    {title:'Azul cobalto + navy',tags:['corporate','color'],wadaIdxs:[125,128,54],comboNum:247},
+    {title:'Navy + crudo',tags:['corporate','clasico'],wadaIdxs:[128,54,152]},
+    {title:'Gris antracita + blanco',tags:['corporate','minimal'],wadaIdxs:[156,153,152]},
+    {title:'Camel + chocolate',tags:['corporate','elegante'],wadaIdxs:[50,86,54]},
+    {title:'Blanco + negro power',tags:['corporate','contraste'],wadaIdxs:[152,157,153]},
+    {title:'Azul cobalto + navy',tags:['corporate','color'],wadaIdxs:[125,128,54]},
   ]},
 ];
 
 const OCCASION_STYLES=[
-  {id:'hippie',name:'Hippie Chic',desc:'Capas, flecos, tie-dye y paletas tierra',colorIdxs:[14,59,93,50,76],why:'Ocres y terracota — la paleta de la naturaleza'},
-  {id:'electronica',name:'Fiesta Electrónica',desc:'Neón, brillos, saturación máxima',colorIdxs:[92,55,9,141,98],why:'Saturados que vibran bajo luces UV'},
-  {id:'trajes',name:'Trajes Formales',desc:'Sastrería clásica, líneas limpias',colorIdxs:[128,156,54,86,152],why:'Navy y grises — autoridad y elegancia'},
-  {id:'oversized',name:'Oversized / Holgado',desc:'Sastrería deconstructed, capas urbanas',colorIdxs:[157,153,54,128,107],why:'Monocromáticos en siluetas amplias'},
+  {id:'hippie',name:'Hippie Chic',desc:'Capas, flecos, paletas tierra',colorIdxs:[14,59,93,50,76],why:'Ocres y terracota — la paleta de la naturaleza'},
+  {id:'electronica',name:'Fiesta Electronica',desc:'Neon, brillos, saturacion maxima',colorIdxs:[92,55,9,141,98],why:'Saturados que vibran bajo luces'},
+  {id:'trajes',name:'Trajes Formales',desc:'Sastreria clasica, lineas limpias',colorIdxs:[128,156,54,86,152],why:'Navy y grises — autoridad y elegancia'},
+  {id:'oversized',name:'Oversized / Holgado',desc:'Sastreria deconstructed, capas urbanas',colorIdxs:[157,153,54,128,107],why:'Monocromaticos en siluetas amplias'},
   {id:'boda',name:'Boda invitada',desc:'Elegante sin opacar a la novia',colorIdxs:[3,133,110,43,116],why:'Pasteles suaves que complementan'},
-  {id:'casual',name:'Casual calle',desc:'Cómodo, fresco, con color propio',colorIdxs:[50,54,88,76,40],why:'Neutros cálidos para combinar fácil'},
-  {id:'editorial',name:'Editorial / Avant-garde',desc:'Statement total, color extremo',colorIdxs:[157,17,55,35,148],why:'Negro, rojo y amarillo — impacto máximo'},
-  {id:'playa',name:'Playa / Resort',desc:'Frescos y luminosos bajo el sol',colorIdxs:[109,110,55,152,87],why:'Azules y blancos que reflejan el verano'},
-  {id:'noche',name:'Noche / Cocktail',desc:'Sofisticado y listo para brillar',colorIdxs:[157,29,22,148,51],why:'Bordó, negro y dorado — glamour nocturno'},
-  {id:'sport',name:'Sport Chic',desc:'Del gym a la calle sin cambiar',colorIdxs:[157,120,92,55,153],why:'Negro y azul cobalto — energía y contraste'},
+  {id:'casual',name:'Casual calle',desc:'Comodo, fresco, con color propio',colorIdxs:[50,54,88,76,40],why:'Neutros calidos para combinar facil'},
+  {id:'editorial',name:'Editorial',desc:'Statement total, color extremo',colorIdxs:[157,17,55,35,148],why:'Negro, rojo y amarillo — impacto maximo'},
+  {id:'playa',name:'Playa / Resort',desc:'Frescos y luminosos bajo el sol',colorIdxs:[109,110,55,152,87],why:'Azules y blancos del verano'},
+  {id:'noche',name:'Noche / Cocktail',desc:'Sofisticado y listo para brillar',colorIdxs:[157,29,22,148,51],why:'Bordo, negro y dorado — glamour nocturno'},
+  {id:'sport',name:'Sport Chic',desc:'Del gym a la calle sin cambiar',colorIdxs:[157,120,92,55,153],why:'Negro y azul cobalto — energia y contraste'},
   {id:'boho',name:'Boho / Romantic',desc:'Texturas naturales y capas',colorIdxs:[50,45,14,59,93],why:'Terracota y verdes musgo — paleta natural'},
   {id:'corporate',name:'Corporate / Oficina',desc:'Profesional y con identidad',colorIdxs:[156,128,125,54,152],why:'Navy y grises con acentos de color'},
 ];
 
-let inspoActiveStyle='all';
-let inspoSearchQ='';
-let activeOccasionStyle=null;
-let closetItems=[];
-let closetPickerColor=null;
-let activeSeason='fw25';
+let inspoActiveStyle = 'all';
+let activeOccasionStyle = null;
 
-// ── INSPO ─────────────────────────────────────────────────────────────────────
+// ── INSPO FUNCTIONS ───────────────────────────────────────────────────────
 function buildDailyStrip(){
   const el=document.getElementById('dailyStrip');if(!el)return;
-  const day=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
-  const allCombos=Object.entries(COMBOS);
-  const[cn,indices]=allCombos[day%allCombos.length];
-  const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
-  if(!colors.length){el.style.display='none';return}
-  const sw=colors.map(cl=>{
+  const day=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/(86400000));
+  const allC=Object.entries(COMBOS);
+  const[cn,idxs]=allC[day%allC.length];
+  const cols=idxs.map(i=>colorByIndex[i]).filter(Boolean);
+  if(!cols.length){el.style.display='none';return}
+  const sw=cols.map(cl=>{
     const lum=0.299*cl.rgb[0]+0.587*cl.rgb[1]+0.114*cl.rgb[2];
     const tc=lum>140?'rgba(0,0,0,0.7)':'rgba(255,255,255,0.9)';
-    return '<div style="flex:1;min-height:100px;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.5rem 0.4rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.72rem;color:'+tc+'">'+cl.name+'</span></div>';
+    return '<div style="flex:1;min-height:100px;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.5rem 0.5rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.72rem;color:'+tc+'">'+cl.name+'</span></div>';
   }).join('');
-  el.innerHTML='<div style="display:flex;gap:1px;background:var(--line2)">'+sw+'</div><div class="daily-strip-info"><span class="daily-strip-eyebrow">Combinación del día · #'+cn+'</span><div class="daily-strip-title">'+colors.map(c=>c.name).join(' · ')+'</div><div class="daily-strip-sub">'+colors.length+' colores · '+new Date().toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})+'</div><button class="daily-strip-btn" onclick="openDailyCombo('+cn+')">Explorar →</button></div>';
+  el.innerHTML='<div style="display:flex;gap:1px;flex:1">'+sw+'</div><div class="daily-strip-info"><span class="daily-strip-eyebrow">Combinacion del dia · #'+cn+'</span><div class="daily-strip-title">'+cols.map(c=>c.name).join(' · ')+'</div><div class="daily-strip-sub">'+cols.length+' colores Wada · '+new Date().toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})+'</div><button class="daily-strip-btn" onclick="openDailyCombo('+cn+')">Explorar →</button></div>';
 }
 
 function buildStylePills(){
   const el=document.getElementById('inspoStylePills');if(!el)return;
   el.innerHTML='';
-  const allBtn=document.createElement('button');allBtn.className='style-pill'+(inspoActiveStyle==='all'?' active':'');allBtn.textContent='Todos';
-  allBtn.onclick=()=>{inspoActiveStyle='all';document.querySelectorAll('.style-pill').forEach(b=>b.classList.remove('active'));allBtn.classList.add('active');renderPinterestGrid()};
-  el.appendChild(allBtn);
+  const ab=document.createElement('button');
+  ab.className='style-pill active';ab.textContent='Todos';
+  ab.onclick=()=>{inspoActiveStyle='all';document.querySelectorAll('.style-pill').forEach(b=>b.classList.remove('active'));ab.classList.add('active');renderPinterestGrid()};
+  el.appendChild(ab);
   STYLES.forEach(s=>{
-    const btn=document.createElement('button');btn.className='style-pill'+(inspoActiveStyle===s.id?' active':'');btn.textContent=s.name;
+    const btn=document.createElement('button');btn.className='style-pill';btn.textContent=s.name;
     btn.onclick=()=>{inspoActiveStyle=s.id;document.querySelectorAll('.style-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderPinterestGrid()};
     el.appendChild(btn);
   });
@@ -2246,46 +2264,43 @@ function renderPinterestGrid(){
     if(inspoActiveStyle!=='all'&&inspoActiveStyle!==s.id)return;
     s.cards.forEach(card=>{
       if(inspoSearchQ&&!card.title.toLowerCase().includes(inspoSearchQ)&&!card.tags.some(t=>t.includes(inspoSearchQ))&&!s.name.toLowerCase().includes(inspoSearchQ))return;
-      cards.push({...card,styleName:s.name,styleId:s.id});
+      cards.push({...card,styleName:s.name});
     });
   });
   if(!cards.length){grid.innerHTML='<p style="padding:3rem;text-align:center;font-style:italic;color:var(--ink3)">Sin resultados.</p>';return}
+  const heights=[280,340,300,380,260,320,360,300];
   cards.forEach((card,idx)=>{
-    const colors=card.wadaIdxs.map(i=>colorByIndex[i]).filter(Boolean);
-    if(!colors.length)return;
-    const heights=[280,340,300,380,260,320,360,280,300,340];
-    const splitH=heights[idx%heights.length];
-    const splitCols=colors.slice(0,Math.min(colors.length,3));
-    const splits=splitCols.map(cl=>{
+    const cols=card.wadaIdxs.map(i=>colorByIndex[i]).filter(Boolean);if(!cols.length)return;
+    const h=heights[idx%heights.length];
+    const splits=cols.slice(0,3).map(cl=>{
       const lum=0.299*cl.rgb[0]+0.587*cl.rgb[1]+0.114*cl.rgb[2];
-      const textCol=lum>140?'rgba(0,0,0,0.72)':'rgba(255,255,255,0.92)';
-      return '<div style="flex:1;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.7rem 0.6rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.82rem;color:'+textCol+';line-height:1.1">'+cl.name+'</span></div>';
+      const tc=lum>140?'rgba(0,0,0,0.72)':'rgba(255,255,255,0.92)';
+      return '<div style="flex:1;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.6rem 0.5rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.8rem;color:'+tc+';line-height:1.1">'+cl.name+'</span></div>';
     }).join('');
     const tags=card.tags.map((t,i)=>'<span class="pinterest-tag'+(i===0?' accent':'')+'">'+t+'</span>').join('');
     const div=document.createElement('div');div.className='pinterest-card';
-    div.innerHTML='<span class="pinterest-style-label">'+card.styleName+'</span><div style="display:flex;height:'+splitH+'px;gap:1px;background:var(--line2)">'+splits+'</div><div class="pinterest-body"><span class="pinterest-title">'+card.title+'</span><div class="pinterest-tags" style="margin-top:0.4rem">'+tags+'</div></div>';
-    div.onclick=()=>{if(colors.length>=2){selectedColor=colors[0];buildComboModal(colors,card.comboNum||null,null);document.getElementById('comboModalOverlay').classList.add('open')}};
+    div.innerHTML='<span class="pinterest-style-label">'+card.styleName+'</span><div style="display:flex;height:'+h+'px;gap:1px;background:var(--line2)">'+splits+'</div><div class="pinterest-body"><span class="pinterest-title">'+card.title+'</span><div class="pinterest-tags" style="margin-top:0.3rem">'+tags+'</div></div>';
+    div.onclick=()=>{if(cols.length>=2){selectedColor=cols[0];buildComboModal(cols,null,null);document.getElementById('comboModalOverlay').classList.add('open')}};
     grid.appendChild(div);
   });
 }
 
 function openDailyCombo(cn){
-  const colors=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);
-  if(!colors.length)return;
-  selectedColor=colors[0];buildComboModal(colors,parseInt(cn),null);
+  const cols=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);if(!cols.length)return;
+  selectedColor=cols[0];buildComboModal(cols,parseInt(cn),null);
   document.getElementById('comboModalOverlay').classList.add('open');
 }
 
-// ── OCCASION ──────────────────────────────────────────────────────────────────
+// ── OCCASION FUNCTIONS ────────────────────────────────────────────────────
 function buildOccasionPage(){
   const grid=document.getElementById('occasionStylesGrid');if(!grid)return;
   grid.innerHTML='';
   OCCASION_STYLES.forEach(style=>{
-    const colors=style.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
-    const sw=colors.map(c=>`<div style="background:${c.hex}"></div>`).join('');
+    const cols=style.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
+    const sw=cols.map(c=>'<div style="background:'+c.hex+'"></div>').join('');
     const card=document.createElement('div');
     card.className='occasion-style-card'+(activeOccasionStyle===style.id?' active':'');
-    card.innerHTML=`<div class="occasion-style-top">${sw}</div><div class="occasion-style-bottom"><span class="occasion-style-name">${style.name}</span><span class="occasion-style-desc">${style.desc}</span></div>`;
+    card.innerHTML='<div class="occasion-style-top">'+sw+'</div><div class="occasion-style-bottom"><span class="occasion-style-name">'+style.name+'</span><span class="occasion-style-desc">'+style.desc+'</span></div>';
     card.onclick=()=>{
       activeOccasionStyle=style.id;
       document.querySelectorAll('.occasion-style-card').forEach(c=>c.classList.toggle('active',c===card));
@@ -2309,36 +2324,34 @@ function renderOccasionResults(style){
     if(score>0)scored.push({cn,idxs,score});
   });
   scored.sort((a,b)=>b.score-a.score);
-  header.innerHTML=`<div><span class="occasion-results-title">${style.name}</span><p style="font-size:0.62rem;color:var(--ink3);margin-top:0.3rem;font-style:italic">${style.why}</p></div><span class="occasion-results-count">${scored.length} combinaciones</span>`;
+  header.innerHTML='<div><span class="occasion-results-title">'+style.name+'</span><p style="font-size:0.62rem;color:var(--ink3);margin-top:0.3rem;font-style:italic">'+style.why+'</p></div><span class="occasion-results-count">'+scored.length+' combinaciones</span>';
   rGrid.innerHTML='';
-  scored.slice(0,24).forEach(({cn,idxs},i)=>{
-    const colors=idxs.map(idx=>colorByIndex[idx]).filter(Boolean);if(!colors.length)return;
-    // Build color split with names
-    const splitCols=colors.slice(0,Math.min(colors.length,3));
-    const splits=splitCols.map(cl=>{
+  scored.slice(0,24).forEach(({cn,idxs})=>{
+    const cols=idxs.map(i=>colorByIndex[i]).filter(Boolean);if(!cols.length)return;
+    const splits=cols.slice(0,3).map(cl=>{
       const lum=0.299*cl.rgb[0]+0.587*cl.rgb[1]+0.114*cl.rgb[2];
       const tc=lum>140?'rgba(0,0,0,0.72)':'rgba(255,255,255,0.92)';
-      return '<div style="flex:1;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.5rem 0.4rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.65rem;color:'+tc+';line-height:1.1">'+cl.name+'</span></div>';
+      return '<div style="flex:1;background:'+cl.hex+';display:flex;align-items:flex-end;padding:0.5rem 0.4rem"><span style="font-family:Playfair Display,serif;font-style:italic;font-size:0.65rem;color:'+tc+'">'+cl.name+'</span></div>';
     }).join('');
-    const why=colors.filter(c=>style.colorIdxs.includes(c.index)).map(c=>c.name).join(', ');
+    const why=cols.filter(c=>style.colorIdxs.includes(c.index)).map(c=>c.name).join(', ');
     const card=document.createElement('div');card.className='occasion-combo-card';
-    card.innerHTML='<div style="display:flex;height:90px;gap:1px;background:var(--line2)">'+splits+'</div><div class="occasion-combo-info"><span class="occasion-combo-num">Combinación #'+cn+'</span><span class="occasion-combo-names">'+colors.map(c=>c.name).join(' · ')+'</span>'+(why?'<span class="occasion-combo-why">✦ '+why+'</span>':'')+'</div>';
-    card.onclick=()=>{selectedColor=colors[0];buildComboModal(colors,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
+    card.innerHTML='<div style="display:flex;height:90px;gap:1px;background:var(--line2)">'+splits+'</div><div class="occasion-combo-info"><span class="occasion-combo-num">Combinacion #'+cn+'</span><span class="occasion-combo-names">'+cols.map(c=>c.name).join(' · ')+'</span>'+(why?'<span class="occasion-combo-why">&#10022; '+why+'</span>':'')+'</div>';
+    card.onclick=()=>{selectedColor=cols[0];buildComboModal(cols,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
     rGrid.appendChild(card);
   });
 }
 
-// ── SEASON ────────────────────────────────────────────────────────────────────
+// ── SEASON FUNCTIONS ──────────────────────────────────────────────────────
 const SEASONS={
-  fw25:{label:'Fall / Winter 2025',intro:'FW25 apuesta al "quiet luxury" con tonos tierra profundos, bordó y siena.',
-    trends:[{name:'Mocha Mousse',wadaIdx:50,badge:'Pantone 2025'},{name:'Bordeaux',wadaIdx:29,badge:'Tendencia'},{name:'Forest Floor',wadaIdx:79,badge:'Key Color'},{name:'Inkwell',wadaIdx:128,badge:'Clásico FW'},{name:'Dusty Olive',wadaIdx:76,badge:'Tendencia'},{name:'Warm Taupe',wadaIdx:54,badge:'Básico'}],
-    houses:[{name:'Bottega Veneta',note:'Intarsias en ocre, siena y verde musgo',colorIdxs:[51,79,54]},{name:'Hermès',note:'Cuero natural, camel profundo',colorIdxs:[14,50,82]},{name:'The Row',note:'Monocromo en nude y taupe',colorIdxs:[152,54,4]},{name:'Valentino',note:'Negro absoluto y bordó',colorIdxs:[157,29,11]}]},
+  fw25:{label:'Fall / Winter 2025',intro:'FW25 apuesta al quiet luxury con tonos tierra, bordo y siena.',
+    trends:[{name:'Mocha Mousse',wadaIdx:50,badge:'Pantone 2025'},{name:'Bordeaux',wadaIdx:29,badge:'Tendencia'},{name:'Forest Floor',wadaIdx:79,badge:'Key Color'},{name:'Inkwell',wadaIdx:128,badge:'Clasico FW'},{name:'Dusty Olive',wadaIdx:76,badge:'Tendencia'},{name:'Warm Taupe',wadaIdx:54,badge:'Basico'}],
+    houses:[{name:'Bottega Veneta',note:'Intarsias en ocre, siena y verde musgo',colorIdxs:[51,79,54]},{name:'Hermes',note:'Cuero natural, camel profundo',colorIdxs:[14,50,82]},{name:'The Row',note:'Monocromo en nude y taupe',colorIdxs:[152,54,4]},{name:'Valentino',note:'Negro absoluto y bordo',colorIdxs:[157,29,11]}]},
   ss25:{label:'Spring / Summer 2025',intro:'SS25 trae azules cobalto, verdes frescos y rosas fuertes.',
     trends:[{name:'Lapis Blue',wadaIdx:125,badge:'Key SS25'},{name:'Peach Fuzz',wadaIdx:43,badge:'Pantone 2024'},{name:'Fresh Mint',wadaIdx:87,badge:'Tendencia'},{name:'Viva Magenta',wadaIdx:8,badge:'Bestseller'},{name:'Electric Yellow',wadaIdx:55,badge:'Bold'},{name:'Aqua Sky',wadaIdx:110,badge:'Tendencia'}],
-    houses:[{name:'Jacquemus',note:'Rosa intenso y blanco minimal',colorIdxs:[6,152,11]},{name:'Prada',note:'Azul industrial y amarillo Bauhaus',colorIdxs:[125,55,157]},{name:'Loewe',note:'Naturales y verdes artesanales',colorIdxs:[89,54,76]},{name:'Chloé',note:'Arena, beige dorado y turquesa',colorIdxs:[54,51,116]}]},
-  fw24:{label:'Fall / Winter 2024',intro:'FW24 exploró el rojo como protagonista y el chocolate como base.',
-    trends:[{name:'Chocolate Brown',wadaIdx:86,badge:'Dominante'},{name:'Fiery Red',wadaIdx:16,badge:'Key Color'},{name:'Midnight Navy',wadaIdx:130,badge:'Clásico'},{name:'Burnt Copper',wadaIdx:67,badge:'Tendencia'},{name:'Forest Green',wadaIdx:104,badge:'Emergente'},{name:'Cream',wadaIdx:39,badge:'Básico'}],
-    houses:[{name:'Gucci',note:'Chocolate y camel con acento rojo',colorIdxs:[86,14,17]},{name:'Saint Laurent',note:'Negro total y marfil',colorIdxs:[157,39,29]},{name:'Max Mara',note:'Camel icónico con detalles blancos',colorIdxs:[54,50,152]},{name:'Balenciaga',note:'Cargos en militar y negro',colorIdxs:[107,108,157]}]},
+    houses:[{name:'Jacquemus',note:'Rosa intenso y blanco minimal',colorIdxs:[6,152,11]},{name:'Prada',note:'Azul industrial y amarillo Bauhaus',colorIdxs:[125,55,157]},{name:'Loewe',note:'Naturales y verdes artesanales',colorIdxs:[89,54,76]},{name:'Chloe',note:'Arena, beige dorado y turquesa',colorIdxs:[54,51,116]}]},
+  fw24:{label:'Fall / Winter 2024',intro:'FW24 exploro el rojo como protagonista y el chocolate como base.',
+    trends:[{name:'Chocolate Brown',wadaIdx:86,badge:'Dominante'},{name:'Fiery Red',wadaIdx:16,badge:'Key Color'},{name:'Midnight Navy',wadaIdx:130,badge:'Clasico'},{name:'Burnt Copper',wadaIdx:67,badge:'Tendencia'},{name:'Forest Green',wadaIdx:104,badge:'Emergente'},{name:'Cream',wadaIdx:39,badge:'Basico'}],
+    houses:[{name:'Gucci',note:'Chocolate y camel con acento rojo',colorIdxs:[86,14,17]},{name:'Saint Laurent',note:'Negro total y marfil',colorIdxs:[157,39,29]},{name:'Max Mara',note:'Camel iconico con detalles blancos',colorIdxs:[54,50,152]},{name:'Balenciaga',note:'Cargos en militar y negro',colorIdxs:[107,108,157]}]},
 };
 
 function switchSeason(s,btn){
@@ -2353,14 +2366,14 @@ function renderSeasonContent(){
   const s=SEASONS[activeSeason];
   const trends=s.trends.map(t=>{
     const wc=colorByIndex[t.wadaIdx];if(!wc)return'';
-    return`<div class="season-trend-card"><div class="season-trend-swatch" style="background:${wc.hex}"><span class="season-trend-badge">${t.badge}</span></div><div class="season-trend-body"><span class="season-trend-name">${t.name}</span><span class="season-trend-wada">${wc.name} · ${wc.hex}</span><button class="season-trend-btn" onclick="selectColorAndShow(${t.wadaIdx})">Ver combinaciones →</button></div></div>`;
+    return'<div class="season-trend-card"><div class="season-trend-swatch" style="background:'+wc.hex+'"><span class="season-trend-badge">'+t.badge+'</span></div><div class="season-trend-body"><span class="season-trend-name">'+t.name+'</span><span class="season-trend-wada">'+wc.name+' · '+wc.hex+'</span><button class="season-trend-btn" onclick="selectColorAndShow('+t.wadaIdx+')">Ver combinaciones →</button></div></div>';
   }).join('');
   const houses=s.houses.map(h=>{
-    const colors=h.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
-    const dots=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
-    return`<div class="season-house-card"><span class="season-house-name">${h.name}</span><div class="season-house-colors">${dots}</div><span class="season-house-note">${h.note}</span></div>`;
+    const cols=h.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
+    const dots=cols.map(c=>'<div style="background:'+c.hex+'" title="'+c.name+'"></div>').join('');
+    return'<div class="season-house-card"><span class="season-house-name">'+h.name+'</span><div class="season-house-colors">'+dots+'</div><span class="season-house-note">'+h.note+'</span></div>';
   }).join('');
-  el.innerHTML=`<p class="season-intro">${s.intro}</p><div class="season-trends">${trends}</div><div><span style="font-size:0.45rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:1rem">Casas destacadas · ${s.label}</span><div class="season-house-grid">${houses}</div></div>`;
+  el.innerHTML='<p class="season-intro">'+s.intro+'</p><div class="season-trends">'+trends+'</div><span style="font-size:0.45rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:1rem">Casas destacadas · '+s.label+'</span><div class="season-house-grid">'+houses+'</div>';
 }
 
 function selectColorAndShow(idx){
@@ -2370,12 +2383,9 @@ function selectColorAndShow(idx){
   setTimeout(()=>openComboModal(),100);
 }
 
-// ── CLOSET ────────────────────────────────────────────────────────────────────
+// ── CLOSET FUNCTIONS ──────────────────────────────────────────────────────
 function buildClosetView(){
-  renderClosetItems();
-  renderClosetCombinations();
-  renderClosetHistory();
-  updateClosetAddPreview();
+  renderClosetItems();renderClosetCombinations();renderClosetHistory();updateClosetAddPreview();
 }
 
 function updateClosetAddPreview(){
@@ -2390,8 +2400,7 @@ function openClosetPicker(){
   activePopoverSlot='closet';
   document.getElementById('cpTitle').textContent='Elegir color para el closet';
   document.getElementById('cpSearch').value='';
-  popoverSearch='';
-  renderPopoverGrid();
+  popoverSearch='';renderPopoverGrid();
   const pop=document.getElementById('colorPopover');pop.classList.add('open');
   const el=document.getElementById('closetAddPreview');
   const rect=el?el.getBoundingClientRect():{left:100,bottom:200};
@@ -2414,20 +2423,23 @@ function addToCloset(){
 
 function renderClosetItems(){
   const el=document.getElementById('closetItems');if(!el)return;
+  if(!closetItems.length){el.innerHTML='<p style="padding:1.5rem;text-align:center;font-style:italic;color:var(--ink3);font-size:0.75rem">Tu closet esta vacio.</p>';return}
   el.innerHTML='';
-  if(!closetItems.length){el.innerHTML='<p style="padding:1.5rem;text-align:center;font-style:italic;color:var(--ink3);font-size:0.75rem">Tu closet está vacío.</p>';return}
   closetItems.forEach(item=>{
     const row=document.createElement('div');row.className='closet-item';
-    row.innerHTML=`<div class="closet-item-swatch" style="background:${item.color.hex}"></div><div class="closet-item-info"><span class="closet-item-label">${item.label}</span><span class="closet-item-color">${item.color.name} · ${item.color.hex}</span></div><button class="closet-item-del" onclick="removeFromCloset(${item.id})">✕</button>`;
+    row.innerHTML='<div class="closet-item-swatch" style="background:'+item.color.hex+'"></div><div class="closet-item-info"><span class="closet-item-label">'+item.label+'</span><span class="closet-item-color">'+item.color.name+' · '+item.color.hex+'</span></div><button class="closet-item-del" onclick="removeFromCloset('+item.id+')">✕</button>';
     el.appendChild(row);
   });
 }
 
-function removeFromCloset(id){closetItems=closetItems.filter(i=>i.id!==id);renderClosetItems();renderClosetCombinations();saveToStorage();}
+function removeFromCloset(id){
+  closetItems=closetItems.filter(i=>i.id!==id);
+  renderClosetItems();renderClosetCombinations();saveToStorage();
+}
 
 function renderClosetCombinations(){
   const el=document.getElementById('closetCombinations');if(!el)return;
-  if(closetItems.length<2){el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem;line-height:1.7">Con 2 o más colores verás las combinaciones posibles.</p>';return}
+  if(closetItems.length<2){el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem;line-height:1.7">Con 2 o mas colores veras las combinaciones posibles.</p>';return}
   el.innerHTML='';
   const myIdx=closetItems.map(i=>i.color.index);
   const perfect=[],partial=[];
@@ -2436,61 +2448,68 @@ function renderClosetCombinations(){
     else if(idxs.some(i=>myIdx.includes(i)))partial.push({cn,idxs});
   });
   if(perfect.length){
-    const lbl=document.createElement('span');lbl.className='closet-section-label';lbl.textContent='Podés hacer estos looks ahora ✦';el.appendChild(lbl);
+    const lbl=document.createElement('span');lbl.className='closet-section-label';lbl.textContent='Podes hacer estos looks ahora ✦';el.appendChild(lbl);
     perfect.slice(0,4).forEach(({cn,idxs})=>{
-      const colors=idxs.map(i=>colorByIndex[i]).filter(Boolean);
+      const cols=idxs.map(i=>colorByIndex[i]).filter(Boolean);
       const row=document.createElement('div');row.className='closet-combo-row';
-      row.innerHTML=`<div class="closet-combo-swatches">${colors.map(c=>`<div style="background:${c.hex}"></div>`).join('')}</div><div class="closet-combo-info"><span class="closet-combo-label">${colors.map(c=>c.name).join(' · ')}</span><span class="closet-combo-sub">Tenés todo · Combo #${cn}</span></div>`;
-      row.onclick=()=>{buildComboModal(colors,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
+      row.innerHTML='<div class="closet-combo-swatches">'+cols.map(c=>'<div style="background:'+c.hex+'"></div>').join('')+'</div><div class="closet-combo-info"><span class="closet-combo-label">'+cols.map(c=>c.name).join(' · ')+'</span><span class="closet-combo-sub">Tenes todo · Combo #'+cn+'</span></div>';
+      row.onclick=()=>{buildComboModal(cols,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
       el.appendChild(row);
     });
   }
-  if(partial.length&&!perfect.length){
+  if(!perfect.length&&partial.length){
     const lbl=document.createElement('span');lbl.className='closet-section-label';lbl.textContent='Cerca — te falta un color';el.appendChild(lbl);
     partial.slice(0,3).forEach(({cn,idxs})=>{
       const all=idxs.map(i=>colorByIndex[i]).filter(Boolean);
       const miss=all.filter(c=>!myIdx.includes(c.index));
       if(!miss.length)return;
       const row=document.createElement('div');row.className='closet-missing';
-      row.innerHTML=`<span style="font-size:0.6rem;color:var(--ink);display:block;margin-bottom:0.3rem">Combo #${cn}: ${all.map(c=>c.name).join(' · ')}</span><span style="font-size:0.55rem;color:var(--ink3)">Te falta: ${miss[0].name} (${miss[0].hex})</span>`;
+      row.innerHTML='<span style="font-size:0.6rem;color:var(--ink);display:block;margin-bottom:0.3rem">Combo #'+cn+': '+all.map(c=>c.name).join(' · ')+'</span><span style="font-size:0.55rem;color:var(--ink3)">Te falta: '+miss[0].name+' ('+miss[0].hex+')</span>';
       el.appendChild(row);
     });
   }
-  if(!perfect.length&&!partial.length)el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Ningún par forma combinación Wada todavía.</p>';
+  if(!perfect.length&&!partial.length)el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Ningun par forma combinacion Wada todavia.</p>';
 }
 
 function renderClosetHistory(){
   const el=document.getElementById('closetHistory');if(!el)return;
   const looks=savedItems.filter(s=>s.type==='look'||s.type==='combo');
-  if(!looks.length){el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Los looks guardados aparecerán aquí.</p>';return}
+  if(!looks.length){el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Los looks guardados apareceran aqui.</p>';return}
   el.innerHTML='';
   looks.slice().reverse().forEach(item=>{
     const row=document.createElement('div');row.className='history-item';
-    const sw=item.colors.slice(0,5).map(c=>`<div style="background:${c.hex}"></div>`).join('');
+    const sw=item.colors.slice(0,5).map(c=>'<div style="background:'+c.hex+'"></div>').join('');
     const date=new Date(item.id).toLocaleDateString('es-AR',{day:'numeric',month:'short'});
-    row.innerHTML=`<div class="history-swatches">${sw}</div><div class="history-info"><span class="history-label">${item.label}</span><span class="history-date">${item.type==='look'?'Atelier':'Archivo'} · ${date}</span></div><button class="history-del" onclick="delHistory(${item.id},event)">✕</button>`;
+    row.innerHTML='<div class="history-swatches">'+sw+'</div><div class="history-info"><span class="history-label">'+item.label+'</span><span class="history-date">'+(item.type==='look'?'Atelier':'Archivo')+' · '+date+'</span></div><button class="history-del" onclick="delHistory('+item.id+',event)">✕</button>';
     row.onclick=(e)=>{if(!e.target.classList.contains('history-del')){buildComboModal(item.colors,item.comboNum||null,null);document.getElementById('comboModalOverlay').classList.add('open')}};
     el.appendChild(row);
   });
 }
 
-function delHistory(id,e){e.stopPropagation();savedItems=savedItems.filter(s=>s.id!==id);updateSavedCount();renderClosetHistory();saveToStorage();}
+function delHistory(id,e){
+  e.stopPropagation();
+  savedItems=savedItems.filter(s=>s.id!==id);
+  updateSavedCount();renderClosetHistory();saveToStorage();
+}
 
-// Patch popover to handle closet slot
-const _origPopoverSelect=renderPopoverGrid;
+// ── PATCH POPOVER FOR CLOSET ──────────────────────────────────────────────
+const _origRPG = renderPopoverGrid;
 function renderPopoverGrid(){
   const grid=document.getElementById('cpGrid');grid.innerHTML='';
   const none=document.createElement('div');none.className='cp-cell cp-none';none.textContent='✕';none.title='Quitar';
   none.onclick=()=>{
     if(activePopoverSlot==='closet'){closetPickerColor=null;updateClosetAddPreview();closePopover();return}
-    atelierState[activePopoverSlot]=null;buildStep2();closePopover();
+    atelierState[activePopoverSlot]=null;
+    if(pendingSuggestionColor)pendingSuggestionColor=null;
+    buildStep2();closePopover();
   };
   grid.appendChild(none);
   let fl=COLORS;
   if(popoverSearch)fl=fl.filter(c=>c.name.toLowerCase().includes(popoverSearch));
   fl.forEach(c=>{
     const cell=document.createElement('div');
-    cell.className='cp-cell'+(activePopoverSlot!=='closet'&&atelierState[activePopoverSlot]&&atelierState[activePopoverSlot].index===c.index?' selected':'');
+    const sel=(activePopoverSlot!=='closet'&&atelierState[activePopoverSlot]&&atelierState[activePopoverSlot].index===c.index);
+    cell.className='cp-cell'+(sel?' selected':'');
     cell.style.background=c.hex;cell.title=c.name;
     cell.onclick=()=>{
       if(activePopoverSlot==='closet'){closetPickerColor=c;updateClosetAddPreview();closePopover();return}
@@ -2504,6 +2523,25 @@ function renderPopoverGrid(){
   });
 }
 
+// ── PATCH SAVE TO PERSIST ─────────────────────────────────────────────────
+const _origSaveCombo2=saveCombo;
+function saveCombo(colorIndices,comboNum){
+  _origSaveCombo2(colorIndices,comboNum);
+  saveToStorage();
+}
+const _origSaveAtelier2=saveAtelier;
+function saveAtelier(){
+  _origSaveAtelier2();
+  saveToStorage();
+}
+
+
+// ── INIT ──
+loadFromStorage();
+buildFamilyBtns();
+renderGrid();
+buildStep1();
+updateSavedCount();
 </script>
 </body>
 </html>
