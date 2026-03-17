@@ -991,6 +991,65 @@ header{
   .h-nav .h-tab{font-size:0.42rem;padding:0.4rem 0.5rem;letter-spacing:0.08em}
 }
 
+
+/* ── MANNEQUIN VISUALIZER ────────────────── */
+.atelier-builder{display:grid;grid-template-columns:1fr 280px 260px;gap:1.5rem;align-items:start}
+.atelier-center{display:flex;flex-direction:column;align-items:center;gap:0.7rem;position:sticky;top:80px}
+.viz-controls{display:flex;gap:0.4rem;align-items:center;width:100%}
+.viz-gender-toggle,.viz-mode-toggle{display:flex;gap:2px;background:var(--cream2);border:1px solid var(--line);padding:2px}
+.viz-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.75rem;
+  background:none;border:none;color:var(--ink3);cursor:pointer;
+  padding:0.3rem 0.6rem;transition:all 0.2s;line-height:1;
+}
+.viz-btn.active,.viz-btn:hover{background:var(--ink);color:var(--cream)}
+.viz-save-btn{background:var(--cream2);border:1px solid var(--line);margin-left:auto;padding:0.3rem 0.7rem}
+.viz-save-btn:hover{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+
+.viz-stage{
+  width:100%;position:relative;
+  border:1px solid var(--line);
+  transition:background 0.6s;
+}
+.viz-stage.day{background:var(--cream2)}
+.viz-stage.night{background:#1a1714}
+
+#mannequinSvg{width:100%;display:block}
+
+/* SVG garment zones — filled by JS */
+.mq-zone{cursor:pointer;transition:opacity 0.2s,filter 0.2s}
+.mq-zone:hover{opacity:0.85;filter:brightness(1.08)}
+.mq-zone.empty{fill:var(--cream3);stroke:var(--line);stroke-width:1.5}
+.mq-zone.empty:hover{fill:var(--cream2)}
+.mq-skin{fill:#e8c9a0}
+.mq-skin-dark{fill:#c8956c}
+.mq-hair{fill:#2d1b0e}
+.mq-outline{fill:none;stroke:rgba(26,23,20,0.08);stroke-width:0.5}
+
+/* Color label on garment */
+.mq-label{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:9px;pointer-events:none;dominant-baseline:middle;text-anchor:middle;
+}
+
+/* Harmony */
+.harmony-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0.8rem;background:var(--cream2);border:1px solid var(--line)}
+.harmony-label{font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3)}
+.harmony-score{font-family:'Playfair Display',serif;font-style:italic;font-size:0.75rem;color:var(--ink)}
+.harmony-score.good{color:#2d7a3a}
+.harmony-score.ok{color:#b5830a}
+.harmony-score.bold{color:var(--red)}
+
+@media(max-width:900px){
+  .atelier-builder{grid-template-columns:1fr 220px}
+  .atelier-center{order:-1;position:static}
+  .atelier-right{display:none}
+}
+@media(max-width:600px){
+  .atelier-builder{grid-template-columns:1fr}
+  .viz-stage{max-width:260px;margin:0 auto}
+}
+
 </style>
 </head>
 <body>
@@ -1062,8 +1121,27 @@ header{
           <div id="otherSlots" class="other-slots"></div>
         </div>
         <div class="atelier-center">
-          <span class="atelier-center-label">Tu look</span>
-          <div id="atelierSilhouette" class="atelier-silhouette"></div>
+          <!-- Visualizer controls -->
+          <div class="viz-controls">
+            <div class="viz-gender-toggle">
+              <button class="viz-btn active" id="vizFem" onclick="setGender('f',this)">♀</button>
+              <button class="viz-btn" id="vizMas" onclick="setGender('m',this)">♂</button>
+            </div>
+            <div class="viz-mode-toggle">
+              <button class="viz-btn active" id="vizDay" onclick="setMode('day',this)">☀</button>
+              <button class="viz-btn" id="vizNight" onclick="setMode('night',this)">☽</button>
+            </div>
+            <button class="viz-btn viz-save-btn" onclick="saveLookAsImage()" title="Guardar como imagen">⬇</button>
+          </div>
+
+          <!-- SVG mannequin stage -->
+          <div class="viz-stage" id="vizStage">
+            <svg id="mannequinSvg" viewBox="0 0 260 520" xmlns="http://www.w3.org/2000/svg">
+              <!-- Rendered by buildMannequin() -->
+            </svg>
+          </div>
+
+          <!-- Harmony -->
           <div class="harmony-bar">
             <span class="harmony-label">Armonía Wada</span>
             <div class="harmony-score" id="harmonyScore">—</div>
@@ -2462,6 +2540,333 @@ buildFamilyBtns();
 renderGrid();
 buildStep1();
 updateSavedCount();
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MANNEQUIN VISUALIZER
+// ═══════════════════════════════════════════════════════════════════════════
+
+let vizGender = 'f';   // 'f' | 'm'
+let vizMode   = 'day'; // 'day' | 'night'
+
+function setGender(g, btn){
+  vizGender = g;
+  document.querySelectorAll('.viz-gender-toggle .viz-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildMannequin();
+}
+function setMode(m, btn){
+  vizMode = m;
+  document.querySelectorAll('.viz-mode-toggle .viz-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const stage = document.getElementById('vizStage');
+  if(stage){ stage.classList.toggle('night', m==='night'); stage.classList.toggle('day', m==='day'); }
+  buildMannequin();
+}
+
+// Map garment slots to SVG zone names
+// GARMENTS order: 0=abrigo,1=blazer,2=camisa,3=pantalon,4=vestido,5=corbata,6=zapatos,7=cartera,8=accesorio
+const ZONE_MAP = {
+  f: {
+    // zone_id: { label, priority (render order, higher = on top) }
+    abrigo:    { label:'Abrigo',    z:1 },
+    blazer:    { label:'Blazer',    z:2 },
+    camisa:    { label:'Top',       z:3 },
+    pantalon:  { label:'Falda/Pant',z:3 },
+    vestido:   { label:'Vestido',   z:2 },
+    corbata:   { label:'Accesorio', z:4 },
+    zapatos:   { label:'Zapatos',   z:3 },
+    cartera:   { label:'Cartera',   z:4 },
+    accesorio: { label:'Joya',      z:5 },
+  },
+  m: {
+    abrigo:    { label:'Abrigo',    z:1 },
+    blazer:    { label:'Blazer',    z:2 },
+    camisa:    { label:'Camisa',    z:3 },
+    pantalon:  { label:'Pantalón',  z:3 },
+    vestido:   { label:'Traje',     z:2 },
+    corbata:   { label:'Corbata',   z:4 },
+    zapatos:   { label:'Zapatos',   z:3 },
+    cartera:   { label:'Bolso',     z:4 },
+    accesorio: { label:'Accesorio', z:5 },
+  }
+};
+
+// SVG path definitions for female & male silhouettes
+// ViewBox: 0 0 260 520
+function getMannequinPaths(gender, slots, activeBase){
+  const s = slots; // array of color|null indexed by GARMENTS
+  const isFem = gender === 'f';
+
+  // Helper: get fill for a garment index
+  function fill(idx){ return s[idx] ? s[idx].hex : null; }
+  function lum(idx){ if(!s[idx])return 200; const r=s[idx].rgb; return 0.299*r[0]+0.587*r[1]+0.114*r[2]; }
+  function tc(idx){ return lum(idx)>140 ? 'rgba(0,0,0,0.75)' : 'rgba(255,255,255,0.9)'; }
+  function zoneFill(idx){ return fill(idx) || (vizMode==='night'?'#2a2725':'#e8e3da'); }
+  function zoneStroke(idx){ return fill(idx) ? 'none' : (vizMode==='night'?'rgba(255,255,255,0.1)':'rgba(26,23,20,0.12)'); }
+  function isBase(idx){ return idx === activeBase; }
+  function baseGlow(idx){ return isBase(idx) ? `filter="url(#glow)"` : ''; }
+
+  const nightText = vizMode==='night' ? 'rgba(255,255,255,0.85)' : '';
+
+  if(isFem){
+    // Female figure: elegant, slim, 260x520
+    return `
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/></filter>
+    </defs>
+
+    <!-- ABRIGO (outer coat — full body overlay) -->
+    ${fill(0) ? `
+    <path class="mq-zone" ${baseGlow(0)} onclick="openPopover(0,this)"
+      d="M 72,140 Q 55,155 50,200 L 38,380 Q 36,395 50,398 L 65,395 L 68,320 L 72,310
+         L 72,420 Q 72,435 86,437 L 174,437 Q 188,435 188,420 L 188,310 L 192,320 L 195,395
+         L 210,398 Q 224,395 222,380 L 210,200 Q 205,155 188,140 Z"
+      fill="${zoneFill(0)}" stroke="${zoneStroke(0)}" stroke-width="1.5"/>
+    <text class="mq-label" x="130" y="300" fill="${tc(0)}">${s[0]?s[0].name:''}</text>
+    ` : ''}
+
+    <!-- VESTIDO (dress — torso+skirt, shown when no top+bottom) -->
+    ${fill(4) && !fill(2) && !fill(3) ? `
+    <path class="mq-zone" ${baseGlow(4)} onclick="openPopover(4,this)"
+      d="M 88,145 Q 80,150 78,165 L 72,310 Q 72,320 86,322 L 174,322 Q 188,320 188,310
+         L 182,165 Q 180,150 172,145 Z"
+      fill="${zoneFill(4)}" stroke="${zoneStroke(4)}" stroke-width="1"/>
+    <path class="mq-zone" ${baseGlow(4)} onclick="openPopover(4,this)"
+      d="M 72,310 Q 68,315 66,330 L 60,420 Q 60,435 80,437 L 180,437 Q 200,435 200,420
+         L 194,330 Q 192,315 188,310 Z"
+      fill="${zoneFill(4)}" stroke="none"/>
+    <text class="mq-label" x="130" y="270" fill="${tc(4)}">${s[4]?s[4].name:''}</text>
+    ` : ''}
+
+    <!-- BLAZER -->
+    ${fill(1) ? `
+    <path class="mq-zone" ${baseGlow(1)} onclick="openPopover(1,this)"
+      d="M 82,145 Q 70,152 68,170 L 62,280 Q 62,290 76,292 L 184,292 Q 198,290 198,280
+         L 192,170 Q 190,152 178,145
+         L 165,150 L 155,165 L 130,170 L 105,165 L 95,150 Z"
+      fill="${zoneFill(1)}" stroke="${zoneStroke(1)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="230" fill="${tc(1)}">${s[1]?s[1].name:''}</text>
+    ` : ''}
+
+    <!-- CAMISA/TOP -->
+    ${fill(2) ? `
+    <path class="mq-zone" ${baseGlow(2)} onclick="openPopover(2,this)"
+      d="M 92,148 Q 85,155 84,170 L 80,285 Q 80,293 94,295 L 166,295 Q 180,293 180,285
+         L 176,170 Q 175,155 168,148 Z"
+      fill="${zoneFill(2)}" stroke="${zoneStroke(2)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="228" fill="${tc(2)}">${s[2]?s[2].name:''}</text>
+    ` : ''}
+
+    <!-- PANTALON/FALDA -->
+    ${fill(3) ? `
+    <path class="mq-zone" ${baseGlow(3)} onclick="openPopover(3,this)"
+      d="M 80,290 Q 76,295 74,310 L 68,418 Q 68,432 88,434 L 172,434 Q 192,432 192,418
+         L 186,310 Q 184,295 180,290 Z"
+      fill="${zoneFill(3)}" stroke="${zoneStroke(3)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="370" fill="${tc(3)}">${s[3]?s[3].name:''}</text>
+    ` : ''}
+
+    <!-- ZAPATOS -->
+    <g onclick="openPopover(6,this)" class="mq-zone" ${baseGlow(6)}>
+      <ellipse cx="100" cy="468" rx="28" ry="10" fill="${zoneFill(6)}" stroke="${zoneStroke(6)}" stroke-width="1"/>
+      <ellipse cx="160" cy="468" rx="28" ry="10" fill="${zoneFill(6)}" stroke="${zoneStroke(6)}" stroke-width="1"/>
+      <!-- heels -->
+      <rect x="118" y="460" width="6" height="14" rx="2" fill="${zoneFill(6)}"/>
+      <rect x="178" y="460" width="6" height="14" rx="2" fill="${zoneFill(6)}"/>
+    </g>
+    ${s[6]?`<text class="mq-label" x="130" y="484" fill="${tc(6)}">${s[6].name}</text>`:''}
+
+    <!-- CARTERA -->
+    ${fill(7) ? `
+    <rect class="mq-zone" ${baseGlow(7)} onclick="openPopover(7,this)"
+      x="188" y="290" width="42" height="30" rx="4"
+      fill="${zoneFill(7)}" stroke="${zoneStroke(7)}" stroke-width="1"/>
+    <line x1="188" y1="305" x2="210" y2="270" stroke="${zoneFill(7)}" stroke-width="2.5"/>
+    <text class="mq-label" x="209" y="310" fill="${tc(7)}">${s[7].name}</text>
+    ` : ''}
+
+    <!-- CORBATA/PAÑUELO -->
+    ${fill(5) ? `
+    <path class="mq-zone" ${baseGlow(5)} onclick="openPopover(5,this)"
+      d="M 124,155 L 120,165 L 126,210 L 130,215 L 134,210 L 140,165 L 136,155 Z"
+      fill="${zoneFill(5)}" stroke="${zoneStroke(5)}" stroke-width="1"/>
+    ` : ''}
+
+    <!-- SKIN: neck, arms, hands -->
+    <rect class="mq-skin" x="120" y="100" width="20" height="46" rx="8"/>
+    <!-- left arm -->
+    <path class="mq-skin" d="M 72,148 Q 52,160 44,195 L 40,260 Q 38,272 48,274 L 60,272 L 66,200 L 78,168 Z"/>
+    <!-- right arm -->
+    <path class="mq-skin" d="M 188,148 Q 208,160 216,195 L 220,260 Q 222,272 212,274 L 200,272 L 194,200 L 182,168 Z"/>
+    <!-- hands -->
+    <ellipse class="mq-skin" cx="48" cy="278" rx="10" ry="8"/>
+    <ellipse class="mq-skin" cx="212" cy="278" rx="10" ry="8"/>
+    <!-- legs skin (shown when no pants) -->
+    ${!fill(3)&&!fill(4)?`
+    <path class="mq-skin" d="M 94,435 L 88,500 Q 88,510 100,510 L 116,510 Q 126,510 126,500 L 120,435 Z"/>
+    <path class="mq-skin" d="M 166,435 L 160,500 Q 160,510 144,510 L 128,510 Q 118,510 118,500 L 140,435 Z"/>
+    `:''}
+
+    <!-- HEAD -->
+    <ellipse cx="130" cy="72" rx="34" ry="40" class="mq-skin"/>
+    <!-- hair -->
+    <path class="mq-hair" d="M 96,62 Q 96,28 130,26 Q 164,28 164,62 Q 164,42 148,36 Q 130,30 112,36 Q 96,42 96,62 Z"/>
+    <!-- face details -->
+    <ellipse cx="118" cy="72" rx="4" ry="5" fill="rgba(0,0,0,0.35)"/>
+    <ellipse cx="142" cy="72" rx="4" ry="5" fill="rgba(0,0,0,0.35)"/>
+    <path d="M 122,86 Q 130,92 138,86" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"/>
+
+    <!-- ACCESORIO (earrings/necklace) -->
+    ${fill(8) ? `
+    <circle class="mq-zone" ${baseGlow(8)} onclick="openPopover(8,this)" cx="96" cy="85" r="5" fill="${zoneFill(8)}"/>
+    <circle class="mq-zone" onclick="openPopover(8,this)" cx="164" cy="85" r="5" fill="${zoneFill(8)}"/>
+    ` : ''}
+
+    <!-- Empty state prompts — only show for base slot if unset -->
+    ${!fill(0)&&!fill(1)&&!fill(2)&&!fill(3)&&!fill(4)?`
+    <text x="130" y="260" text-anchor="middle" fill="${vizMode==='night'?'rgba(255,255,255,0.3)':'rgba(26,23,20,0.25)'}" font-size="11" font-family="Playfair Display,serif" font-style="italic">Tocá una prenda</text>
+    `:''}
+    `;
+  } else {
+    // MALE figure
+    return `
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- ABRIGO -->
+    ${fill(0) ? `
+    <path class="mq-zone" ${baseGlow(0)} onclick="openPopover(0,this)"
+      d="M 68,145 Q 48,165 44,210 L 32,385 Q 30,400 46,402 L 62,398 L 66,310
+         L 70,300 L 70,425 Q 70,440 86,442 L 174,442 Q 190,440 190,425
+         L 190,300 L 194,310 L 198,398 L 214,402 Q 230,400 228,385
+         L 216,210 Q 212,165 192,145 Z"
+      fill="${zoneFill(0)}" stroke="${zoneStroke(0)}" stroke-width="1.5"/>
+    <text class="mq-label" x="130" y="300" fill="${tc(0)}">${s[0]?s[0].name:''}</text>
+    ` : ''}
+
+    <!-- BLAZER/SACO -->
+    ${fill(1) ? `
+    <path class="mq-zone" ${baseGlow(1)} onclick="openPopover(1,this)"
+      d="M 78,148 Q 62,158 60,178 L 54,295 Q 54,308 70,310 L 190,310 Q 206,308 206,295
+         L 200,178 Q 198,158 182,148
+         L 166,153 L 155,170 L 130,174 L 105,170 L 94,153 Z"
+      fill="${zoneFill(1)}" stroke="${zoneStroke(1)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="240" fill="${tc(1)}">${s[1]?s[1].name:''}</text>
+    ` : ''}
+
+    <!-- CAMISA -->
+    ${fill(2) ? `
+    <path class="mq-zone" ${baseGlow(2)} onclick="openPopover(2,this)"
+      d="M 88,150 Q 78,160 76,178 L 72,300 Q 72,310 88,312 L 172,312 Q 188,310 188,300
+         L 184,178 Q 182,160 172,150 Z"
+      fill="${zoneFill(2)}" stroke="${zoneStroke(2)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="238" fill="${tc(2)}">${s[2]?s[2].name:''}</text>
+    ` : ''}
+
+    <!-- PANTALON -->
+    ${fill(3) ? `
+    <path class="mq-zone" ${baseGlow(3)} onclick="openPopover(3,this)"
+      d="M 76,305 Q 70,312 68,330 L 68,440 Q 68,455 86,456 L 124,456 L 128,380 L 132,380
+         L 136,456 L 174,456 Q 192,455 192,440 L 192,330 Q 190,312 184,305 Z"
+      fill="${zoneFill(3)}" stroke="${zoneStroke(3)}" stroke-width="1"/>
+    <text class="mq-label" x="130" y="388" fill="${tc(3)}">${s[3]?s[3].name:''}</text>
+    ` : ''}
+
+    <!-- CORBATA -->
+    ${fill(5) ? `
+    <path class="mq-zone" ${baseGlow(5)} onclick="openPopover(5,this)"
+      d="M 124,158 L 120,170 L 128,225 L 130,230 L 132,225 L 140,170 L 136,158 Z"
+      fill="${zoneFill(5)}" stroke="${zoneStroke(5)}" stroke-width="1"/>
+    ` : ''}
+
+    <!-- ZAPATOS (flat, male) -->
+    <g onclick="openPopover(6,this)" class="mq-zone" ${baseGlow(6)}>
+      <ellipse cx="96" cy="465" rx="30" ry="11" fill="${zoneFill(6)}" stroke="${zoneStroke(6)}" stroke-width="1"/>
+      <ellipse cx="164" cy="465" rx="30" ry="11" fill="${zoneFill(6)}" stroke="${zoneStroke(6)}" stroke-width="1"/>
+    </g>
+    ${s[6]?`<text class="mq-label" x="130" y="480" fill="${tc(6)}">${s[6].name}</text>`:''}
+
+    <!-- CARTERA/BOLSO -->
+    ${fill(7) ? `
+    <rect class="mq-zone" ${baseGlow(7)} onclick="openPopover(7,this)"
+      x="192" y="298" width="38" height="28" rx="3"
+      fill="${zoneFill(7)}" stroke="${zoneStroke(7)}" stroke-width="1"/>
+    <line x1="192" y1="312" x2="210" y2="282" stroke="${zoneFill(7)}" stroke-width="2.5"/>
+    ` : ''}
+
+    <!-- SKIN: neck, arms -->
+    <rect class="mq-skin" x="118" y="102" width="24" height="48" rx="10"/>
+    <path class="mq-skin" d="M 68,150 Q 44,168 36,210 L 30,272 Q 28,284 40,286 L 54,284 L 60,215 L 74,172 Z"/>
+    <path class="mq-skin" d="M 192,150 Q 216,168 224,210 L 230,272 Q 232,284 220,286 L 206,284 L 200,215 L 186,172 Z"/>
+    <ellipse class="mq-skin" cx="40" cy="290" rx="12" ry="9"/>
+    <ellipse class="mq-skin" cx="220" cy="290" rx="12" ry="9"/>
+    ${!fill(3)?`
+    <path class="mq-skin" d="M 90,456 L 84,506 Q 84,515 98,515 L 118,515 Q 128,515 128,506 L 122,456 Z"/>
+    <path class="mq-skin" d="M 170,456 L 164,506 Q 164,515 150,515 L 130,515 Q 120,515 120,506 L 138,456 Z"/>
+    `:''}
+
+    <!-- HEAD (male: squarer jaw) -->
+    <rect x="96" y="35" width="68" height="72" rx="24" class="mq-skin"/>
+    <!-- hair -->
+    <path class="mq-hair" d="M 96,52 Q 96,30 130,28 Q 164,30 164,52 Q 158,36 130,34 Q 102,36 96,52 Z"/>
+    <!-- face -->
+    <ellipse cx="116" cy="74" rx="5" ry="5.5" fill="rgba(0,0,0,0.35)"/>
+    <ellipse cx="144" cy="74" rx="5" ry="5.5" fill="rgba(0,0,0,0.35)"/>
+    <path d="M 120,88 Q 130,94 140,88" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="1.5"/>
+    <!-- jaw line -->
+    <path d="M 100,90 Q 100,108 130,110 Q 160,108 160,90" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="1"/>
+
+    ${!fill(0)&&!fill(1)&&!fill(2)&&!fill(3)?`
+    <text x="130" y="260" text-anchor="middle" fill="${vizMode==='night'?'rgba(255,255,255,0.3)':'rgba(26,23,20,0.25)'}" font-size="11" font-family="Playfair Display,serif" font-style="italic">Tocá una prenda</text>
+    `:''}
+    `;
+  }
+}
+
+function buildMannequin(){
+  const svg = document.getElementById('mannequinSvg');
+  const stage = document.getElementById('vizStage');
+  if(!svg || !stage) return;
+
+  // Set day/night class
+  stage.className = 'viz-stage ' + vizMode;
+
+  // Render paths
+  svg.innerHTML = getMannequinPaths(vizGender, atelierState, atelierBaseIdx);
+}
+
+// Override buildSilhouette to also update mannequin
+const _origBuildSilhouette = buildSilhouette;
+function buildSilhouette(){
+  if(typeof _origBuildSilhouette === 'function') _origBuildSilhouette();
+  buildMannequin();
+}
+
+// ── SAVE AS IMAGE ─────────────────────────────────────────────────────────
+function saveLookAsImage(){
+  const svg = document.getElementById('mannequinSvg');
+  if(!svg){ showToast('Sin look para guardar'); return; }
+
+  const serializer = new XMLSerializer();
+  let svgStr = serializer.serializeToString(svg);
+
+  // Add white/dark background
+  const bg = vizMode === 'night' ? '#1a1714' : '#f7f4ef';
+  svgStr = svgStr.replace('<svg', `<svg style="background:${bg}"`);
+
+  const blob = new Blob([svgStr], {type:'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const name = (document.getElementById('lookNameInput')||{}).value || 'wada-look';
+  a.download = name.replace(/\s+/g,'-').toLowerCase() + '.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Look guardado como imagen ✦');
+}
+
 </script>
 </body>
 </html>
