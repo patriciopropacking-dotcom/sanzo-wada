@@ -1948,18 +1948,6 @@ function renderSaved(){
 function deleteSaved(id){savedItems=savedItems.filter(s=>s.id!==id);updateSavedCount();renderSaved()}
 
 // ── TABS ──────────────────────────────────────────────────────────────────────
-function switchTab(tab,btn){
-  document.querySelectorAll('.h-tab').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  ['archive','atelier','inspo','season','closet','combinations'].forEach(t=>{
-    const el=document.getElementById(`tab-${t}`);
-    if(el)el.classList.toggle('active',t===tab);
-  });
-  if(tab==='combinations')renderCombosView();
-  if(tab==='inspo'){buildInspoFilters();buildDailyCombo();renderInspoGrid()}
-  if(tab==='season')renderSeasonContent();
-  if(tab==='closet')buildClosetView();
-}
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function showToast(msg){
@@ -2225,13 +2213,6 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2200);
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
-loadFromStorage();
-buildFamilyBtns();
-renderGrid();
-buildStep1();
-updateSavedCount();
-
 // ── PERSIST TO LOCALSTORAGE ───────────────────────────────────────────────────
 function saveToStorage(){
   try{
@@ -2251,456 +2232,1273 @@ function loadFromStorage(){
 // ── INSPO DATA ────────────────────────────────────────────────────────────────
 // Curated inspo cards: each maps to Wada color indices + style tags
 // Photos from Unsplash (free, no API key needed via source.unsplash.com)
-const INSPO_CARDS=[
-  {id:1,title:'Monocromo en terracota',tags:['editorial','formal','otoño'],colorIdxs:[14,20,67],occasion:'formal',
-   photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80'},
-  {id:2,title:'Blanco total con acento',tags:['editorial','verano','minimalista'],colorIdxs:[152,39,116],occasion:'casual',
-   photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80'},
-  {id:3,title:'Street style violeta',tags:['street','urbano','bold'],colorIdxs:[138,90,55],occasion:'casual',
-   photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80'},
-  {id:4,title:'Look cocktail rojo',tags:['editorial','cocktail','noche'],colorIdxs:[23,157,42],occasion:'cocktail',
-   photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80'},
-  {id:5,title:'Tonal azul marino',tags:['formal','clásico','oficina'],colorIdxs:[128,125,110],occasion:'formal',
-   photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80'},
-  {id:6,title:'Amarillo vibrante',tags:['street','verano','color'],colorIdxs:[55,157,98],occasion:'casual',
-   photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80'},
-  {id:7,title:'Nude y camel',tags:['editorial','minimalista','clásico'],colorIdxs:[54,50,83],occasion:'formal',
-   photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80'},
-  {id:8,title:'Destellos verdes',tags:['street','primavera','bold'],colorIdxs:[96,40,157],occasion:'casual',
-   photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&crop=bottom'},
-  {id:9,title:'Boda invitada rosado',tags:['boda','cocktail','romántico'],colorIdxs:[3,133,110],occasion:'boda',
-   photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=top'},
-  {id:10,title:'Total black con textura',tags:['editorial','noche','poder'],colorIdxs:[157,156,123],occasion:'noche',
-   photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=top'},
-  {id:11,title:'Pasteles de primavera',tags:['street','primavera','suave'],colorIdxs:[43,110,133],occasion:'casual',
-   photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=top'},
-  {id:12,title:'Vestido corinto y dorado',tags:['editorial','cócktail','glamour'],colorIdxs:[29,51,157],occasion:'cocktail',
-   photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=top'},
-];
 
-const INSPO_TAGS=['todos','editorial','street','formal','cocktail','casual','boda','noche','verano','otoño'];
-let inspoActiveTag='todos';
-let inspoSearchQ='';
+OCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WADA — Colour Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#f7f4ef;
+  --cream2:#f0ece5;
+  --cream3:#e8e3da;
+  --cream4:#ddd8ce;
+  --ink:#1a1714;
+  --ink2:#3d3a35;
+  --ink3:#7a7369;
+  --line:rgba(26,23,20,0.1);
+  --line2:rgba(26,23,20,0.05);
+  --red:#b5173a;
+  --red2:#8f1030;
+}
+html{background:var(--cream);color:var(--ink);font-family:'Tenor Sans',sans-serif;-webkit-font-smoothing:antialiased;scrollbar-width:thin;scrollbar-color:var(--ink3) var(--cream)}
+body{min-height:100vh}
 
-function buildInspoFilters(){
-  const el=document.getElementById('inspoFilterChips');
-  if(!el)return;
-  el.innerHTML='';
-  INSPO_TAGS.forEach(t=>{
-    const btn=document.createElement('button');
-    btn.className='inspo-chip'+(t===inspoActiveTag?' active':'');
-    btn.textContent=t;
-    btn.onclick=()=>{inspoActiveTag=t;document.querySelectorAll('.inspo-chip').forEach((b,i)=>b.classList.toggle('active',INSPO_TAGS[i]===t));renderInspoGrid()};
-    el.appendChild(btn);
-  });
+/* ── HEADER ──────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:200;
+  background:var(--cream);
+  border-bottom:1px solid var(--line);
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;padding:0 2rem;height:60px;
+}
+.h-nav{display:flex;align-items:center;gap:0.2rem}
+.h-tab{
+  font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--ink3);background:none;border:none;cursor:pointer;
+  padding:0.5rem 0.9rem;font-family:'Tenor Sans',sans-serif;
+  position:relative;transition:color 0.2s;
+}
+.h-tab::after{content:'';position:absolute;bottom:-1px;left:0.9rem;right:0.9rem;height:1px;background:var(--red);transform:scaleX(0);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1)}
+.h-tab:hover,.h-tab.active{color:var(--ink)}
+.h-tab.active::after{transform:scaleX(1)}
+.h-logo{text-align:center}
+.logo-w{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:400;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink);display:block;line-height:1}
+.logo-s{font-size:0.42rem;letter-spacing:0.45em;text-transform:uppercase;color:var(--red);display:block;margin-top:3px}
+.h-right{display:flex;justify-content:flex-end;align-items:center;gap:1rem}
+.saved-btn{
+  font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);
+  color:var(--ink3);cursor:pointer;padding:0.4rem 0.8rem;
+  font-family:'Tenor Sans',sans-serif;transition:all 0.2s;
+  display:flex;align-items:center;gap:0.4rem;
+}
+.saved-btn:hover{border-color:var(--ink);color:var(--ink)}
+.saved-count{
+  background:var(--red);color:white;
+  border-radius:50%;width:16px;height:16px;
+  font-size:0.45rem;display:flex;align-items:center;justify-content:center;
+  font-family:'Tenor Sans',sans-serif;
 }
 
-function filterInspo(){inspoSearchQ=document.getElementById('inspoSearch').value.toLowerCase();renderInspoGrid()}
+/* ── TAB PANELS ─────────────────────────── */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
 
-function renderInspoGrid(){
-  const grid=document.getElementById('inspoGrid');
-  if(!grid)return;
-  let cards=INSPO_CARDS;
-  if(inspoActiveTag&&inspoActiveTag!=='todos')cards=cards.filter(c=>c.tags.includes(inspoActiveTag)||c.occasion===inspoActiveTag);
-  if(inspoSearchQ)cards=cards.filter(c=>c.title.toLowerCase().includes(inspoSearchQ)||c.tags.some(t=>t.includes(inspoSearchQ)));
-  grid.innerHTML='';
-  cards.forEach(card=>{
-    const colors=card.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
-    const colorDots=colors.map(c=>`<div class="inspo-card-color" style="background:${c.hex}" title="${c.name}"></div>`).join('');
-    const tags=card.tags.map(t=>`<span class="inspo-tag">${t}</span>`).join('');
-    const div=document.createElement('div');
-    div.className='inspo-card';
-    div.innerHTML=`
-      <img class="inspo-img" src="${card.photo}" alt="${card.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="inspo-img-placeholder" style="display:none"><span style="font-size:2rem;opacity:0.3">◈</span></div>
-      <div class="inspo-card-body">
-        <div class="inspo-card-colors">${colorDots}</div>
-        <span class="inspo-card-title">${card.title}</span>
-        <div class="inspo-card-tags">${tags}</div>
-      </div>`;
-    div.onclick=()=>{
-      // Find combo with these colors and open modal
-      if(colors.length>=2){
-        selectedColor=colors[0];
-        buildComboModal(colors,null,null);
-        document.getElementById('comboModalOverlay').classList.add('open');
-      }
-    };
-    grid.appendChild(div);
-  });
+/* ── ARCHIVE ─────────────────────────────── */
+.archive-hero{
+  padding:3rem 2rem 2rem;
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:2rem;
+  border-bottom:1px solid var(--line2);
+}
+.a-eyebrow{font-size:0.48rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--red);margin-bottom:0.8rem}
+.a-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4.5vw,3.5rem);font-weight:400;line-height:1.05;color:var(--ink)}
+.a-title em{font-style:italic;color:var(--red)}
+.a-desc{font-size:0.72rem;letter-spacing:0.05em;color:var(--ink3);line-height:1.8;max-width:420px;margin-top:0.8rem}
+.a-stat{text-align:right}
+.stat-n{font-family:'Playfair Display',serif;font-size:3rem;font-weight:400;color:var(--red);line-height:1;display:block}
+.stat-l{font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink3);display:block;margin-top:4px}
+
+.filter-bar{
+  padding:0.9rem 2rem;display:flex;align-items:center;gap:1rem;
+  border-bottom:1px solid var(--line2);flex-wrap:wrap;
+  position:sticky;top:60px;z-index:100;background:var(--cream);
+}
+.f-search{position:relative;flex:1;max-width:260px}
+.f-search input{
+  width:100%;font-family:'Tenor Sans',sans-serif;font-size:0.68rem;
+  letter-spacing:0.08em;background:var(--cream2);border:1px solid var(--line);
+  color:var(--ink);padding:0.55rem 0.55rem 0.55rem 1.8rem;outline:none;transition:border-color 0.2s;
+}
+.f-search input:focus{border-color:var(--ink)}
+.f-search input::placeholder{color:var(--ink3)}
+.f-icon{position:absolute;left:0.6rem;top:50%;transform:translateY(-50%);font-size:0.6rem;color:var(--ink3);pointer-events:none}
+.f-families{display:flex;gap:0.4rem;flex-wrap:wrap;flex:1}
+.fam-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.35rem 0.8rem;border:1px solid var(--line);background:transparent;
+  color:var(--ink3);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:0.4rem;
+}
+.fam-btn .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.fam-btn:hover{border-color:var(--ink);color:var(--ink)}
+.fam-btn.active{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+.f-clear{font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;background:none;border:none;color:var(--ink3);cursor:pointer;transition:color 0.2s}
+.f-clear:hover{color:var(--red)}
+
+/* GRID */
+.colour-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:0.5px;background:var(--line2);
+}
+.c-cell{
+  background:var(--cream);cursor:pointer;position:relative;
+  overflow:hidden;aspect-ratio:1;transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.c-cell:hover{transform:scale(1.05);z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.c-cell:active{transform:scale(0.97)}
+.c-swatch{position:absolute;inset:0}
+.c-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(20,17,14,0.8) 0%,transparent 55%);
+  opacity:0;transition:opacity 0.25s;
+}
+.c-cell:hover .c-overlay,.c-cell.selected .c-overlay{opacity:1}
+.c-info{
+  position:absolute;bottom:0;left:0;right:0;padding:0.6rem;
+  transform:translateY(4px);opacity:0;transition:all 0.25s;
+}
+.c-cell:hover .c-info,.c-cell.selected .c-info{opacity:1;transform:translateY(0)}
+.c-name{font-size:0.58rem;letter-spacing:0.06em;color:#f7f4ef;line-height:1.3;display:block}
+.c-hex{font-size:0.48rem;letter-spacing:0.1em;color:rgba(247,244,239,0.65);display:block;margin-top:1px;font-family:monospace}
+.c-cell.selected::after{content:'';position:absolute;inset:0;border:2.5px solid var(--red);z-index:3;pointer-events:none}
+
+/* BOTTOM PANEL */
+.sel-panel{
+  position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:var(--cream);border-top:1px solid var(--line);
+  transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.sel-panel.visible{transform:translateY(0)}
+.sel-inner{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:68px 1fr auto;
+  align-items:center;gap:1.5rem;padding:1rem 2rem;position:relative;
+}
+.sel-swatch{width:68px;height:68px;flex-shrink:0;border:1px solid var(--line)}
+.sel-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:var(--ink);line-height:1;margin-bottom:0.3rem}
+.sel-meta{display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.4rem}
+.sel-chip{font-size:0.48rem;letter-spacing:0.12em;font-family:monospace;color:var(--red);background:var(--cream2);border:1px solid var(--line);padding:0.22rem 0.5rem}
+.sel-combos{font-size:0.48rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3);display:block;margin-top:0.3rem}
+.sel-actions{display:flex;gap:0.6rem;flex-shrink:0}
+.sel-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;
+  border:none;padding:0.85rem 1.5rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.sel-btn-primary{background:var(--ink);color:var(--cream)}
+.sel-btn-primary:hover{background:var(--red)}
+.sel-btn-secondary{background:transparent;color:var(--ink3);border:1px solid var(--line)}
+.sel-btn-secondary:hover{border-color:var(--ink);color:var(--ink)}
+.sel-close{position:absolute;top:0.7rem;right:1rem;background:none;border:none;color:var(--ink3);font-size:1rem;cursor:pointer;transition:color 0.2s}
+.sel-close:hover{color:var(--red)}
+
+/* ── COMBO MODAL (full screen) ─────────── */
+.combo-modal-overlay{
+  display:none;position:fixed;inset:0;z-index:600;
+  background:rgba(26,23,20,0.6);backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:2rem;
+}
+.combo-modal-overlay.open{display:flex}
+.combo-modal{
+  background:var(--cream);
+  width:100%;max-width:900px;max-height:90vh;overflow-y:auto;
+  position:relative;
+  animation:modalPop 0.4s cubic-bezier(0.34,1.2,0.64,1) both;
+}
+@keyframes modalPop{from{opacity:0;transform:scale(0.93) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.cm-close{
+  position:absolute;top:1.2rem;right:1.2rem;z-index:10;
+  background:var(--cream2);border:1px solid var(--line);
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:var(--ink3);cursor:pointer;transition:all 0.2s;
+}
+.cm-close:hover{border-color:var(--ink);color:var(--ink)}
+
+/* Swatches strip */
+.cm-swatches{display:flex;height:260px}
+.cm-swatch-item{flex:1;position:relative;cursor:pointer;transition:flex 0.4s cubic-bezier(0.16,1,0.3,1)}
+.cm-swatch-item:hover{flex:2}
+.cm-swatch-bg{position:absolute;inset:0}
+.cm-swatch-label{
+  position:absolute;bottom:0;left:0;right:0;padding:1rem;
+  background:linear-gradient(to top,rgba(20,17,14,0.75) 0%,transparent 70%);
+  opacity:0;transition:opacity 0.25s;
+}
+.cm-swatch-item:hover .cm-swatch-label{opacity:1}
+.cm-swatch-name{font-family:'Playfair Display',serif;font-size:0.9rem;font-style:italic;color:#f7f4ef;display:block}
+.cm-swatch-hex{font-size:0.5rem;letter-spacing:0.1em;color:rgba(247,244,239,0.65);font-family:monospace}
+
+/* Outfit silhouette */
+.cm-body{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:340px}
+.cm-outfit{
+  padding:2.5rem;border-right:1px solid var(--line2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;
+}
+.outfit-eyebrow{font-size:0.45rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--ink3);align-self:flex-start}
+.outfit-figure{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  width:100%;max-width:220px;
+}
+.outfit-piece{
+  border-radius:2px;
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.42rem;letter-spacing:0.12em;text-transform:uppercase;
+  transition:transform 0.2s;
+  cursor:default;
+}
+.outfit-piece:hover{transform:scale(1.02)}
+.outfit-piece-label{
+  position:absolute;right:calc(100% + 8px);
+  font-size:0.4rem;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink3);white-space:nowrap;
 }
 
-function buildDailyCombo(){
-  const el=document.getElementById('dailyCombo');
-  if(!el)return;
-  // Pick combo based on day of year
-  const dayOfYear=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
-  const allCombos=Object.entries(COMBOS);
-  const {0:cn,1:indices}=allCombos[dayOfYear%allCombos.length];
-  const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
-  if(!colors.length){el.style.display='none';return}
-  const swatches=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
-  el.innerHTML=`
-    <div class="daily-combo-swatches">${swatches}</div>
-    <div class="daily-combo-info">
-      <span class="daily-eyebrow">Combinación del día · #${cn}</span>
-      <div class="daily-title">${colors.map(c=>c.name).join(' · ')}</div>
-      <div class="daily-sub">${colors.length} colores · Paleta Sanzo Wada</div>
-      <button class="daily-btn" onclick="openDailyCombo(${cn})">Explorar combinación →</button>
-    </div>`;
+/* Combo info panel */
+.cm-info{padding:2.5rem;display:flex;flex-direction:column;gap:1.5rem}
+.cm-num{font-size:0.45rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--red)}
+.cm-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;line-height:1.1;color:var(--ink)}
+.cm-colors-list{display:flex;flex-direction:column;gap:0.6rem}
+.cm-color-row{display:flex;align-items:center;gap:0.8rem}
+.cm-color-dot{width:28px;height:28px;flex-shrink:0;border:1px solid var(--line)}
+.cm-color-info{}
+.cm-color-n{font-size:0.78rem;color:var(--ink);line-height:1.2}
+.cm-color-h{font-size:0.5rem;letter-spacing:0.1em;font-family:monospace;color:var(--ink3)}
+.cm-actions{display:flex;gap:0.6rem;margin-top:auto;padding-top:1rem;border-top:1px solid var(--line2)}
+.cm-save-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.85rem 1.5rem;cursor:pointer;
+  transition:background 0.2s;display:flex;align-items:center;gap:0.5rem;
+}
+.cm-save-btn:hover{background:var(--red)}
+.cm-save-btn.saved{background:var(--red)}
+.cm-atelier-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;
+  background:transparent;color:var(--ink3);border:1px solid var(--line);padding:0.85rem 1.5rem;cursor:pointer;
+  transition:all 0.2s;
+}
+.cm-atelier-btn:hover{border-color:var(--ink);color:var(--ink)}
+
+/* ── ATELIER ─────────────────────────────── */
+.atelier-wrap{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem}
+.atelier-step{}
+.atelier-header{margin-bottom:2.5rem}
+.atelier-eyebrow{font-size:0.48rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--red);margin-bottom:0.8rem}
+.atelier-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.05;color:var(--ink)}
+.atelier-title em{font-style:italic}
+.atelier-desc{font-size:0.72rem;letter-spacing:0.05em;color:var(--ink3);line-height:1.8;max-width:520px;margin-top:0.8rem}
+
+/* Step 1: base garment picker */
+.base-garments-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:0.5px;background:var(--line2);margin-top:0.5rem;
+}
+.base-garment-card{
+  background:var(--cream);padding:2rem 1.5rem;
+  cursor:pointer;text-align:center;
+  transition:background 0.15s,transform 0.2s;
+  display:flex;flex-direction:column;align-items:center;gap:0.7rem;
+}
+.base-garment-card:hover{background:var(--cream2);transform:scale(1.03);z-index:2}
+.base-garment-card:active{transform:scale(0.97)}
+.bg-icon{font-size:2.2rem;line-height:1}
+.bg-label{font-family:'Playfair Display',serif;font-size:0.85rem;color:var(--ink);font-style:italic}
+.bg-sub{font-size:0.45rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink3)}
+
+/* Step 2 topbar */
+.step2-topbar{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;margin-bottom:2rem;padding-bottom:1.5rem;
+  border-bottom:1px solid var(--line2);
+}
+.atelier-back-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--ink3);
+  padding:0.5rem 1rem;cursor:pointer;transition:all 0.2s;justify-self:start;
+}
+.atelier-back-btn:hover{border-color:var(--ink);color:var(--ink)}
+.step2-title{
+  font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;
+  color:var(--ink);text-align:center;
 }
 
-function openDailyCombo(cn){
-  const colors=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);
-  if(!colors.length)return;
-  selectedColor=colors[0];
-  buildComboModal(colors,parseInt(cn),null);
-  document.getElementById('comboModalOverlay').classList.add('open');
+/* Builder layout */
+.atelier-builder{display:grid;grid-template-columns:1fr 200px 280px;gap:2rem;align-items:start}
+
+/* LEFT: slots */
+.atelier-left{}
+.base-slot-display{
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:0.5px;
+}
+.base-slot-inner{
+  display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;
+}
+.base-slot-badge{
+  font-size:0.4rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--red);color:white;padding:2px 6px;
+  margin-left:0.5rem;vertical-align:middle;
+}
+.other-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+
+/* Garment slots (used in both old and new) */
+.garment-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+.garment-slot{
+  background:var(--cream);display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;gap:0;transition:background 0.15s;
+  position:relative;
+}
+.garment-slot:hover{background:var(--cream2)}
+.garment-slot.has-color{background:var(--cream)}
+.garment-slot.is-base{border-left:3px solid var(--red)}
+.garment-icon{
+  width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;border-right:1px solid var(--line2);flex-shrink:0;cursor:pointer;
+}
+.garment-label-wrap{padding:0.8rem 1rem;border-right:1px solid var(--line2);cursor:pointer}
+.garment-label{font-size:0.65rem;letter-spacing:0.1em;color:var(--ink);display:block}
+.garment-sublabel{font-size:0.5rem;letter-spacing:0.08em;color:var(--ink3);display:block;margin-top:2px}
+.garment-color-preview{
+  width:56px;height:56px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;
+}
+.garment-swatch{width:100%;height:100%;position:absolute;inset:0}
+.garment-empty{font-size:0.5rem;letter-spacing:0.1em;color:var(--ink3);text-align:center;padding:0.5rem;position:relative;z-index:1}
+.garment-slot.has-color .garment-empty{display:none}
+
+/* Suggest button per garment */
+.garment-suggest-btn{
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.4rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:none;border:none;border-left:1px solid var(--line2);color:var(--red);cursor:pointer;
+  padding:0 0.7rem;height:56px;display:flex;align-items:center;gap:0.3rem;
+  transition:background 0.15s;flex-shrink:0;white-space:nowrap;opacity:0.7;
+}
+.garment-suggest-btn:hover{background:var(--cream2);opacity:1}
+.garment-suggest-btn.hidden{visibility:hidden;pointer-events:none}
+
+/* CENTER: silhouette */
+.atelier-center{display:flex;flex-direction:column;align-items:center;gap:1rem;position:sticky;top:80px}
+.atelier-center-label{font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink3)}
+.atelier-silhouette{
+  width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:1.5rem 1rem;background:var(--cream2);border:1px solid var(--line);
+  min-height:280px;justify-content:center;
+}
+.sil-piece{
+  border-radius:2px;display:flex;align-items:center;justify-content:center;
+  font-size:0.38rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(26,23,20,0.45);transition:background 0.35s,width 0.3s;cursor:pointer;
+  position:relative;border:1.5px solid transparent;
+}
+.sil-piece.empty{background:var(--cream3)!important;color:var(--ink3)}
+.sil-piece.is-base{border-color:var(--red)!important;}
+.sil-piece:hover:not(.empty){border-color:var(--ink)}
+.sil-piece-label{
+  position:absolute;left:calc(100% + 6px);
+  font-size:0.38rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ink3);white-space:nowrap;
 }
 
-// ── SEASON DATA ───────────────────────────────────────────────────────────────
-const SEASONS={
-  fw25:{
-    label:'Fall / Winter 2025',
-    intro:'Las pasarelas de FW25 apuestan al "quiet luxury" con tonos tierra profundos, bordó y siena. Los colores Wada que mejor capturan esta temporada:',
-    trends:[
-      {name:'Mocha Mousse',pantone:'17-1230',wadaIdx:50,badge:'Pantone 2025'},
-      {name:'Bordeaux',pantone:'19-1629',wadaIdx:29,badge:'Tendencia'},
-      {name:'Forest Floor',pantone:'18-0430',wadaIdx:79,badge:'Key Color'},
-      {name:'Inkwell',pantone:'19-4024',wadaIdx:128,badge:'Clásico FW'},
-      {name:'Dusty Olive',pantone:'17-0535',wadaIdx:76,badge:'Tendencia'},
-      {name:'Warm Taupe',pantone:'16-1318',wadaIdx:54,badge:'Básico'},
-    ],
-    houses:[
-      {name:'Bottega Veneta',note:'Intarsias y cueros en ocre, siena y verde musgo',colorIdxs:[51,79,54]},
-      {name:'Hermès',note:'Cuero natural y silla de montar, camel profundo',colorIdxs:[14,50,82]},
-      {name:'The Row',note:'Monocromo en nude, taupe y blanco hueso',colorIdxs:[152,54,4]},
-      {name:'Valentino',note:'Negro absoluto y bordó con acento florido',colorIdxs:[157,29,11]},
-    ]
-  },
-  ss25:{
-    label:'Spring / Summer 2025',
-    intro:'SS25 trae una paleta vibrante de azules cobalto, verdes frescos y rosas fuertes. El optimismo vuelve a la pasarela con colores Wada saturados:',
-    trends:[
-      {name:'Lapis Blue',pantone:'19-4241',wadaIdx:125,badge:'Key Color SS25'},
-      {name:'Peach Fuzz',pantone:'13-1023',wadaIdx:43,badge:'Pantone 2024'},
-      {name:'Fresh Mint',pantone:'14-0232',wadaIdx:87,badge:'Tendencia'},
-      {name:'Viva Magenta',pantone:'18-1750',wadaIdx:8,badge:'Bestseller'},
-      {name:'Electric Yellow',pantone:'13-0858',wadaIdx:55,badge:'Bold Pick'},
-      {name:'Aqua Sky',pantone:'14-4816',wadaIdx:110,badge:'Tendencia'},
-    ],
-    houses:[
-      {name:'Jacquemus',note:'Rosa intenso y blanco, siluetas ultra minimalistas',colorIdxs:[6,152,11]},
-      {name:'Prada',note:'Azul industrial y amarillo, combinación Bauhaus',colorIdxs:[125,55,157]},
-      {name:'Loewe',note:'Naturales y verdes, textura y artesanía',colorIdxs:[89,54,76]},
-      {name:'Chloé',note:'Arena, beige dorado y turquesa suave',colorIdxs:[54,51,116]},
-    ]
-  },
-  fw24:{
-    label:'Fall / Winter 2024',
-    intro:'FW24 exploró el rojo como protagonista absoluto y el marrón chocolate como base. Una temporada de contraste y drama:',
-    trends:[
-      {name:'Chocolate Brown',pantone:'19-1118',wadaIdx:86,badge:'Dominante FW24'},
-      {name:'Fiery Red',pantone:'18-1660',wadaIdx:16,badge:'Key Color'},
-      {name:'Midnight Navy',pantone:'19-4024',wadaIdx:130,badge:'Clásico'},
-      {name:'Burnt Copper',pantone:'17-1340',wadaIdx:67,badge:'Tendencia'},
-      {name:'Forest Green',pantone:'18-0430',wadaIdx:104,badge:'Emergente'},
-      {name:'Cream',pantone:'11-0601',wadaIdx:39,badge:'Básico'},
-    ],
-    houses:[
-      {name:'Gucci',note:'Marrón chocolate y camel con acento rojo',colorIdxs:[86,14,17]},
-      {name:'Saint Laurent',note:'Negro total y marfil, elegancia extrema',colorIdxs:[157,39,29]},
-      {name:'Balenciaga',note:'Cargos y outerwear en militar y negro',colorIdxs:[107,108,157]},
-      {name:'Max Mara',note:'Camel icónico con detalles blancos',colorIdxs:[54,50,152]},
-    ]
-  }
-};
+/* Drag handle on sil-pieces */
+.sil-piece .drag-handle{
+  position:absolute;right:4px;top:50%;transform:translateY(-50%);
+  font-size:0.6rem;color:rgba(26,23,20,0.25);cursor:grab;
+}
+.sil-piece.dragging{opacity:0.5;border-style:dashed}
+.sil-piece.drag-over{border-color:var(--red);border-style:solid}
 
-let activeSeason='fw25';
-function switchSeason(s,btn){
-  activeSeason=s;
-  document.querySelectorAll('.season-tab-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  renderSeasonContent();
+/* RIGHT: suggestions + actions */
+.atelier-right{display:flex;flex-direction:column;gap:1rem}
+.atelier-suggestions-box{
+  background:var(--cream2);border:1px solid var(--line);
+  min-height:160px;
+}
+.suggestions-placeholder{
+  padding:2rem 1.5rem;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:0.8rem;
+}
+.suggestions-placeholder-icon{font-size:1.5rem;color:var(--ink3);opacity:0.4}
+.suggestions-placeholder span{font-size:0.62rem;color:var(--ink3);line-height:1.7;letter-spacing:0.03em}
+.suggestions-placeholder strong{color:var(--red)}
+.suggest-panel-header{
+  padding:0.7rem 1rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--cream);
+}
+.suggest-panel-title{font-size:0.45rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red)}
+.suggest-panel-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.85rem}
+.suggest-panel-close:hover{color:var(--red)}
+.suggest-panel-body{padding:0.8rem}
+.suggest-base-color{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.6rem 0.8rem;background:var(--cream);border:1px solid var(--line);
+  margin-bottom:0.8rem;
+}
+.suggest-base-dot{width:24px;height:24px;flex-shrink:0;border:1px solid var(--line)}
+.suggest-base-info{}
+.suggest-base-name{font-size:0.6rem;color:var(--ink);display:block}
+.suggest-base-sub{font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.suggest-section-label{font-size:0.42rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.5rem;margin-top:0.7rem}
+.suggest-chips{display:flex;flex-direction:column;gap:3px}
+.suggest-chip{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--cream);border:1px solid var(--line);
+  padding:0.3rem 0.5rem;cursor:pointer;
+  transition:border-color 0.15s;font-size:0.52rem;color:var(--ink2);
+}
+.suggest-chip:hover{border-color:var(--red)}
+.suggest-chip-dot{width:20px;height:20px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08)}
+.suggest-chip-name{flex:1;font-size:0.52rem}
+.suggest-wada-badge{
+  font-size:0.35rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--red);color:white;padding:1px 4px;flex-shrink:0;
 }
 
-function renderSeasonContent(){
-  const el=document.getElementById('seasonContent');if(!el)return;
-  const s=SEASONS[activeSeason];
-  const trendCards=s.trends.map(t=>{
-    const wc=colorByIndex[t.wadaIdx];
-    if(!wc)return'';
-    return`<div class="season-trend-card">
-      <div class="season-trend-swatch" style="background:${wc.hex}">
-        <span class="season-trend-badge">${t.badge}</span>
+/* Actions */
+.atelier-actions{display:flex;flex-direction:column;gap:0.5rem}
+.look-name-input{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;
+  background:var(--cream);border:1px solid var(--line);
+  color:var(--ink);padding:0.6rem 0.8rem;outline:none;width:100%;
+  transition:border-color 0.2s;
+}
+.look-name-input:focus{border-color:var(--ink)}
+.look-name-input::placeholder{color:var(--ink3)}
+.atelier-action-row{display:flex;gap:0.4rem}
+
+/* GARMENT SLOTS */
+.garment-slots{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+.garment-slot{
+  background:var(--cream);display:grid;grid-template-columns:56px 1fr auto auto;
+  align-items:center;gap:0;transition:background 0.15s;
+  position:relative;
+}
+.garment-slot:hover{background:var(--cream2)}
+.garment-slot.has-color{background:var(--cream)}
+.garment-icon{
+  width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;border-right:1px solid var(--line2);flex-shrink:0;cursor:pointer;
+}
+.garment-label-wrap{padding:0.8rem 1rem;border-right:1px solid var(--line2);cursor:pointer}
+.garment-label{font-size:0.65rem;letter-spacing:0.1em;color:var(--ink);display:block}
+.garment-sublabel{font-size:0.5rem;letter-spacing:0.08em;color:var(--ink3);display:block;margin-top:2px}
+.garment-color-preview{
+  width:56px;height:56px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;cursor:pointer;
+}
+.garment-swatch{width:100%;height:100%;position:absolute;inset:0}
+.garment-empty{font-size:0.5rem;letter-spacing:0.1em;color:var(--ink3);text-align:center;padding:0.5rem;position:relative;z-index:1}
+.garment-slot.has-color .garment-empty{display:none}
+
+/* Suggest button per garment */
+.garment-suggest-btn{
+  font-family:'Tenor Sans',sans-serif;
+  font-size:0.4rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:none;border:none;border-left:1px solid var(--line2);color:var(--red);cursor:pointer;
+  padding:0 0.7rem;height:56px;display:flex;align-items:center;gap:0.3rem;
+  transition:background 0.15s;flex-shrink:0;white-space:nowrap;opacity:0.7;
+}
+.garment-suggest-btn:hover{background:var(--cream2);opacity:1}
+.garment-suggest-btn.hidden{visibility:hidden;pointer-events:none}
+
+/* Suggestion panel below a slot */
+.suggest-panel{
+  background:var(--cream2);border-bottom:1px solid var(--line);border-left:1px solid var(--line);border-right:1px solid var(--line);
+  animation:slideIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
+}
+.suggest-header{
+  padding:0.7rem 1rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.suggest-title{font-size:0.48rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red)}
+.suggest-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.85rem;transition:color 0.2s;padding:0.2rem}
+.suggest-close:hover{color:var(--red)}
+.suggest-body{padding:0.8rem 1rem 1rem}
+.suggest-intro{font-size:0.62rem;color:var(--ink3);letter-spacing:0.04em;line-height:1.6;margin-bottom:0.8rem;font-style:italic}
+.suggest-garment-group{margin-bottom:0.9rem}
+.suggest-garment-label{font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.4rem}
+.suggest-colors{display:flex;gap:4px;flex-wrap:wrap}
+.suggest-chip{
+  display:flex;align-items:center;gap:0.35rem;
+  background:var(--cream);border:1px solid var(--line);
+  padding:0.25rem 0.5rem 0.25rem 0.25rem;
+  cursor:pointer;transition:border-color 0.15s,transform 0.15s;
+  font-size:0.48rem;color:var(--ink2);letter-spacing:0.04em;
+}
+.suggest-chip:hover{border-color:var(--red);transform:scale(1.04)}
+.suggest-dot{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(0,0,0,0.08)}
+.suggest-wada{
+  font-size:0.35rem;letter-spacing:0.08em;text-transform:uppercase;
+  background:var(--red);color:white;padding:1px 3px;margin-left:1px;line-height:1.4;
+}
+
+/* Combo thumbnails in modal */
+.combo-thumb{
+  position:relative;
+  height:36px;width:72px;
+  cursor:pointer;overflow:hidden;flex-shrink:0;
+  border:1.5px solid var(--line);
+  transition:transform 0.18s,border-color 0.18s,box-shadow 0.18s;
+}
+.combo-thumb:hover{transform:scale(1.08);border-color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.combo-thumb-active{border-color:var(--red)!important;border-width:2px!important}
+.combo-thumb-num{
+  position:absolute;bottom:0;left:0;right:0;
+  font-size:0.38rem;letter-spacing:0.08em;
+  background:rgba(26,23,20,0.6);color:#f7f4ef;
+  text-align:center;padding:1px 0;
+  opacity:0;transition:opacity 0.2s;
+}
+.combo-thumb:hover .combo-thumb-num{opacity:1}
+
+/* LOOK PREVIEW */
+.look-preview{position:sticky;top:80px}
+.look-preview-title{font-size:0.48rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.2rem;display:block}
+.look-card{
+  background:var(--cream2);border:1px solid var(--line);
+  padding:2rem;display:flex;flex-direction:column;align-items:center;gap:1rem;
+}
+.look-figure{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  width:100%;max-width:180px;
+}
+.lf-piece{
+  border-radius:2px;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.38rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:rgba(247,244,239,0.7);
+  transition:background 0.3s;position:relative;
+}
+.lf-piece.empty{background:var(--cream3)!important;color:var(--ink3)}
+
+.harmony-bar{width:100%;padding:1rem;background:var(--cream);border:1px solid var(--line);text-align:center}
+.harmony-label{font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.3rem}
+.harmony-score{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
+.harmony-score.good{color:#2d7a2d}
+.harmony-score.ok{color:#b5900a}
+.harmony-score.bold{color:var(--red)}
+
+.look-action-row{display:flex;gap:0.4rem;width:100%}
+.look-save-btn{
+  flex:1;font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.8rem;cursor:pointer;transition:background 0.2s;
+}
+.look-save-btn:hover{background:var(--red)}
+.look-share-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:transparent;color:var(--ink);border:1px solid var(--ink);padding:0.8rem 0.9rem;cursor:pointer;transition:all 0.2s;
+}
+.look-share-btn:hover{background:var(--ink);color:var(--cream)}
+.look-clear-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:transparent;color:var(--ink3);border:1px solid var(--line);padding:0.8rem;cursor:pointer;transition:all 0.2s;width:100%;
+}
+.look-clear-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* COLOR PICKER POPOVER */
+.color-popover{
+  display:none;position:fixed;z-index:800;
+  background:var(--cream);border:1px solid var(--line);
+  width:min(340px,92vw);max-height:420px;overflow-y:auto;
+  box-shadow:0 12px 48px rgba(0,0,0,0.18);
+}
+.color-popover.open{display:block}
+.cp-header{
+  padding:0.8rem 1rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--cream);z-index:1;
+}
+.cp-title{font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink)}
+.cp-close{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:0.9rem}
+.cp-search input{
+  width:100%;font-family:'Tenor Sans',sans-serif;font-size:0.65rem;
+  background:var(--cream2);border:none;border-bottom:1px solid var(--line2);
+  color:var(--ink);padding:0.6rem 1rem;outline:none;
+}
+.cp-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:0.8rem}
+.cp-cell{
+  aspect-ratio:1;cursor:pointer;border:1px solid transparent;transition:transform 0.15s;
+}
+.cp-cell:hover{transform:scale(1.15);z-index:1;border-color:var(--ink)}
+.cp-cell.selected{border:2px solid var(--red)}
+.cp-none{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream3);font-size:0.6rem;color:var(--ink3);cursor:pointer;
+}
+.cp-none:hover{background:var(--cream4)}
+
+/* ── SAVED ───────────────────────────────── */
+.saved-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(26,23,20,0.5);backdrop-filter:blur(6px)}
+.saved-overlay.open{display:block}
+.saved-drawer{
+  position:fixed;right:0;top:0;bottom:0;z-index:750;
+  width:min(460px,100vw);background:var(--cream);
+  border-left:1px solid var(--line);overflow-y:auto;
+  transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.saved-drawer.open{transform:translateX(0)}
+.sd-header{
+  padding:1.5rem 2rem;border-bottom:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:var(--cream);z-index:10;
+}
+.sd-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
+.sd-close{background:none;border:1px solid var(--line);width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--ink3);cursor:pointer;font-size:0.9rem;transition:all 0.2s}
+.sd-close:hover{border-color:var(--ink);color:var(--ink)}
+.sd-body{padding:1.5rem 2rem}
+.sd-empty{text-align:center;padding:4rem 2rem;font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--ink3)}
+.saved-item{
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:0.8rem;position:relative;
+}
+.saved-item-swatches{display:flex;height:80px}
+.saved-item-swatches div{flex:1}
+.saved-item-info{padding:0.8rem 1rem}
+.saved-item-label{font-family:'Playfair Display',serif;font-size:0.9rem;font-style:italic;color:var(--ink);display:block}
+.saved-item-sub{font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-top:2px;display:block}
+.saved-item-del{
+  position:absolute;top:0.5rem;right:0.5rem;
+  background:none;border:none;color:var(--ink3);cursor:pointer;
+  font-size:0.75rem;transition:color 0.2s;padding:0.2rem;
+}
+.saved-item-del:hover{color:var(--red)}
+
+/* ── COMBINATIONS VIEW ───────────────────── */
+.combos-view{max-width:1000px;margin:0 auto;padding:3rem 2rem}
+.cv-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:var(--ink);margin-bottom:0.4rem}
+.cv-sub{font-size:0.5rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink3);margin-bottom:2rem;display:block}
+.combos-list{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+.combo-row{
+  background:var(--cream);display:grid;grid-template-columns:160px 1fr auto;
+  align-items:stretch;cursor:pointer;transition:background 0.15s;
+  animation:slideIn 0.35s ease both;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.combo-row:hover{background:var(--cream2)}
+.cr-swatches{display:flex}
+.cr-swatches div{flex:1;min-height:72px}
+.cr-info{padding:1rem 1.4rem;border-left:1px solid var(--line2);display:flex;flex-direction:column;justify-content:center}
+.cr-num{font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:0.3rem}
+.cr-names{font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;color:rgba(26,23,20,0.65);line-height:1.4}
+.cr-arrow{display:flex;align-items:center;padding:0 1.2rem;border-left:1px solid var(--line2);color:var(--ink3);font-size:0.8rem;transition:all 0.2s}
+.combo-row:hover .cr-arrow{color:var(--red);transform:translateX(3px)}
+
+/* MISC */
+.empty-msg{text-align:center;padding:4rem;font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;color:var(--ink3)}
+.toast{
+  position:fixed;bottom:120px;left:50%;transform:translateX(-50%) translateY(20px);z-index:900;
+  background:var(--ink);color:var(--cream);
+  font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;
+  padding:0.7rem 1.5rem;opacity:0;transition:all 0.3s;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:700px){
+  header{padding:0 1rem;grid-template-columns:auto 1fr auto}
+  .h-nav .h-tab:nth-child(n+3){display:none}
+  .archive-hero{grid-template-columns:1fr;padding:1.5rem 1rem}
+  .a-stat{display:none}
+  .filter-bar{padding:0.7rem 1rem}
+  .colour-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}
+  .atelier-builder{grid-template-columns:1fr}
+  .atelier-center{position:static}
+  .atelier-right{order:3}
+  .cm-body{grid-template-columns:1fr}
+  .combo-modal{max-height:95vh}
+  .sel-actions{flex-direction:column;gap:0.4rem}
+  .sel-btn{padding:0.7rem 1rem;font-size:0.48rem}
+}
+
+/* ── INSPO ──────────────────────────────── */
+.inspo-wrap,.season-wrap,.closet-wrap{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem}
+.inspo-header{margin-bottom:2rem}
+.inspo-search-bar{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
+.inspo-search-bar input{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:1rem;
+  background:var(--cream2);border:1px solid var(--line);color:var(--ink);
+  padding:0.8rem 1rem;outline:none;width:100%;transition:border-color 0.2s;
+}
+.inspo-search-bar input:focus{border-color:var(--ink)}
+.inspo-search-bar input::placeholder{color:var(--ink3)}
+.inspo-filter-chips{display:flex;gap:0.4rem;flex-wrap:wrap}
+.inspo-chip{
+  font-family:'Tenor Sans',sans-serif;font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.3rem 0.8rem;border:1px solid var(--line);background:var(--cream);
+  color:var(--ink3);cursor:pointer;transition:all 0.2s;
+}
+.inspo-chip:hover,.inspo-chip.active{border-color:var(--ink);color:var(--ink);background:var(--cream2)}
+
+/* Daily combo */
+.daily-combo{
+  background:var(--cream2);border:1px solid var(--line);
+  padding:1.5rem 2rem;margin-bottom:2.5rem;
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;
+}
+.daily-combo-swatches{display:flex;height:80px;width:200px;gap:1px;flex-shrink:0}
+.daily-combo-swatches div{flex:1}
+.daily-combo-info{}
+.daily-eyebrow{font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.4rem}
+.daily-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;color:var(--ink);margin-bottom:0.3rem}
+.daily-sub{font-size:0.6rem;color:var(--ink3);letter-spacing:0.05em}
+.daily-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.6rem 1.2rem;cursor:pointer;
+  transition:background 0.2s;margin-top:0.8rem;display:inline-block;
+}
+.daily-btn:hover{background:var(--red)}
+
+/* Inspo grid */
+.inspo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:1px;background:var(--line2);
+}
+.inspo-card{
+  background:var(--cream);cursor:pointer;position:relative;overflow:hidden;
+  transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+}
+.inspo-card:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+.inspo-img{
+  width:100%;aspect-ratio:3/4;object-fit:cover;display:block;
+  background:var(--cream3);
+}
+.inspo-img-placeholder{
+  width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;
+  background:var(--cream3);
+}
+.inspo-card-body{padding:1rem}
+.inspo-card-colors{display:flex;gap:3px;margin-bottom:0.6rem}
+.inspo-card-color{width:20px;height:20px;flex-shrink:0;border:1px solid rgba(0,0,0,0.06)}
+.inspo-card-title{font-family:'Playfair Display',serif;font-size:0.85rem;font-style:italic;color:var(--ink);display:block;margin-bottom:0.2rem}
+.inspo-card-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.inspo-tag{font-size:0.42rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);background:var(--cream2);padding:2px 6px}
+.inspo-tag.red{background:rgba(181,23,58,0.08);color:var(--red)}
+
+/* ── SEASON ─────────────────────────────── */
+.season-tabs-row{display:flex;gap:0;margin-bottom:2rem;border-bottom:1px solid var(--line2)}
+.season-tab-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:none;border:none;color:var(--ink3);cursor:pointer;padding:0.7rem 1.2rem;
+  position:relative;transition:color 0.2s;
+}
+.season-tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:1px;background:var(--red);transform:scaleX(0);transition:transform 0.3s}
+.season-tab-btn.active{color:var(--ink)}
+.season-tab-btn.active::after{transform:scaleX(1)}
+.season-intro{font-size:0.75rem;color:var(--ink3);line-height:1.8;margin-bottom:2rem;max-width:600px;font-style:italic}
+.season-trends{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--line2);margin-bottom:2.5rem}
+.season-trend-card{background:var(--cream);padding:0}
+.season-trend-swatch{height:120px;position:relative}
+.season-trend-badge{
+  position:absolute;bottom:0.6rem;left:0.6rem;
+  font-size:0.42rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:rgba(247,244,239,0.9);color:var(--ink);padding:2px 8px;
+}
+.season-trend-body{padding:0.8rem}
+.season-trend-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;color:var(--ink);display:block}
+.season-trend-wada{font-size:0.48rem;color:var(--ink3);display:block;margin-top:0.2rem}
+.season-trend-btn{
+  font-size:0.45rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--red);
+  background:none;border:none;cursor:pointer;padding:0.4rem 0;font-family:'Tenor Sans',sans-serif;
+  transition:color 0.2s;
+}
+.season-trend-btn:hover{color:var(--red2)}
+.season-house-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.season-house-card{background:var(--cream2);border:1px solid var(--line);padding:1.2rem}
+.season-house-name{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.6rem;display:block}
+.season-house-colors{display:flex;gap:3px;margin-bottom:0.5rem}
+.season-house-colors div{width:28px;height:28px;flex-shrink:0;border:1px solid rgba(0,0,0,0.06)}
+.season-house-note{font-size:0.58rem;color:var(--ink3);line-height:1.6}
+
+/* ── CLOSET ─────────────────────────────── */
+.closet-body{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.closet-left{}
+.closet-section-label{font-size:0.45rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:0.8rem}
+.closet-add-section{background:var(--cream2);border:1px solid var(--line);padding:1.2rem;margin-bottom:1rem}
+.closet-add-row{display:grid;grid-template-columns:48px 1fr auto;gap:0.6rem;align-items:center;margin-bottom:0.8rem}
+.closet-add-preview{width:48px;height:48px;border:1px solid var(--line);background:var(--cream3);flex-shrink:0;cursor:pointer;transition:transform 0.15s}
+.closet-add-preview:hover{transform:scale(1.05)}
+.closet-input{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:0.85rem;
+  background:var(--cream);border:1px solid var(--line);color:var(--ink);
+  padding:0.55rem 0.7rem;outline:none;transition:border-color 0.2s;
+}
+.closet-input:focus{border-color:var(--ink)}
+.closet-input::placeholder{color:var(--ink3)}
+.closet-add-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.55rem 0.9rem;cursor:pointer;
+  transition:background 0.2s;white-space:nowrap;
+}
+.closet-add-btn:hover{background:var(--red)}
+.closet-confirm-btn{
+  width:100%;font-family:'Tenor Sans',sans-serif;font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--red);color:white;border:none;padding:0.7rem;cursor:pointer;transition:background 0.2s;
+}
+.closet-confirm-btn:hover{background:var(--red2)}
+.closet-items{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+.closet-item{
+  background:var(--cream);display:grid;grid-template-columns:48px 1fr auto;
+  align-items:center;gap:0;animation:slideIn 0.3s ease both;
+}
+.closet-item-swatch{width:48px;height:48px;flex-shrink:0;border-right:1px solid var(--line2)}
+.closet-item-info{padding:0.6rem 0.8rem;border-right:1px solid var(--line2)}
+.closet-item-label{font-size:0.65rem;color:var(--ink);display:block}
+.closet-item-color{font-size:0.5rem;color:var(--ink3);font-family:monospace;display:block;margin-top:1px}
+.closet-item-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem;font-size:0.8rem;transition:color 0.2s;height:48px}
+.closet-item-del:hover{color:var(--red)}
+.closet-right{}
+.closet-combo-row{
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:0.5px;cursor:pointer;
+  display:grid;grid-template-columns:100px 1fr;transition:background 0.15s;
+}
+.closet-combo-row:hover{background:var(--cream3)}
+.closet-combo-swatches{display:flex;height:56px}
+.closet-combo-swatches div{flex:1}
+.closet-combo-info{padding:0.7rem 0.8rem;border-left:1px solid var(--line2)}
+.closet-combo-label{font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--ink);display:block}
+.closet-combo-sub{font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.closet-missing{
+  background:var(--cream2);border:1px solid var(--line);border-left:3px solid var(--red);
+  padding:0.8rem 1rem;margin-bottom:0.5px;
+}
+.closet-missing-label{font-size:0.6rem;color:var(--ink);display:block;margin-bottom:0.3rem}
+.closet-missing-color{display:flex;align-items:center;gap:0.5rem;font-size:0.55rem;color:var(--ink3)}
+.closet-missing-dot{width:16px;height:16px;flex-shrink:0;border:1px solid var(--line)}
+.history-item{
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:0.5px;display:grid;grid-template-columns:80px 1fr auto;
+  cursor:pointer;transition:background 0.15s;
+}
+.history-item:hover{background:var(--cream3)}
+.history-swatches{display:flex;flex-direction:column}
+.history-swatches div{flex:1;min-height:16px}
+.history-info{padding:0.7rem 0.8rem;border-left:1px solid var(--line2)}
+.history-label{font-family:'Playfair Display',serif;font-style:italic;font-size:0.8rem;color:var(--ink);display:block}
+.history-date{font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3)}
+.history-del{background:none;border:none;color:var(--ink3);cursor:pointer;padding:0 0.8rem;font-size:0.75rem;transition:color 0.2s}
+.history-del:hover{color:var(--red)}
+
+/* ── OCCASION MODAL ─────────────────────── */
+.occasion-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,0.6);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:2rem}
+.occasion-overlay.open{display:flex}
+.occasion-modal{background:var(--cream);width:100%;max-width:700px;max-height:85vh;overflow-y:auto;position:relative;animation:modalPop 0.4s cubic-bezier(0.34,1.2,0.64,1) both}
+.occasion-header{padding:2rem 2rem 1rem;border-bottom:1px solid var(--line2)}
+.occasion-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:400;color:var(--ink)}
+.occasion-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.5px;background:var(--line2);margin-bottom:0}
+.occasion-card{
+  background:var(--cream);padding:1.5rem 1rem;text-align:center;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;transition:background 0.15s;
+}
+.occasion-card:hover,.occasion-card.active{background:var(--cream2)}
+.occasion-card.active{border-left:3px solid var(--red)}
+.occasion-icon{font-size:1.8rem}
+.occasion-label{font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:var(--ink)}
+.occasion-sub{font-size:0.42rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3)}
+.occasion-results{padding:1.5rem 2rem}
+.occasion-results-title{font-size:0.48rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:1rem}
+.occasion-combos{display:flex;flex-direction:column;gap:0.5px;background:var(--line2)}
+
+@media(max-width:700px){
+  .daily-combo{grid-template-columns:1fr;gap:1rem}
+  .daily-combo-swatches{width:100%}
+  .closet-body{grid-template-columns:1fr}
+  .inspo-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .h-nav .h-tab:nth-child(n+5){display:none}
+}
+
+
+/* ── INSPO PAGE ─────────────────────────── */
+.inspo-page,.occasion-page{max-width:1300px;margin:0 auto;padding:3rem 2rem 4rem}
+.inspo-page-header{margin-bottom:2rem}
+
+.daily-strip{
+  display:grid;grid-template-columns:220px 1fr;
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:2rem;overflow:hidden;min-height:110px;
+}
+.daily-strip-swatches{display:flex}
+.daily-strip-swatches div{flex:1;min-height:110px}
+.daily-strip-info{
+  padding:1.2rem 1.5rem;border-left:1px solid var(--line2);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.daily-strip-eyebrow{font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.3rem}
+.daily-strip-title{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.2rem}
+.daily-strip-sub{font-size:0.55rem;color:var(--ink3)}
+.daily-strip-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.5rem 1rem;cursor:pointer;
+  transition:background 0.2s;margin-top:0.7rem;display:inline-block;align-self:flex-start;
+}
+.daily-strip-btn:hover{background:var(--red)}
+
+.inspo-controls{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
+.inspo-search-wrap{position:relative}
+.inspo-search-icon{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.7rem;pointer-events:none}
+.inspo-search-wrap input{
+  width:100%;font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;
+  background:var(--cream2);border:1px solid var(--line);color:var(--ink);
+  padding:0.75rem 0.75rem 0.75rem 2.2rem;outline:none;transition:border-color 0.2s;
+}
+.inspo-search-wrap input:focus{border-color:var(--ink)}
+.inspo-search-wrap input::placeholder{color:var(--ink3)}
+.inspo-style-pills{display:flex;gap:0.4rem;flex-wrap:wrap}
+.style-pill{
+  font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.35rem 0.9rem;border:1px solid var(--line);background:var(--cream);
+  color:var(--ink3);cursor:pointer;transition:all 0.2s;
+}
+.style-pill:hover{border-color:var(--ink);color:var(--ink)}
+.style-pill.active{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+
+/* Pinterest grid */
+.pinterest-grid{
+  columns:4 200px;column-gap:1px;
+}
+.pinterest-card{
+  background:var(--cream);cursor:pointer;
+  break-inside:avoid;margin-bottom:1px;
+  position:relative;overflow:hidden;
+  transition:transform 0.25s cubic-bezier(0.16,1,0.3,1);
+  display:block;
+}
+.pinterest-card:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.14)}
+.pinterest-card:active{transform:scale(0.98)}
+.pinterest-img{width:100%;display:block;background:var(--cream3)}
+.pinterest-body{padding:0.8rem}
+.pinterest-palette{display:flex;gap:3px;margin-bottom:0.5rem}
+.pinterest-palette div{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(0,0,0,0.07)}
+.pinterest-title{font-family:'Playfair Display',serif;font-size:0.82rem;font-style:italic;color:var(--ink);display:block;margin-bottom:0.3rem}
+.pinterest-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.pinterest-tag{font-size:0.4rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);background:var(--cream2);padding:2px 5px}
+.pinterest-tag.accent{background:rgba(181,23,58,0.08);color:var(--red)}
+.pinterest-style-label{
+  position:absolute;top:0.6rem;left:0.6rem;
+  font-size:0.38rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:rgba(247,244,239,0.92);color:var(--ink);padding:2px 7px;
+  backdrop-filter:blur(2px);
+}
+
+/* ── OCCASION PAGE ──────────────────────── */
+.occasion-styles-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:1px;background:var(--line2);margin-bottom:2.5rem;
+}
+.occasion-style-card{
+  background:var(--cream);padding:0;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:background 0.15s;
+}
+.occasion-style-card:hover{background:var(--cream2)}
+.occasion-style-card.active{background:var(--cream2)}
+.occasion-style-card.active::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--red);
+}
+.occasion-style-top{height:100px;display:flex;gap:1px}
+.occasion-style-top div{flex:1}
+.occasion-style-bottom{padding:0.9rem 1rem}
+.occasion-style-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;color:var(--ink);display:block;margin-bottom:0.2rem}
+.occasion-style-desc{font-size:0.48rem;letter-spacing:0.06em;color:var(--ink3);line-height:1.5}
+
+.occasion-results-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:1.5rem 0 1rem;border-top:1px solid var(--line2);margin-bottom:1rem;
+}
+.occasion-results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--ink)}
+.occasion-results-count{font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3)}
+.occasion-results-grid{
+  columns:3 240px;column-gap:1px;margin-bottom:3rem;
+}
+.occasion-combo-card{
+  background:var(--cream);cursor:pointer;break-inside:avoid;margin-bottom:1px;
+  transition:background 0.15s;
+}
+.occasion-combo-card:hover{background:var(--cream2)}
+.occasion-combo-swatches{display:flex;height:80px}
+.occasion-combo-swatches div{flex:1}
+.occasion-combo-info{padding:0.8rem}
+.occasion-combo-num{font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.2rem}
+.occasion-combo-names{font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:var(--ink);line-height:1.4}
+.occasion-combo-why{font-size:0.5rem;color:var(--ink3);margin-top:0.3rem;display:block;line-height:1.5}
+
+@media(max-width:700px){
+  .pinterest-grid{columns:2 140px}
+  .occasion-styles-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .occasion-results-grid{columns:1}
+  .daily-strip{grid-template-columns:120px 1fr}
+  .h-nav .h-tab{font-size:0.45rem;padding:0.5rem 0.6rem;letter-spacing:0.1em}
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="h-nav">
+    <button class="h-tab active" onclick="switchTab('archive',this)">Archivo</button>
+    <button class="h-tab" onclick="switchTab('atelier',this)">Atelier</button>
+    <button class="h-tab" onclick="switchTab('inspo',this)">Inspo</button>
+    <button class="h-tab" onclick="switchTab('occasion',this)">Ocasión</button>
+    <button class="h-tab" onclick="switchTab('season',this)">Temporada</button>
+    <button class="h-tab" onclick="switchTab('closet',this)">Mi Closet</button>
+  </div>
+  <div class="h-logo">
+    <span class="logo-w">Wada</span>
+    <span class="logo-s">Colour Intelligence</span>
+  </div>
+  <div class="h-right">
+    <button class="saved-btn" onclick="openSaved()">
+      Guardados <span class="saved-count" id="savedCount">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- ── ARCHIVE TAB ──────────────────────── -->
+<div id="tab-archive" class="tab-panel active">
+  <div class="archive-hero">
+    <div>
+      <div class="a-eyebrow">Sanzo Wada · 1883–1967</div>
+      <h1 class="a-title">Encontrá tu<br><em>colour</em></h1>
+      <p class="a-desc">Tocá el color que te querés poner. Wada te muestra exactamente con qué combinarlo.</p>
+    </div>
+    <div class="a-stat"><span class="stat-n">157</span><span class="stat-l">Colores</span></div>
+  </div>
+
+  <div class="filter-bar">
+    <div class="f-search">
+      <span class="f-icon">◈</span>
+      <input type="text" id="searchInput" placeholder="Buscar color…" oninput="filterGrid()">
+    </div>
+    <div class="f-families" id="famBtns"></div>
+    <button class="f-clear" onclick="clearFilters()">× Todo</button>
+  </div>
+
+  <div class="colour-grid" id="colourGrid"></div>
+</div>
+
+<!-- ── ATELIER TAB ──────────────────────── -->
+<div id="tab-atelier" class="tab-panel">
+  <div class="atelier-wrap">
+    <div id="atelierStep1" class="atelier-step">
+      <div class="atelier-header">
+        <div class="atelier-eyebrow">Atelier · Paso 1</div>
+        <h2 class="atelier-title">¿Con qué <em>empezás</em>?</h2>
+        <p class="atelier-desc">Elegí la prenda protagonista — la pieza alrededor de la cual construís tu outfit.</p>
       </div>
-      <div class="season-trend-body">
-        <span class="season-trend-name">${t.name}</span>
-        <span class="season-trend-wada">${wc.name} · ${wc.hex}</span>
-        <button class="season-trend-btn" onclick="selectColorAndShow(${t.wadaIdx})">Ver combinaciones →</button>
+      <div class="base-garments-grid" id="baseGarments"></div>
+    </div>
+    <div id="atelierStep2" class="atelier-step" style="display:none">
+      <div class="step2-topbar">
+        <button class="atelier-back-btn" onclick="atelierBack()">← Cambiar base</button>
+        <div id="step2Title" class="step2-title"></div>
+        <div></div>
       </div>
-    </div>`;
-  }).join('');
-
-  const houseCards=s.houses.map(h=>{
-    const colors=h.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
-    const dots=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
-    return`<div class="season-house-card">
-      <span class="season-house-name">${h.name}</span>
-      <div class="season-house-colors">${dots}</div>
-      <span class="season-house-note">${h.note}</span>
-    </div>`;
-  }).join('');
-
-  el.innerHTML=`
-    <p class="season-intro">${s.intro}</p>
-    <div class="season-trends">${trendCards}</div>
-    <div style="margin-bottom:1.5rem">
-      <span style="font-size:0.45rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:1rem">Casas de moda destacadas · ${s.label}</span>
-      <div class="season-house-grid">${houseCards}</div>
-    </div>`;
-}
-
-function selectColorAndShow(idx){
-  const c=colorByIndex[idx];if(!c)return;
-  selectedColor=c;
-  switchTab('archive',document.querySelector('.h-tab'));
-  setTimeout(()=>{openComboModal()},100);
-}
-
-// ── CLOSET ────────────────────────────────────────────────────────────────────
-let closetItems=[]; // {id,label,color}
-let closetPickerColor=null;
-
-function buildClosetView(){
-  renderClosetItems();
-  renderClosetCombinations();
-  renderClosetHistory();
-  updateClosetAddPreview();
-}
-
-function updateClosetAddPreview(){
-  const el=document.getElementById('closetAddPreview');if(!el)return;
-  if(closetPickerColor){
-    el.style.background=closetPickerColor.hex;
-    el.title=closetPickerColor.name;
-  } else {
-    el.style.background='';
-    el.innerHTML=`<span style="font-size:0.7rem;color:var(--ink3)">+</span>`;
-  }
-  const btn=document.getElementById('closetConfirmBtn');
-  if(btn)btn.style.display=closetPickerColor?'block':'none';
-}
-
-function openClosetPicker(){
-  activePopoverSlot='closet';
-  document.getElementById('cpTitle').textContent='Elegir color para el closet';
-  document.getElementById('cpSearch').value='';
-  popoverSearch='';
-  renderPopoverGrid();
-  const pop=document.getElementById('colorPopover');
-  pop.classList.add('open');
-  const el=document.getElementById('closetAddPreview');
-  const rect=el?el.getBoundingClientRect():{left:100,bottom:200};
-  const pw=Math.min(340,window.innerWidth*0.92);
-  let left=rect.left;
-  if(left+pw>window.innerWidth)left=window.innerWidth-pw-8;
-  let top=rect.bottom+4;
-  pop.style.left=left+'px';pop.style.top=top+'px';pop.style.width=pw+'px';
-  setTimeout(()=>document.addEventListener('click',outsidePopover),10);
-}
-
-function addToCloset(){
-  if(!closetPickerColor)return;
-  const label=document.getElementById('closetAddName').value.trim()||closetPickerColor.name;
-  closetItems.push({id:Date.now(),label,color:closetPickerColor});
-  closetPickerColor=null;
-  document.getElementById('closetAddName').value='';
-  updateClosetAddPreview();
-  renderClosetItems();
-  renderClosetCombinations();
-  saveToStorage();
-  showToast(`${label} agregado al closet ✦`);
-}
-
-function renderClosetItems(){
-  const el=document.getElementById('closetItems');if(!el)return;
-  el.innerHTML='';
-  if(!closetItems.length){
-    el.innerHTML='<p style="padding:1.5rem;text-align:center;font-style:italic;color:var(--ink3);font-size:0.75rem">Tu closet está vacío. Agregá tus colores reales.</p>';
-    return;
-  }
-  closetItems.forEach(item=>{
-    const row=document.createElement('div');row.className='closet-item';
-    row.innerHTML=`
-      <div class="closet-item-swatch" style="background:${item.color.hex}"></div>
-      <div class="closet-item-info">
-        <span class="closet-item-label">${item.label}</span>
-        <span class="closet-item-color">${item.color.name} · ${item.color.hex}</span>
+      <div class="atelier-builder">
+        <div class="atelier-left">
+          <div id="baseSlotDisplay" class="base-slot-display"></div>
+          <div id="otherSlots" class="other-slots"></div>
+        </div>
+        <div class="atelier-center">
+          <span class="atelier-center-label">Tu look</span>
+          <div id="atelierSilhouette" class="atelier-silhouette"></div>
+          <div class="harmony-bar">
+            <span class="harmony-label">Armonía Wada</span>
+            <div class="harmony-score" id="harmonyScore">—</div>
+          </div>
+        </div>
+        <div class="atelier-right">
+          <div id="atelierSuggestionsBox" class="atelier-suggestions-box">
+            <div class="suggestions-placeholder">
+              <span class="suggestions-placeholder-icon">✦</span>
+              <span>Tocá <strong>Sugerir</strong> en cualquier prenda para ver qué colores Wada combinan perfectamente</span>
+            </div>
+          </div>
+          <div class="atelier-actions">
+            <input type="text" id="lookNameInput" class="look-name-input" placeholder="Nombrar este look…">
+            <div class="atelier-action-row">
+              <button class="look-save-btn" onclick="saveAtelier()">↓ Guardar</button>
+              <button class="look-share-btn" onclick="shareAtelier()">↗ Compartir</button>
+            </div>
+            <button class="look-clear-btn" onclick="clearAtelier()">Limpiar todo</button>
+          </div>
+        </div>
       </div>
-      <button class="closet-item-del" onclick="removeFromCloset(${item.id})">✕</button>`;
-    el.appendChild(row);
-  });
-}
+    </div>
+  </div>
+</div>
 
-function removeFromCloset(id){
-  closetItems=closetItems.filter(i=>i.id!==id);
-  renderClosetItems();renderClosetCombinations();saveToStorage();
-}
 
-function renderClosetCombinations(){
-  const el=document.getElementById('closetCombinations');if(!el)return;
-  if(closetItems.length<2){
-    el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem;line-height:1.7">Con 2 o más colores en tu closet, Wada te muestra qué combinaciones podés hacer hoy.</p>';
-    return;
-  }
-  el.innerHTML='';
-  const myIndices=closetItems.map(i=>i.color.index);
-  // Find Wada combos where ALL colors are in my closet
-  const perfect=[];const partial=[];
-  Object.entries(COMBOS).forEach(([cn,indices])=>{
-    const hasAll=indices.every(i=>myIndices.includes(i));
-    const hasSome=indices.some(i=>myIndices.includes(i))&&!hasAll;
-    if(hasAll)perfect.push({cn,indices});
-    else if(hasSome)partial.push({cn,indices});
-  });
+<!-- ── COMBINATIONS TAB ─────────────────── -->
+<div id="tab-combinations" class="tab-panel">
+  <div class="combos-view">
+    <h2 class="cv-title">Todas las combinaciones</h2>
+    <span class="cv-sub">348 combinaciones · Archivo Sanzo Wada</span>
+    <div class="combos-list" id="combosListEl"></div>
+  </div>
+</div>
 
-  if(perfect.length){
-    const label=document.createElement('span');
-    label.className='closet-section-label';label.textContent='Podés hacer estos looks ahora ✦';
-    el.appendChild(label);
-    perfect.slice(0,4).forEach(({cn,indices})=>{
-      const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
-      const row=document.createElement('div');row.className='closet-combo-row';
-      row.innerHTML=`<div class="closet-combo-swatches">${colors.map(c=>`<div style="background:${c.hex}"></div>`).join('')}</div><div class="closet-combo-info"><span class="closet-combo-label">${colors.map(c=>c.name).join(' · ')}</span><span class="closet-combo-sub">Combinación #${cn} · Tenés todo</span></div>`;
-      row.onclick=()=>{buildComboModal(colors,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
-      el.appendChild(row);
-    });
-  }
+<!-- ── INSPO TAB ────────────────────────── -->
+<div id="tab-inspo" class="tab-panel">
+  <div class="inspo-page">
+    <div class="inspo-page-header">
+      <div class="a-eyebrow">Inspiración · Editorial &amp; Street Style</div>
+      <h2 class="atelier-title">Style <em>Inspo</em></h2>
+      <p class="atelier-desc">Buscá outfits por estilo, estado de ánimo o color. Cada card te muestra la paleta Wada del look.</p>
+    </div>
 
-  if(partial.length){
-    const label=document.createElement('span');
-    label.className='closet-section-label';label.style.marginTop='1.2rem';
-    label.textContent='Te falta un color para completar';
-    el.appendChild(label);
-    partial.slice(0,3).forEach(({cn,indices})=>{
-      const allColors=indices.map(i=>colorByIndex[i]).filter(Boolean);
-      const missing=allColors.filter(c=>!myIndices.includes(c.index));
-      if(!missing.length)return;
-      const m=missing[0];
-      const row=document.createElement('div');row.className='closet-missing';
-      row.innerHTML=`<span class="closet-missing-label">Combo #${cn}: ${allColors.map(c=>c.name).join(' · ')}</span><div class="closet-missing-color"><div class="closet-missing-dot" style="background:${m.hex}"></div>Te falta: ${m.name}</div>`;
-      el.appendChild(row);
-    });
-  }
+    <!-- Daily combo strip -->
+    <div class="daily-strip" id="dailyStrip"></div>
 
-  if(!perfect.length&&!partial.length){
-    el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Ninguna de tus prendas forma combinaciones Wada entre sí todavía. Agregá más colores.</p>';
-  }
-}
+    <!-- Search + filter -->
+    <div class="inspo-controls">
+      <div class="inspo-search-wrap">
+        <span class="inspo-search-icon">◈</span>
+        <input type="text" id="inspoSearchInput" placeholder="Buscar estilo, color, ocasión…" oninput="filterInspo()">
+      </div>
+      <div class="inspo-style-pills" id="inspoStylePills"></div>
+    </div>
 
-function renderClosetHistory(){
-  const el=document.getElementById('closetHistory');if(!el)return;
-  const looks=savedItems.filter(s=>s.type==='look'||s.type==='combo');
-  if(!looks.length){
-    el.innerHTML='<p style="font-style:italic;color:var(--ink3);font-size:0.72rem">Los looks que guardes desde el Atelier o el Archivo aparecerán aquí.</p>';
-    return;
-  }
-  el.innerHTML='';
-  looks.slice().reverse().forEach(item=>{
-    const row=document.createElement('div');row.className='history-item';
-    const sw=item.colors.slice(0,5).map(c=>`<div style="background:${c.hex}"></div>`).join('');
-    const date=new Date(item.id).toLocaleDateString('es-AR',{day:'numeric',month:'short'});
-    row.innerHTML=`<div class="history-swatches">${sw}</div><div class="history-info"><span class="history-label">${item.label}</span><span class="history-date">${item.type==='look'?'Atelier':'Archivo'} · ${date}</span></div><button class="history-del" onclick="deleteHistory(${item.id},event)">✕</button>`;
-    row.onclick=(e)=>{if(!e.target.classList.contains('history-del')){buildComboModal(item.colors,item.comboNum||null,null);document.getElementById('comboModalOverlay').classList.add('open')}};
-    el.appendChild(row);
-  });
-}
+    <!-- Pinterest grid -->
+    <div class="pinterest-grid" id="pinterestGrid"></div>
+  </div>
+</div>
 
-function deleteHistory(id,e){
-  e.stopPropagation();
-  savedItems=savedItems.filter(s=>s.id!==id);
-  updateSavedCount();renderClosetHistory();saveToStorage();
-}
+<!-- ── OCCASION TAB ───────────────────────── -->
+<div id="tab-occasion" class="tab-panel">
+  <div class="occasion-page">
+    <div class="inspo-page-header">
+      <div class="a-eyebrow">Modo Ocasión · Combinaciones por contexto</div>
+      <h2 class="atelier-title">¿Para qué <em>ocasión</em>?</h2>
+      <p class="atelier-desc">Elegí tu estilo o evento y descubrí las combinaciones Wada más apropiadas para ese momento.</p>
+    </div>
+    <div class="occasion-styles-grid" id="occasionStylesGrid"></div>
+    <div id="occasionStyleResults" style="display:none">
+      <div class="occasion-results-header" id="occasionResultsHeader"></div>
+      <div class="occasion-results-grid" id="occasionResultsGrid"></div>
+    </div>
+  </div>
+</div>
 
-// ── OCCASION ─────────────────────────────────────────────────────────────────
-const OCCASIONS=[
-  {id:'formal',icon:'💼',label:'Formal',sub:'Trabajo · Business',keywords:['formal','clásico','monocromático']},
-  {id:'cocktail',icon:'🥂',label:'Cocktail',sub:'Evento · Cena',keywords:['cocktail','elegante','noche']},
-  {id:'boda',icon:'💐',label:'Boda invitada',sub:'Invitada · Celebración',keywords:['boda','romántico','floral']},
-  {id:'casual',icon:'☕',label:'Casual',sub:'Día · Weekend',keywords:['casual','urbano','cómodo']},
-  {id:'viaje',icon:'✈️',label:'Viaje',sub:'Travel · Airport',keywords:['viaje','cómodo','versátil']},
-  {id:'noche',icon:'🌙',label:'Noche / Club',sub:'Salida · Fiesta',keywords:['noche','bold','dramático']},
-  {id:'sport',icon:'🎾',label:'Sport Chic',sub:'Active · Athleisure',keywords:['sport','fresco','versátil']},
-  {id:'playa',icon:'🌊',label:'Playa / Resort',sub:'Verano · Vacaciones',keywords:['verano','fresco','suave']},
-];
+<!-- ── SEASON TAB ────────────────────────── -->
+<div id="tab-season" class="tab-panel">
+  <div class="season-wrap">
+    <div class="inspo-page-header">
+      <div class="a-eyebrow">Pasarela · Wada Intelligence</div>
+      <h2 class="atelier-title">Paleta de <em>Temporada</em></h2>
+      <p class="atelier-desc">Los colores que dominan las pasarelas esta temporada, traducidos a la paleta de Sanzo Wada.</p>
+    </div>
+    <div class="season-tabs-row">
+      <button class="season-tab-btn active" onclick="switchSeason('fw25',this)">FW 2025</button>
+      <button class="season-tab-btn" onclick="switchSeason('ss25',this)">SS 2025</button>
+      <button class="season-tab-btn" onclick="switchSeason('fw24',this)">FW 2024</button>
+    </div>
+    <div id="seasonContent"></div>
+  </div>
+</div>
 
-// Which color families work for each occasion
-const OCCASION_COLOR_FAMILIES={
-  formal:[128,125,126,156,157,54,50,4],
-  cocktail:[29,22,11,23,148,35,157,51],
-  boda:[1,3,43,110,133,152,39,4],
-  casual:[55,62,90,87,98,39,43,50,55],
-  viaje:[54,50,88,155,54,76,89],
-  noche:[157,29,36,148,35,22,130,131],
-  sport:[98,90,92,71,55,62,109,87],
-  playa:[109,110,114,115,87,55,39,43],
-};
+<!-- ── CLOSET TAB ─────────────────────────── -->
+<div id="tab-closet" class="tab-panel">
+  <div class="closet-wrap">
+    <div class="inspo-page-header">
+      <div class="a-eyebrow">Mi Closet · Colores reales</div>
+      <h2 class="atelier-title">Mi <em>Closet</em></h2>
+      <p class="atelier-desc">Guardá los colores de tu ropero real. Wada te dice qué combinaciones podés hacer hoy y qué te falta.</p>
+    </div>
+    <div class="closet-body">
+      <div class="closet-left">
+        <div class="closet-add-section">
+          <span class="closet-section-label">Agregar color al closet</span>
+          <div class="closet-add-row">
+            <div class="closet-add-preview" id="closetAddPreview" onclick="openClosetPicker()"></div>
+            <input type="text" id="closetAddName" class="closet-input" placeholder="Nombre de la prenda…">
+            <button class="closet-add-btn" onclick="openClosetPicker()">Elegir color</button>
+          </div>
+          <button class="closet-confirm-btn" id="closetConfirmBtn" onclick="addToCloset()" style="display:none">+ Agregar al closet</button>
+        </div>
+        <div class="closet-items" id="closetItems"></div>
+      </div>
+      <div class="closet-right">
+        <span class="closet-section-label">Combinaciones posibles con tu closet</span>
+        <div id="closetCombinations"></div>
+        <div class="closet-history">
+          <span class="closet-section-label" style="margin-top:1.5rem;display:block">Historial de looks</span>
+          <div id="closetHistory"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-let activeOccasion=null;
 
-function openOccasion(){
-  const modal=document.getElementById('occasionModal');
-  const grid=document.getElementById('occasionGrid');
-  if(!grid)return;
-  grid.innerHTML='';
-  OCCASIONS.forEach(o=>{
-    const card=document.createElement('div');card.className='occasion-card'+(activeOccasion===o.id?' active':'');
-    card.innerHTML=`<span class="occasion-icon">${o.icon}</span><span class="occasion-label">${o.label}</span><span class="occasion-sub">${o.sub}</span>`;
-    card.onclick=()=>{activeOccasion=o.id;renderOccasionResults(o);document.querySelectorAll('.occasion-card').forEach(c=>c.classList.toggle('active',c===card))};
-    grid.appendChild(card);
-  });
-  document.getElementById('occasionResults').innerHTML='';
-  document.getElementById('occasionOverlay').classList.add('open');
-}
 
-function renderOccasionResults(occasion){
-  const el=document.getElementById('occasionResults');
-  const families=OCCASION_COLOR_FAMILIES[occasion.id]||[];
-  // Find Wada combos where the colors match this occasion's palette
-  const relevantColors=new Set(families);
-  const goodCombos=[];
-  Object.entries(COMBOS).forEach(([cn,indices])=>{
-    const score=indices.filter(i=>relevantColors.has(i)).length;
-    if(score>=1)goodCombos.push({cn,indices,score});
-  });
-  goodCombos.sort((a,b)=>b.score-a.score);
-  const top=goodCombos.slice(0,8);
-  if(!top.length){el.innerHTML='<div style="padding:1.5rem;color:var(--ink3);font-style:italic">Sin combinaciones para esta ocasión.</div>';return}
-  const rows=top.map(({cn,indices})=>{
-    const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
-    const sw=colors.map(c=>`<div style="flex:1;background:${c.hex}"></div>`).join('');
-    return`<div class="combo-row" onclick="openOccasionCombo(${cn})" style="grid-template-columns:120px 1fr auto">
-      <div class="cr-swatches" style="display:flex;height:60px">${sw}</div>
-      <div class="cr-info"><div class="cr-num">Combinación #${cn}</div><div class="cr-names">${colors.map(c=>c.name).join(' · ')}</div></div>
-      <div class="cr-arrow">→</div>
-    </div>`;
-  }).join('');
-  el.innerHTML=`<div class="occasion-results"><span class="occasion-results-title">${occasion.icon} Combinaciones para ${occasion.label}</span><div class="occasion-combos">${rows}</div></div>`;
-}
+<!-- BOTTOM SELECTION PANEL -->
+<div class="sel-panel" id="selPanel">
+  <button class="sel-close" onclick="closePanel()">×</button>
+  <div class="sel-inner">
+    <div class="sel-swatch" id="selSwatch"></div>
+    <div>
+      <div class="sel-name" id="selName"></div>
+      <div class="sel-meta" id="selMeta"></div>
+      <span class="sel-combos" id="selCombos"></span>
+    </div>
+    <div class="sel-actions">
+      <button class="sel-btn sel-btn-primary" onclick="openComboModal()">Ver combinaciones</button>
+      <button class="sel-btn sel-btn-secondary" onclick="sendToAtelier()">→ Atelier</button>
+      <button class="sel-btn sel-btn-secondary" onclick="openOccasion()">Ocasión</button>
+    </div>
+  </div>
+</div>
 
-function openOccasionCombo(cn){
-  const colors=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);
-  if(!colors.length)return;
-  document.getElementById('occasionOverlay').classList.remove('open');
-  selectedColor=colors[0];
-  buildComboModal(colors,parseInt(cn),null);
-  document.getElementById('comboModalOverlay').classList.add('open');
-}
+<!-- COMBO MODAL -->
+<div class="combo-modal-overlay" id="comboModalOverlay" onclick="closeComboModal(event)">
+  <div class="combo-modal" id="comboModal">
+    <button class="cm-close" onclick="document.getElementById('comboModalOverlay').classList.remove('open')">×</button>
+    <div class="cm-swatches" id="cmSwatches"></div>
+    <div class="cm-body">
+      <div class="cm-outfit" id="cmOutfit">
+        <span class="outfit-eyebrow">Look con esta combinación</span>
+        <div class="outfit-figure" id="outfitFigure"></div>
+      </div>
+      <div class="cm-info" id="cmInfo"></div>
+    </div>
+  </div>
+</div>
 
-function closeOccasion(e){if(e.target===document.getElementById('occasionOverlay'))document.getElementById('occasionOverlay').classList.remove('open')}
-
+<!-- SAVED DRAWER -->
+<div class="saved-overlay" id="savedOverlay" onclick="closeSaved(event)"></div>
+<div class="saved-drawer" id="savedDrawer">
+  <div class="sd-header">
+    <div class="sd-title">Guardados</div>
+    <button class="sd-close" onclick="closeSaved()">×</button>
+  </div>
+  <div class="sd-body" id="sdBody"></div>
+</div>
 
 </script>
+
+<!-- COLOR POPOVER (for Atelier) -->
+<div class="color-popover" id="colorPopover">
+  <div class="cp-header">
+    <span class="cp-title" id="cpTitle">Elegir color</span>
+    <button class="cp-close" onclick="closePopover()">×</button>
+  </div>
+  <div class="cp-search"><input type="text" id="cpSearch" placeholder="Buscar…" oninput="filterPopover()"></div>
+  <div class="cp-grid" id="cpGrid"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+
 </body>
 </html>
