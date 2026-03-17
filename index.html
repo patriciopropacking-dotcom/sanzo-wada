@@ -880,6 +880,129 @@ header{
   .h-nav .h-tab:nth-child(n+5){display:none}
 }
 
+
+/* ── INSPO PAGE ─────────────────────────── */
+.inspo-page,.occasion-page{max-width:1300px;margin:0 auto;padding:3rem 2rem 4rem}
+.inspo-page-header{margin-bottom:2rem}
+
+.daily-strip{
+  display:grid;grid-template-columns:220px 1fr;
+  background:var(--cream2);border:1px solid var(--line);
+  margin-bottom:2rem;overflow:hidden;min-height:110px;
+}
+.daily-strip-swatches{display:flex}
+.daily-strip-swatches div{flex:1;min-height:110px}
+.daily-strip-info{
+  padding:1.2rem 1.5rem;border-left:1px solid var(--line2);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.daily-strip-eyebrow{font-size:0.42rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.3rem}
+.daily-strip-title{font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;color:var(--ink);margin-bottom:0.2rem}
+.daily-strip-sub{font-size:0.55rem;color:var(--ink3)}
+.daily-strip-btn{
+  font-family:'Tenor Sans',sans-serif;font-size:0.45rem;letter-spacing:0.2em;text-transform:uppercase;
+  background:var(--ink);color:var(--cream);border:none;padding:0.5rem 1rem;cursor:pointer;
+  transition:background 0.2s;margin-top:0.7rem;display:inline-block;align-self:flex-start;
+}
+.daily-strip-btn:hover{background:var(--red)}
+
+.inspo-controls{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem}
+.inspo-search-wrap{position:relative}
+.inspo-search-icon{position:absolute;left:0.8rem;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:0.7rem;pointer-events:none}
+.inspo-search-wrap input{
+  width:100%;font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;
+  background:var(--cream2);border:1px solid var(--line);color:var(--ink);
+  padding:0.75rem 0.75rem 0.75rem 2.2rem;outline:none;transition:border-color 0.2s;
+}
+.inspo-search-wrap input:focus{border-color:var(--ink)}
+.inspo-search-wrap input::placeholder{color:var(--ink3)}
+.inspo-style-pills{display:flex;gap:0.4rem;flex-wrap:wrap}
+.style-pill{
+  font-family:'Tenor Sans',sans-serif;font-size:0.48rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.35rem 0.9rem;border:1px solid var(--line);background:var(--cream);
+  color:var(--ink3);cursor:pointer;transition:all 0.2s;
+}
+.style-pill:hover{border-color:var(--ink);color:var(--ink)}
+.style-pill.active{border-color:var(--ink);background:var(--ink);color:var(--cream)}
+
+/* Pinterest grid */
+.pinterest-grid{
+  columns:4 200px;column-gap:1px;
+}
+.pinterest-card{
+  background:var(--cream);cursor:pointer;
+  break-inside:avoid;margin-bottom:1px;
+  position:relative;overflow:hidden;
+  transition:transform 0.25s cubic-bezier(0.16,1,0.3,1);
+  display:block;
+}
+.pinterest-card:hover{transform:scale(1.02);z-index:2;box-shadow:0 8px 32px rgba(0,0,0,0.14)}
+.pinterest-card:active{transform:scale(0.98)}
+.pinterest-img{width:100%;display:block;background:var(--cream3)}
+.pinterest-body{padding:0.8rem}
+.pinterest-palette{display:flex;gap:3px;margin-bottom:0.5rem}
+.pinterest-palette div{width:18px;height:18px;flex-shrink:0;border:1px solid rgba(0,0,0,0.07)}
+.pinterest-title{font-family:'Playfair Display',serif;font-size:0.82rem;font-style:italic;color:var(--ink);display:block;margin-bottom:0.3rem}
+.pinterest-tags{display:flex;gap:0.3rem;flex-wrap:wrap}
+.pinterest-tag{font-size:0.4rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink3);background:var(--cream2);padding:2px 5px}
+.pinterest-tag.accent{background:rgba(181,23,58,0.08);color:var(--red)}
+.pinterest-style-label{
+  position:absolute;top:0.6rem;left:0.6rem;
+  font-size:0.38rem;letter-spacing:0.15em;text-transform:uppercase;
+  background:rgba(247,244,239,0.92);color:var(--ink);padding:2px 7px;
+  backdrop-filter:blur(2px);
+}
+
+/* ── OCCASION PAGE ──────────────────────── */
+.occasion-styles-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:1px;background:var(--line2);margin-bottom:2.5rem;
+}
+.occasion-style-card{
+  background:var(--cream);padding:0;cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:background 0.15s;
+}
+.occasion-style-card:hover{background:var(--cream2)}
+.occasion-style-card.active{background:var(--cream2)}
+.occasion-style-card.active::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--red);
+}
+.occasion-style-top{height:100px;display:flex;gap:1px}
+.occasion-style-top div{flex:1}
+.occasion-style-bottom{padding:0.9rem 1rem}
+.occasion-style-name{font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;color:var(--ink);display:block;margin-bottom:0.2rem}
+.occasion-style-desc{font-size:0.48rem;letter-spacing:0.06em;color:var(--ink3);line-height:1.5}
+
+.occasion-results-header{
+  display:flex;align-items:baseline;justify-content:space-between;
+  padding:1.5rem 0 1rem;border-top:1px solid var(--line2);margin-bottom:1rem;
+}
+.occasion-results-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-style:italic;color:var(--ink)}
+.occasion-results-count{font-size:0.48rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink3)}
+.occasion-results-grid{
+  columns:3 240px;column-gap:1px;margin-bottom:3rem;
+}
+.occasion-combo-card{
+  background:var(--cream);cursor:pointer;break-inside:avoid;margin-bottom:1px;
+  transition:background 0.15s;
+}
+.occasion-combo-card:hover{background:var(--cream2)}
+.occasion-combo-swatches{display:flex;height:80px}
+.occasion-combo-swatches div{flex:1}
+.occasion-combo-info{padding:0.8rem}
+.occasion-combo-num{font-size:0.42rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);display:block;margin-bottom:0.2rem}
+.occasion-combo-names{font-family:'Playfair Display',serif;font-style:italic;font-size:0.82rem;color:var(--ink);line-height:1.4}
+.occasion-combo-why{font-size:0.5rem;color:var(--ink3);margin-top:0.3rem;display:block;line-height:1.5}
+
+@media(max-width:700px){
+  .pinterest-grid{columns:2 140px}
+  .occasion-styles-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .occasion-results-grid{columns:1}
+  .daily-strip{grid-template-columns:120px 1fr}
+  .h-nav .h-tab{font-size:0.45rem;padding:0.5rem 0.6rem;letter-spacing:0.1em}
+}
+
 </style>
 </head>
 <body>
@@ -889,7 +1012,10 @@ header{
   <div class="h-nav">
     <button class="h-tab active" onclick="switchTab('archive',this)">Archivo</button>
     <button class="h-tab" onclick="switchTab('atelier',this)">Atelier</button>
-    <button class="h-tab" onclick="switchTab('combinations',this)">Combinaciones</button>
+    <button class="h-tab" onclick="switchTab('inspo',this)">Inspo</button>
+    <button class="h-tab" onclick="switchTab('occasion',this)">Ocasión</button>
+    <button class="h-tab" onclick="switchTab('season',this)">Temporada</button>
+    <button class="h-tab" onclick="switchTab('closet',this)">Mi Closet</button>
   </div>
   <div class="h-logo">
     <span class="logo-w">Wada</span>
@@ -986,27 +1112,52 @@ header{
   </div>
 </div>
 
-<!-- ── INSPO TAB ─────────────────────────── -->
+<!-- ── INSPO TAB ────────────────────────── -->
 <div id="tab-inspo" class="tab-panel">
-  <div class="inspo-wrap">
-    <div class="inspo-header">
+  <div class="inspo-page">
+    <div class="inspo-page-header">
       <div class="a-eyebrow">Inspiración · Editorial &amp; Street Style</div>
-      <h2 class="atelier-title">Inspo <em>del día</em></h2>
-      <p class="atelier-desc">Buscá outfits por color, nombre o familia. Fotos editoriales y street style para encontrar tu inspiración.</p>
+      <h2 class="atelier-title">Style <em>Inspo</em></h2>
+      <p class="atelier-desc">Buscá outfits por estilo, estado de ánimo o color. Cada card te muestra la paleta Wada del look.</p>
     </div>
-    <div class="inspo-search-bar">
-      <input type="text" id="inspoSearch" placeholder="Buscar por color, nombre, ocasión…" oninput="filterInspo()">
-      <div class="inspo-filter-chips" id="inspoFilterChips"></div>
+
+    <!-- Daily combo strip -->
+    <div class="daily-strip" id="dailyStrip"></div>
+
+    <!-- Search + filter -->
+    <div class="inspo-controls">
+      <div class="inspo-search-wrap">
+        <span class="inspo-search-icon">◈</span>
+        <input type="text" id="inspoSearchInput" placeholder="Buscar estilo, color, ocasión…" oninput="filterInspo()">
+      </div>
+      <div class="inspo-style-pills" id="inspoStylePills"></div>
     </div>
-    <div class="daily-combo" id="dailyCombo"></div>
-    <div class="inspo-grid" id="inspoGrid"></div>
+
+    <!-- Pinterest grid -->
+    <div class="pinterest-grid" id="pinterestGrid"></div>
+  </div>
+</div>
+
+<!-- ── OCCASION TAB ───────────────────────── -->
+<div id="tab-occasion" class="tab-panel">
+  <div class="occasion-page">
+    <div class="inspo-page-header">
+      <div class="a-eyebrow">Modo Ocasión · Combinaciones por contexto</div>
+      <h2 class="atelier-title">¿Para qué <em>ocasión</em>?</h2>
+      <p class="atelier-desc">Elegí tu estilo o evento y descubrí las combinaciones Wada más apropiadas para ese momento.</p>
+    </div>
+    <div class="occasion-styles-grid" id="occasionStylesGrid"></div>
+    <div id="occasionStyleResults" style="display:none">
+      <div class="occasion-results-header" id="occasionResultsHeader"></div>
+      <div class="occasion-results-grid" id="occasionResultsGrid"></div>
+    </div>
   </div>
 </div>
 
 <!-- ── SEASON TAB ────────────────────────── -->
 <div id="tab-season" class="tab-panel">
   <div class="season-wrap">
-    <div class="inspo-header">
+    <div class="inspo-page-header">
       <div class="a-eyebrow">Pasarela · Wada Intelligence</div>
       <h2 class="atelier-title">Paleta de <em>Temporada</em></h2>
       <p class="atelier-desc">Los colores que dominan las pasarelas esta temporada, traducidos a la paleta de Sanzo Wada.</p>
@@ -1023,19 +1174,19 @@ header{
 <!-- ── CLOSET TAB ─────────────────────────── -->
 <div id="tab-closet" class="tab-panel">
   <div class="closet-wrap">
-    <div class="inspo-header">
+    <div class="inspo-page-header">
       <div class="a-eyebrow">Mi Closet · Colores reales</div>
       <h2 class="atelier-title">Mi <em>Closet</em></h2>
-      <p class="atelier-desc">Guardá los colores de tu ropero real. Wada te dice qué tenés, qué te falta y cómo combinar lo que ya tenés.</p>
+      <p class="atelier-desc">Guardá los colores de tu ropero real. Wada te dice qué combinaciones podés hacer hoy y qué te falta.</p>
     </div>
     <div class="closet-body">
       <div class="closet-left">
         <div class="closet-add-section">
           <span class="closet-section-label">Agregar color al closet</span>
           <div class="closet-add-row">
-            <div class="closet-add-preview" id="closetAddPreview"></div>
-            <input type="text" id="closetAddName" class="closet-input" placeholder="Nombre de la prenda (ej: vestido azul)">
-            <button class="closet-add-btn" onclick="openClosetPicker()">Elegir color Wada</button>
+            <div class="closet-add-preview" id="closetAddPreview" onclick="openClosetPicker()"></div>
+            <input type="text" id="closetAddName" class="closet-input" placeholder="Nombre de la prenda…">
+            <button class="closet-add-btn" onclick="openClosetPicker()">Elegir color</button>
           </div>
           <button class="closet-confirm-btn" id="closetConfirmBtn" onclick="addToCloset()" style="display:none">+ Agregar al closet</button>
         </div>
@@ -1045,7 +1196,7 @@ header{
         <span class="closet-section-label">Combinaciones posibles con tu closet</span>
         <div id="closetCombinations"></div>
         <div class="closet-history">
-          <span class="closet-section-label" style="margin-top:1.5rem">Historial de looks</span>
+          <span class="closet-section-label" style="margin-top:1.5rem;display:block">Historial de looks</span>
           <div id="closetHistory"></div>
         </div>
       </div>
@@ -1053,18 +1204,7 @@ header{
   </div>
 </div>
 
-<!-- ── OCCASION MODAL ────────────────────── -->
-<div class="occasion-overlay" id="occasionOverlay" onclick="closeOccasion(event)">
-  <div class="occasion-modal" id="occasionModal">
-    <button class="cm-close" onclick="document.getElementById('occasionOverlay').classList.remove('open')">×</button>
-    <div class="occasion-header">
-      <div class="a-eyebrow">Modo Ocasión</div>
-      <h3 class="occasion-title">¿Para qué ocasión?</h3>
-    </div>
-    <div class="occasion-grid" id="occasionGrid"></div>
-    <div id="occasionResults"></div>
-  </div>
-</div>
+
 
 <!-- BOTTOM SELECTION PANEL -->
 <div class="sel-panel" id="selPanel">
@@ -1820,6 +1960,264 @@ function switchTab(tab,btn){
   if(tab==='season')renderSeasonContent();
   if(tab==='closet')buildClosetView();
 }
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadFromStorage();
+buildFamilyBtns();
+renderGrid();
+buildStep1();
+updateSavedCount();
+
+// ── PERSIST TO LOCALSTORAGE ───────────────────────────────────────────────────
+function saveToStorage(){
+  try{
+    localStorage.setItem('wada_saved',JSON.stringify(savedItems));
+    localStorage.setItem('wada_closet',JSON.stringify(closetItems));
+  }catch(e){}
+}
+function loadFromStorage(){
+  try{
+    const s=localStorage.getItem('wada_saved');
+    if(s)savedItems=JSON.parse(s);
+    const c=localStorage.getItem('wada_closet');
+    if(c)closetItems=JSON.parse(c);
+  }catch(e){}
+}
+
+// ── INSPO DATA ─────────────────────────────────────────────────────────────
+const STYLES=[
+  {id:'editorial',name:'Editorial / Avant-garde',desc:'Piezas únicas, siluetas dramáticas, color como statement',wadaIdxs:[157,29,55,148,35],
+    cards:[
+      {title:'Total noir con estructura',tags:['editorial','avant-garde','negro'],wadaIdxs:[157,156,123],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80',h:520},
+      {title:'Rojo arquitectónico',tags:['editorial','bold','poder'],wadaIdxs:[17,157,54],photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80',h:420},
+      {title:'Monocromático lavanda',tags:['editorial','color'],wadaIdxs:[133,132,148],photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80',h:380},
+      {title:'Silueta oversize blanco',tags:['editorial','avant-garde'],wadaIdxs:[152,110,157],photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80',h:460},
+      {title:'Verde veneno statement',tags:['editorial','dramático'],wadaIdxs:[92,157,55],photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80',h:500},
+    ]},
+  {id:'casual',name:'Casual calle',desc:'Outfits del día a día con personalidad y comodidad',wadaIdxs:[54,50,88,76,40],
+    cards:[
+      {title:'Denim y beige',tags:['casual','básico'],wadaIdxs:[125,54,50],photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80',h:400},
+      {title:'Pasteles de temporada',tags:['casual','suave','primavera'],wadaIdxs:[43,110,133],photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80',h:460},
+      {title:'Naranja urbano',tags:['casual','street'],wadaIdxs:[64,157,40],photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&sat=-20',h:380},
+      {title:'Neutros terrosos',tags:['casual','neutro','otoño'],wadaIdxs:[54,82,50,76],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=top',h:440},
+      {title:'Amarillo y blanco',tags:['casual','verano'],wadaIdxs:[55,152,116],photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=top',h:360},
+    ]},
+  {id:'noche',name:'Noche / Cocktail',desc:'Looks para salir, cenar o ir a un evento nocturno',wadaIdxs:[157,29,22,148,51],
+    cards:[
+      {title:'Bordó profundo',tags:['noche','elegante'],wadaIdxs:[29,157,51],photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=top',h:500},
+      {title:'Negro y dorado',tags:['noche','glamour'],wadaIdxs:[157,51,42],photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=bottom',h:440},
+      {title:'Azul noche con brillo',tags:['noche','cocktail'],wadaIdxs:[130,110,152],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=bottom',h:480},
+      {title:'Rojo carmin total',tags:['noche','bold'],wadaIdxs:[23,157,42],photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80&crop=top',h:420},
+      {title:'Negro satín power',tags:['noche','glamour'],wadaIdxs:[157,153,125],photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&crop=top',h:460},
+    ]},
+  {id:'boho',name:'Boho / Romantic',desc:'Texturas, capas, flores y paletas tierra cálidas',wadaIdxs:[50,45,14,59,93],
+    cards:[
+      {title:'Terracota y crudo',tags:['boho','tierra'],wadaIdxs:[14,54,50],photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80&crop=top',h:480},
+      {title:'Florido y pastel',tags:['boho','romántico','primavera'],wadaIdxs:[3,43,88],photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=top',h:420},
+      {title:'Ocres y verdes',tags:['boho','natural'],wadaIdxs:[59,76,50],photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=bottom',h:440},
+      {title:'Rosa pálido y camel',tags:['boho','suave'],wadaIdxs:[43,54,50],photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80&crop=bottom',h:500},
+      {title:'Blanco con detalles dorados',tags:['boho','artesanal'],wadaIdxs:[152,51,42],photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=bottom',h:380},
+    ]},
+  {id:'sport',name:'Sport Chic',desc:'Comodidad con estilo, del gym al café',wadaIdxs:[157,17,92,55,109],
+    cards:[
+      {title:'Negro total athleisure',tags:['sport','minimal'],wadaIdxs:[157,153,110],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=left',h:440},
+      {title:'Blanco y verde fresco',tags:['sport','tenis','verano'],wadaIdxs:[152,96,55],photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&crop=left',h:400},
+      {title:'Azul cobalto vibrante',tags:['sport','color'],wadaIdxs:[120,152,55],photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80&crop=bottom',h:460},
+      {title:'Gris y naranja',tags:['sport','street'],wadaIdxs:[153,64,157],photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=left',h:380},
+      {title:'Rosa y blanco sport',tags:['sport','femenino'],wadaIdxs:[6,152,133],photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=left',h:420},
+    ]},
+  {id:'playa',name:'Playa / Resort',desc:'Looks frescos para el sol, la arena y el mar',wadaIdxs:[109,110,55,152,87],
+    cards:[
+      {title:'Blanco total resort',tags:['playa','resort'],wadaIdxs:[152,110,116],photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80&crop=right',h:480},
+      {title:'Azules del mar',tags:['playa','fresco'],wadaIdxs:[110,116,120],photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=left',h:420},
+      {title:'Naranja y turquesa',tags:['playa','tropical'],wadaIdxs:[63,116,55],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=right',h:400},
+      {title:'Amarillo y blanco',tags:['playa','luminoso'],wadaIdxs:[55,152,109],photo:'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80&crop=right',h:460},
+      {title:'Estampado verde y coral',tags:['playa','tropical'],wadaIdxs:[96,6,55],photo:'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=400&q=80&crop=left',h:440},
+    ]},
+  {id:'corporate',name:'Corporate / Oficina',desc:'Profesional, pulido y con carácter propio',wadaIdxs:[156,128,125,54,152],
+    cards:[
+      {title:'Navy y crudo',tags:['corporate','clásico'],wadaIdxs:[128,54,152],photo:'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400&q=80&crop=right',h:460},
+      {title:'Gris antracita total',tags:['corporate','minimal'],wadaIdxs:[156,153,152],photo:'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400&q=80&crop=right',h:440},
+      {title:'Traje en tono camel',tags:['corporate','elegante'],wadaIdxs:[50,54,86],photo:'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=400&q=80&crop=left',h:500},
+      {title:'Blanco y negro power',tags:['corporate','contraste'],wadaIdxs:[152,157,153],photo:'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80&crop=right',h:420},
+      {title:'Azul cobalto ejecutivo',tags:['corporate','color'],wadaIdxs:[125,152,54],photo:'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80&crop=bottom',h:400},
+    ]},
+];
+
+const OCCASION_STYLES=[
+  {id:'hippie',name:'Hippie Chic',desc:'Capas, flecos, tie-dye y paletas tierra vibrantes',colorIdxs:[14,59,93,50,76],whyNote:'Ocres, terracota y verdes naturales — la paleta de la tierra'},
+  {id:'electronica',name:'Fiesta Electrónica',desc:'Neón, brillos, looks monocromáticos ultra saturados',colorIdxs:[92,55,9,141,98],whyNote:'Saturados y contrastes extremos que vibran bajo luces UV'},
+  {id:'trajes',name:'Trajes Formales',desc:'Sastrería clásica: líneas limpias, telas nobles, sobriedad',colorIdxs:[128,156,54,86,152],whyNote:'Navy, gris antracita y neutros que proyectan autoridad'},
+  {id:'oversized',name:'Trajes Holgados / Oversized',desc:'Sastrería deconstructed, fit relajado, capas urbanas',colorIdxs:[157,153,54,128,107],whyNote:'Monocromáticos y neutros en siluetas amplias'},
+  {id:'boda',name:'Boda invitada',desc:'Elegancia festiva: colores alegres pero no protagonistas',colorIdxs:[3,133,110,43,116],whyNote:'Pasteles suaves y azules que complementan sin opacar'},
+  {id:'casual',name:'Casual calle',desc:'Del día a día con personalidad: cómodo, fresco, con color',colorIdxs:[50,54,88,76,40],whyNote:'Neutros cálidos para combinar fácil cualquier día'},
+  {id:'editorial',name:'Editorial / Avant-garde',desc:'Piezas de statement, siluetas dramáticas, color extremo',colorIdxs:[157,17,55,35,148],whyNote:'Negro, rojo y amarillo puro — impacto visual máximo'},
+  {id:'playa',name:'Playa / Resort',desc:'Frescos, luminosos, perfectos bajo el sol',colorIdxs:[109,110,55,152,87],whyNote:'Azules, verdes agua y blancos que reflejan el verano'},
+  {id:'noche',name:'Noche / Cocktail',desc:'Sofisticado, sensual, listo para brillar de noche',colorIdxs:[157,29,22,148,51],whyNote:'Bordó, negro y dorado — la triada del glamour nocturno'},
+  {id:'sport',name:'Sport Chic',desc:'Athleisure con carácter: del gym a la calle',colorIdxs:[157,120,92,55,153],whyNote:'Negro, azul cobalto y verde limón — energía y contraste'},
+  {id:'boho',name:'Boho / Romantic',desc:'Texturas naturales, flores, capas en tonos tierra',colorIdxs:[50,45,14,59,93],whyNote:'Terracota, siena y verdes musgo — paleta de la naturaleza'},
+  {id:'corporate',name:'Corporate / Oficina',desc:'Profesional y con identidad: la moda del poder moderno',colorIdxs:[156,128,125,54,152],whyNote:'Navy y grises con acentos estratégicos de color'},
+];
+
+let inspoActiveStyle='all';
+let inspoSearchQ='';
+let activeOccasionStyle=null;
+
+// ── INSPO ─────────────────────────────────────────────────────────────────────
+function buildInspoPage(){
+  buildDailyStrip();
+  buildStylePills();
+  renderPinterestGrid();
+}
+
+function buildDailyStrip(){
+  const el=document.getElementById('dailyStrip');if(!el)return;
+  const day=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/(1000*60*60*24));
+  const allCombos=Object.entries(COMBOS);
+  const[cn,indices]=allCombos[day%allCombos.length];
+  const colors=indices.map(i=>colorByIndex[i]).filter(Boolean);
+  if(!colors.length){el.style.display='none';return}
+  const sw=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
+  el.innerHTML=`
+    <div class="daily-strip-swatches">${sw}</div>
+    <div class="daily-strip-info">
+      <span class="daily-strip-eyebrow">Combinación del día · #${cn}</span>
+      <div class="daily-strip-title">${colors.map(c=>c.name).join(' · ')}</div>
+      <div class="daily-strip-sub">${colors.length} colores · ${new Date().toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</div>
+      <button class="daily-strip-btn" onclick="openDailyCombo(${cn})">Explorar →</button>
+    </div>`;
+}
+
+function buildStylePills(){
+  const el=document.getElementById('inspoStylePills');if(!el)return;
+  el.innerHTML='';
+  const all=document.createElement('button');
+  all.className='style-pill'+(inspoActiveStyle==='all'?' active':'');
+  all.textContent='Todos';
+  all.onclick=()=>{inspoActiveStyle='all';document.querySelectorAll('.style-pill').forEach(b=>b.classList.remove('active'));all.classList.add('active');renderPinterestGrid()};
+  el.appendChild(all);
+  STYLES.forEach(s=>{
+    const btn=document.createElement('button');
+    btn.className='style-pill'+(inspoActiveStyle===s.id?' active':'');
+    btn.textContent=s.name.split('/')[0].trim();
+    btn.onclick=()=>{inspoActiveStyle=s.id;document.querySelectorAll('.style-pill').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderPinterestGrid()};
+    el.appendChild(btn);
+  });
+}
+
+function filterInspo(){inspoSearchQ=(document.getElementById('inspoSearchInput')||{}).value?document.getElementById('inspoSearchInput').value.toLowerCase():'';renderPinterestGrid()}
+
+function renderPinterestGrid(){
+  const grid=document.getElementById('pinterestGrid');if(!grid)return;
+  grid.innerHTML='';
+  let allCards=[];
+  STYLES.forEach(s=>{
+    if(inspoActiveStyle!=='all'&&inspoActiveStyle!==s.id)return;
+    s.cards.forEach(card=>{
+      if(inspoSearchQ&&!card.title.toLowerCase().includes(inspoSearchQ)&&!card.tags.some(t=>t.includes(inspoSearchQ))&&!s.name.toLowerCase().includes(inspoSearchQ))return;
+      allCards.push({...card,styleName:s.name,styleId:s.id});
+    });
+  });
+  if(!allCards.length){grid.innerHTML='<p style="padding:3rem;text-align:center;font-style:italic;color:var(--ink3)">Sin resultados.</p>';return}
+  allCards.forEach(card=>{
+    const colors=card.wadaIdxs.map(i=>colorByIndex[i]).filter(Boolean);
+    const palette=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
+    const tags=card.tags.map((t,i)=>`<span class="pinterest-tag${i===0?' accent':''}">${t}</span>`).join('');
+    const div=document.createElement('div');div.className='pinterest-card';
+    div.innerHTML=`
+      <span class="pinterest-style-label">${card.styleName.split('/')[0].trim()}</span>
+      <img class="pinterest-img" src="${card.photo}" alt="${card.title}" loading="lazy" style="height:${card.h}px;object-fit:cover" onerror="this.style.background='var(--cream3)';this.style.height='120px';this.removeAttribute('src')">
+      <div class="pinterest-body">
+        <div class="pinterest-palette">${palette}</div>
+        <span class="pinterest-title">${card.title}</span>
+        <div class="pinterest-tags">${tags}</div>
+      </div>`;
+    div.onclick=()=>{if(colors.length>=2){selectedColor=colors[0];buildComboModal(colors,null,null);document.getElementById('comboModalOverlay').classList.add('open')}};
+    grid.appendChild(div);
+  });
+}
+
+function openDailyCombo(cn){
+  const colors=(COMBOS[cn]||[]).map(i=>colorByIndex[i]).filter(Boolean);
+  if(!colors.length)return;
+  selectedColor=colors[0];buildComboModal(colors,parseInt(cn),null);
+  document.getElementById('comboModalOverlay').classList.add('open');
+}
+
+// ── OCCASION ──────────────────────────────────────────────────────────────────
+function buildOccasionPage(){
+  const grid=document.getElementById('occasionStylesGrid');if(!grid)return;
+  grid.innerHTML='';
+  OCCASION_STYLES.forEach(style=>{
+    const colors=style.colorIdxs.map(i=>colorByIndex[i]).filter(Boolean);
+    const sw=colors.map(c=>`<div style="background:${c.hex}" title="${c.name}"></div>`).join('');
+    const card=document.createElement('div');
+    card.className='occasion-style-card'+(activeOccasionStyle===style.id?' active':'');
+    card.id=`occ-${style.id}`;
+    card.innerHTML=`<div class="occasion-style-top">${sw}</div><div class="occasion-style-bottom"><span class="occasion-style-name">${style.name}</span><span class="occasion-style-desc">${style.desc}</span></div>`;
+    card.onclick=()=>{
+      activeOccasionStyle=style.id;
+      document.querySelectorAll('.occasion-style-card').forEach(c=>c.classList.toggle('active',c===card));
+      renderOccasionResults(style);
+      const res=document.getElementById('occasionStyleResults');
+      res.style.display='block';
+      setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),50);
+    };
+    grid.appendChild(card);
+  });
+}
+
+function renderOccasionResults(style){
+  const header=document.getElementById('occasionResultsHeader');
+  const resultGrid=document.getElementById('occasionResultsGrid');
+  if(!header||!resultGrid)return;
+  const relevant=new Set(style.colorIdxs);
+  const scored=[];
+  Object.entries(COMBOS).forEach(([cn,indices])=>{
+    const score=indices.filter(i=>relevant.has(i)).length;
+    if(score>0)scored.push({cn,indices,score});
+  });
+  scored.sort((a,b)=>b.score-a.score);
+  header.innerHTML=`
+    <div>
+      <span class="occasion-results-title">${style.name}</span>
+      <p style="font-size:0.62rem;color:var(--ink3);margin-top:0.3rem;font-style:italic">${style.whyNote}</p>
+    </div>
+    <span class="occasion-results-count">${scored.length} combinaciones</span>`;
+  resultGrid.innerHTML='';
+  scored.slice(0,24).forEach(({cn,indices},i)=>{
+    const colors=indices.map(idx=>colorByIndex[idx]).filter(Boolean);if(!colors.length)return;
+    const sw=colors.map(c=>`<div style="background:${c.hex}"></div>`).join('');
+    const why=colors.filter(c=>style.colorIdxs.includes(c.index)).map(c=>c.name).join(', ');
+    const card=document.createElement('div');card.className='occasion-combo-card';
+    card.style.animationDelay=(i*0.02)+'s';
+    card.innerHTML=`<div class="occasion-combo-swatches">${sw}</div><div class="occasion-combo-info"><span class="occasion-combo-num">Combinación #${cn}</span><span class="occasion-combo-names">${colors.map(c=>c.name).join(' · ')}</span>${why?`<span class="occasion-combo-why">✦ ${why}</span>`:''}</div>`;
+    card.onclick=()=>{selectedColor=colors[0];buildComboModal(colors,parseInt(cn),null);document.getElementById('comboModalOverlay').classList.add('open')};
+    resultGrid.appendChild(card);
+  });
+}
+
+// ── SWITCHTAB (final version) ─────────────────────────────────────────────────
+function switchTab(tab,btn){
+  document.querySelectorAll('.h-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  ['archive','atelier','inspo','occasion','season','closet','combinations'].forEach(t=>{
+    const el=document.getElementById('tab-'+t);
+    if(el)el.classList.toggle('active',t===tab);
+  });
+  if(tab==='combinations')renderCombosView();
+  if(tab==='inspo')buildInspoPage();
+  if(tab==='occasion')buildOccasionPage();
+  if(tab==='season')renderSeasonContent();
+  if(tab==='closet')buildClosetView();
+}
+
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function showToast(msg){
